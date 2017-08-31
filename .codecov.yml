@@ -1,0 +1,22 @@
+comment: false
+
+branch: master
+
+coverage:
+  precision: 2
+  round: down
+  range:
+    - 40.0
+    - 70.0
+
+  status:
+    changes: false
+    patch: true
+    project: true
+
+  ignore:
+  # Ignore tests
+    - "**/tests/.*"
+
+  # Ignore logging
+    - "**/log/.*"
