@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.inria.atlanmod.commons</groupId>
-    <artifactId>commons-parent</artifactId>
+    <artifactId>commons</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
-    <name>Commons Parent</name>
+    <name>Commons</name>
     <description />
 
     <url />
@@ -56,7 +56,7 @@
     </prerequisites>
 
     <modules>
-        <module>commons</module>
+        <module>commons-core</module>
     </modules>
 
     <developers>
