@@ -11,7 +11,7 @@
 
 package fr.inria.atlanmod.commons.extension;
 
-import fr.inria.atlanmod.commons.concurrent.MoreExecutors;
+import fr.inria.atlanmod.commons.concurrent.MoreThreads;
 
 import org.junit.rules.ExternalResource;
 
@@ -95,7 +95,7 @@ public class Workspace extends ExternalResource {
         }
         catch (Exception e) {
             try {
-                MoreExecutors.executeAtExit(() -> deleteDirectory(directory));
+                MoreThreads.executeAtExit(() -> deleteDirectory(directory));
             }
             catch (IllegalStateException ignored) {
             }

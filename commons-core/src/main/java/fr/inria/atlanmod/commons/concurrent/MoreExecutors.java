@@ -16,7 +16,6 @@ import fr.inria.atlanmod.commons.annotation.Static;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
@@ -31,15 +30,6 @@ import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
 @Static
 @ParametersAreNonnullByDefault
 public final class MoreExecutors {
-
-    /**
-     * The default thread factory, used to create {@link Thread} instances that are not attached to an {@link
-     * ExecutorService}.
-     *
-     * @see #executeAtExit(Runnable)
-     */
-    @Nonnull
-    private static final ThreadFactory DEFAULT_THREAD_FACTORY = newThreadFactory();
 
     /**
      * This class should not be instantiated.
@@ -60,30 +50,31 @@ public final class MoreExecutors {
      *
      * @throws IllegalArgumentException if {@code nThreads <= 0}
      * @see Executors#newFixedThreadPool(int)
-     * @see #newThreadFactory()
+     * @see MoreThreads#newThreadFactory()
      * @see #shutdownAtExit(ExecutorService, long, TimeUnit, boolean)
      */
     @Nonnull
     public static ExecutorService newFixedThreadPool(int nThreads) {
-        ExecutorService service = Executors.newFixedThreadPool(nThreads, newThreadFactory());
+        ExecutorService service = Executors.newFixedThreadPool(nThreads, MoreThreads.newThreadFactory());
         service = Executors.unconfigurableExecutorService(service);
         return shutdownAtExit(service, 100, TimeUnit.MILLISECONDS, true);
     }
 
     /**
-     * Creates a new {@link ThreadFactory} that creates daemon threads.
+     * Creates a new {@link ExecutorService} using the maximum {@link Runtime#availableProcessors() available
+     * processors}, that will be closed when the application will exit.
      *
-     * @return a new thread factory
+     * @return a new immutable service
      *
-     * @see Executors#defaultThreadFactory()
+     * @throws IllegalArgumentException if {@code nThreads <= 0}
+     * @see Executors#newFixedThreadPool(int)
+     * @see Runtime#availableProcessors()
+     * @see MoreThreads#newThreadFactory()
+     * @see #shutdownAtExit(ExecutorService, long, TimeUnit, boolean)
      */
     @Nonnull
-    public static ThreadFactory newThreadFactory() {
-        return task -> {
-            Thread thread = Executors.defaultThreadFactory().newThread(task);
-            thread.setDaemon(true);
-            return thread;
-        };
+    public static ExecutorService newFixedThreadPool() {
+        return newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     }
 
     /**
@@ -109,7 +100,7 @@ public final class MoreExecutors {
         checkNotNull(unit);
         checkArgument(timeout >= 0);
 
-        executeAtExit(() -> {
+        MoreThreads.executeAtExit(() -> {
             try {
                 service.shutdown();
 
@@ -126,18 +117,5 @@ public final class MoreExecutors {
         });
 
         return service;
-    }
-
-    /**
-     * Adds a shutdown hook that will execute the {@code task} when the application will exit.
-     *
-     * @param task the task to execute
-     *
-     * @throws NullPointerException if the {@code task} is {@code null}
-     */
-    public static void executeAtExit(Runnable task) {
-        checkNotNull(task);
-
-        Runtime.getRuntime().addShutdownHook(DEFAULT_THREAD_FACTORY.newThread(task));
     }
 }
