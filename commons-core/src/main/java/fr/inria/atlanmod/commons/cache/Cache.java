@@ -20,6 +20,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.ThreadSafe;
 
+import static java.util.Objects.nonNull;
+
 /**
  * A semi-persistent mapping from keys to values. Cache entries are manually added using {@link #get(Object, Function)}
  * or {@link #put(Object, Object)}, and are stored in the cache until either evicted or manually invalidated.
@@ -124,6 +126,17 @@ public interface Cache<K, V> {
      * Discards all entries in the cache.
      */
     void invalidateAll();
+
+    /**
+     * Returns {@code true} if this map contains a mapping for the specified {@code key}.
+     *
+     * @param key key whose presence in this map is to be tested
+     *
+     * @return {@code true} if this map contains a mapping for the specified {@code key}
+     */
+    default boolean contains(K key) {
+        return nonNull(get(key));
+    }
 
     /**
      * Returns the approximate number of entries in this cache.

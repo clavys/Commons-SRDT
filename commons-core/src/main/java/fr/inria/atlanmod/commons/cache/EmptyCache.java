@@ -8,12 +8,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.Immutable;
 
 /**
- * A disabled {@link Cache} that does nothing.
+ * An immutable empty {@link Cache} that does nothing.
  *
  * @param <K> the type of keys maintained by this cache
  * @param <V> the type of mapped values
@@ -21,12 +22,12 @@ import javax.annotation.concurrent.Immutable;
 @Immutable
 @Singleton
 @ParametersAreNonnullByDefault
-class DisabledCache<K, V> implements Cache<K, V> {
+class EmptyCache<K, V> implements Cache<K, V> {
 
     /**
      * The instance of the outer class.
      */
-    private static final Cache<Object, Object> INSTANCE = new DisabledCache<>();
+    private static final Cache<Object, Object> INSTANCE = new EmptyCache<>();
 
     /**
      * Returns the instance of this class.
@@ -61,6 +62,11 @@ class DisabledCache<K, V> implements Cache<K, V> {
     }
 
     @Override
+    public void putIfAbsent(K key, V value) {
+        // Do nothing
+    }
+
+    @Override
     public void putAll(Map<? extends K, ? extends V> map) {
         // Do nothing
     }
@@ -81,6 +87,12 @@ class DisabledCache<K, V> implements Cache<K, V> {
     }
 
     @Override
+    public boolean contains(K key) {
+        return false;
+    }
+
+    @Nonnegative
+    @Override
     public long size() {
         return 0;
     }
@@ -98,7 +110,7 @@ class DisabledCache<K, V> implements Cache<K, V> {
     @Nonnull
     @Override
     public ConcurrentMap<K, V> asMap() {
-        return new ConcurrentHashMap<>();
+        return new ConcurrentHashMap<>(0);
     }
 
     @Nonnull

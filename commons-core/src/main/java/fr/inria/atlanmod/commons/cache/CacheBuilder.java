@@ -47,7 +47,7 @@ public interface CacheBuilder<K, V> {
     long DEFAULT_MAX_WEIGHT = DEFAULT_MAX_SIZE;
 
     /**
-     * Returns a disabled {@link Cache} that does nothing.
+     * Returns an immutable empty {@link Cache} that does nothing.
      *
      * @param <K> the type of keys maintained by this cache
      * @param <V> the type of mapped values
@@ -55,8 +55,8 @@ public interface CacheBuilder<K, V> {
      * @return a new cache
      */
     @Nonnull
-    static <K, V> Cache<K, V> disabled() {
-        return DisabledCache.getInstance();
+    static <K, V> Cache<K, V> empty() {
+        return EmptyCache.getInstance();
     }
 
     /**
