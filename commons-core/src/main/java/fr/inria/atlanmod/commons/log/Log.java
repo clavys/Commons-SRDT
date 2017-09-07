@@ -60,7 +60,7 @@ public final class Log {
      * @see #forName(String)
      */
     @Nonnull
-    private static Logger root() {
+    public static Logger root() {
         return forName(Strings.EMPTY);
     }
 
