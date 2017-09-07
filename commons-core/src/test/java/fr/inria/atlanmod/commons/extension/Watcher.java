@@ -34,12 +34,12 @@ public class Watcher extends TestWatcher {
     /**
      * The special logger without timestamp.
      */
-    private static final Logger LOG_TEST = Log.customLogger("test");
+    private static final Logger LOG_TEST = Log.forName("test");
 
     /**
      * The special logger without timestamp and level.
      */
-    private static final Logger LOG_VOID = Log.customLogger("void");
+    private static final Logger LOG_VOID = Log.forName("void");
 
     /**
      * The message to display a running test.
