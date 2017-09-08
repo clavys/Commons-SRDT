@@ -36,6 +36,9 @@ import static fr.inria.atlanmod.commons.Preconditions.checkArgument;
 @ParametersAreNonnullByDefault
 final class ObjectSerializer<T> implements Serializer<T> {
 
+    @SuppressWarnings("JavaDoc")
+    private static final long serialVersionUID = -4277343013443213864L;
+
     @Override
     public void serialize(T t, @WillNotClose DataOutput out) throws IOException {
         checkArgument(Serializable.class.isInstance(t),

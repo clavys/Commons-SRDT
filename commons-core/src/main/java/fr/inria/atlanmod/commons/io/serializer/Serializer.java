@@ -32,7 +32,7 @@ import javax.annotation.WillNotClose;
  * @param <T> the type of (de)serialized objects
  */
 @ParametersAreNonnullByDefault
-public interface Serializer<T> extends Converter<T, byte[]> {
+public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
 
     /**
      * {@inheritDoc}
