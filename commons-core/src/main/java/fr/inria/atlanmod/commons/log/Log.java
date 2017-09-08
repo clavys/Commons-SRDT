@@ -27,8 +27,8 @@ import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
 /**
  * The factory that creates {@link Logger} instances.
  * <p>
- * It also provides static methods for logging without declaring a specific instance. In this case, the {@link
- * #root()} is used by default.
+ * It also provides static methods for logging without declaring a specific instance. In this case, the {@link #root()}
+ * is used by default.
  */
 @Static
 @ThreadSafe

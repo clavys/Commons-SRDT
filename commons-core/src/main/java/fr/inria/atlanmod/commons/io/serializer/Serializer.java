@@ -11,6 +11,8 @@
 
 package fr.inria.atlanmod.commons.io.serializer;
 
+import fr.inria.atlanmod.commons.Converter;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
@@ -30,7 +32,39 @@ import javax.annotation.WillNotClose;
  * @param <T> the type of (de)serialized objects
  */
 @ParametersAreNonnullByDefault
-public interface Serializer<T> {
+public interface Serializer<T> extends Converter<T, byte[]> {
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see #serialize(Object)
+     */
+    @Nonnull
+    @Override
+    default byte[] doForward(T t) {
+        try {
+            return serialize(t);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see #deserialize(byte[])
+     */
+    @Nonnull
+    @Override
+    default T doBackward(byte[] bytes) {
+        try {
+            return deserialize(bytes);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Write an object of type {@link T} to a {@code byte} array.
