@@ -41,7 +41,7 @@ public interface Serializer<T> extends Converter<T, byte[]> {
      */
     @Nonnull
     @Override
-    default byte[] doForward(T t) {
+    default byte[] convert(T t) {
         try {
             return serialize(t);
         }
@@ -57,7 +57,7 @@ public interface Serializer<T> extends Converter<T, byte[]> {
      */
     @Nonnull
     @Override
-    default T doBackward(byte[] bytes) {
+    default T revert(byte[] bytes) {
         try {
             return deserialize(bytes);
         }

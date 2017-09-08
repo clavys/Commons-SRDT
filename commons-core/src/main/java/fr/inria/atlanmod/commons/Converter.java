@@ -19,7 +19,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 /**
  * An object that converts an object of type {@link A} to another of type {@link B}.
  * <p>
- * The reverse operation <b>may</b> be strict <i>inverse</i>, meaning that {@code converter.doBackward(converter.doForward(a)).equals(a)}
+ * The reverse operation <b>may</b> be strict <i>inverse</i>, meaning that {@code converter.revert(converter.convert(a)).equals(a)}
  * always {@code true}.
  *
  * @param <A> the type of the input instance
@@ -39,13 +39,13 @@ public interface Converter<A, B> {
         return new Converter<T, T>() {
             @Nonnull
             @Override
-            public T doForward(T t) {
+            public T convert(T t) {
                 return t;
             }
 
             @Nonnull
             @Override
-            public T doBackward(T t) {
+            public T revert(T t) {
                 return t;
             }
         };
@@ -54,25 +54,25 @@ public interface Converter<A, B> {
     /**
      * Creates a converter based on separate forward and backward functions.
      *
-     * @param forwardFunc  the function used for {@link #doForward(Object)}
-     * @param backwardFunc the function used for {@link #doBackward(Object)}
-     * @param <A>          the type of the input instance
-     * @param <B>          the type of the output instance
+     * @param convertFunc the function used for {@link #convert(Object)}
+     * @param revertFunc  the function used for {@link #revert(Object)}
+     * @param <A>         the type of the input instance
+     * @param <B>         the type of the output instance
      *
      * @return a new converter
      */
-    static <A, B> Converter<A, B> from(Function<? super A, ? extends B> forwardFunc, Function<? super B, ? extends A> backwardFunc) {
+    static <A, B> Converter<A, B> from(Function<? super A, ? extends B> convertFunc, Function<? super B, ? extends A> revertFunc) {
         return new Converter<A, B>() {
             @Nonnull
             @Override
-            public B doForward(A a) {
-                return forwardFunc.apply(a);
+            public B convert(A a) {
+                return convertFunc.apply(a);
             }
 
             @Nonnull
             @Override
-            public A doBackward(B b) {
-                return backwardFunc.apply(b);
+            public A revert(B b) {
+                return revertFunc.apply(b);
             }
         };
     }
@@ -85,7 +85,7 @@ public interface Converter<A, B> {
      * @return the converted instance
      */
     @Nonnull
-    B doForward(A a);
+    B convert(A a);
 
     /**
      * Returns a representation of {@code b} as an instance of type {@link A}.
@@ -95,5 +95,5 @@ public interface Converter<A, B> {
      * @return the converted instance
      */
     @Nonnull
-    A doBackward(B b);
+    A revert(B b);
 }
