@@ -16,7 +16,7 @@
     <description />
 
     <properties>
-        <caffeine.version>2.5.3</caffeine.version>
+        <caffeine.version>2.5.5</caffeine.version>
     </properties>
 
     <dependencies>
@@ -98,9 +98,6 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}</Bundle-SymbolicName>
-                        <DynamicImport-Package>
-                            *
-                        </DynamicImport-Package>
                         <Export-Package>
                             fr.inria.atlanmod.commons.*
                         </Export-Package>
