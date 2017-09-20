@@ -17,24 +17,25 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * An object that converts an object of type {@link A} to another of type {@link B}.
+ * An object that converts an object of type {@link T} to another of type {@link R}.
  * <p>
  * The reverse operation <b>may</b> be strict <i>inverse</i>, meaning that {@code converter.revert(converter.convert(a)).equals(a)}
  * always {@code true}.
  *
- * @param <A> the type of the input instance
- * @param <B> the type of the output instance
+ * @param <T> the type of the input to the converter
+ * @param <R> the type of the result of the converter
  */
 @ParametersAreNonnullByDefault
-public interface Converter<A, B> {
+public interface Converter<T, R> {
 
     /**
      * Creates a converter that always converts or reverses an object to itself.
      *
-     * @param <T> the type of the converted instance
+     * @param <T> the type of the converted instance and the result
      *
      * @return a new converter
      */
+    @Nonnull
     static <T> Converter<T, T> identity() {
         return new Converter<T, T>() {
             @Nonnull
@@ -56,44 +57,45 @@ public interface Converter<A, B> {
      *
      * @param convertFunc the function used for {@link #convert(Object)}
      * @param revertFunc  the function used for {@link #revert(Object)}
-     * @param <A>         the type of the input instance
-     * @param <B>         the type of the output instance
+     * @param <T>         the type of the input to the converter
+     * @param <R>         the type of the result of the converter
      *
      * @return a new converter
      */
-    static <A, B> Converter<A, B> from(Function<? super A, ? extends B> convertFunc, Function<? super B, ? extends A> revertFunc) {
-        return new Converter<A, B>() {
+    @Nonnull
+    static <T, R> Converter<T, R> from(Function<? super T, ? extends R> convertFunc, Function<? super R, ? extends T> revertFunc) {
+        return new Converter<T, R>() {
             @Nonnull
             @Override
-            public B convert(A a) {
-                return convertFunc.apply(a);
+            public R convert(T t) {
+                return convertFunc.apply(t);
             }
 
             @Nonnull
             @Override
-            public A revert(B b) {
-                return revertFunc.apply(b);
+            public T revert(R r) {
+                return revertFunc.apply(r);
             }
         };
     }
 
     /**
-     * Returns a representation of {@code a} as an instance of type {@link B}.
+     * Returns a representation of {@code t} as an instance of type {@link R}.
      *
-     * @param a the instance to convert
+     * @param t the instance to convert
      *
      * @return the converted instance
      */
     @Nonnull
-    B convert(A a);
+    R convert(T t);
 
     /**
-     * Returns a representation of {@code b} as an instance of type {@link A}.
+     * Returns a representation of {@code r} as an instance of type {@link T}.
      *
-     * @param b the instance to convert
+     * @param r the instance to convert
      *
      * @return the converted instance
      */
     @Nonnull
-    A revert(B b);
+    T revert(R r);
 }
