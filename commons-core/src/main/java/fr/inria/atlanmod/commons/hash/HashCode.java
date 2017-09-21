@@ -69,6 +69,15 @@ public final class HashCode implements Serializable {
     }
 
     /**
+     * Returns the long representation of this hash code.
+     *
+     * @return a long
+     */
+    public long toLong() {
+        return Bytes.toLong(bytes);
+    }
+
+    /**
      * Returns a string containing each byte of {@link #toBytes()}, in order, as a two-digit unsigned hexadecimal number
      * in lower case.
      *
