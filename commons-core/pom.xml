@@ -17,6 +17,7 @@
 
     <properties>
         <caffeine.version>2.5.5</caffeine.version>
+        <zah.version>0.8</zah.version>
     </properties>
 
     <dependencies>
@@ -26,6 +27,13 @@
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
+        </dependency>
+
+        <!-- Hashing -->
+
+        <dependency>
+            <groupId>net.openhft</groupId>
+            <artifactId>zero-allocation-hashing</artifactId>
         </dependency>
 
         <!-- Logging -->
@@ -68,6 +76,14 @@
                 <groupId>com.github.ben-manes.caffeine</groupId>
                 <artifactId>caffeine</artifactId>
                 <version>${caffeine.version}</version>
+            </dependency>
+
+            <!-- Hashing -->
+
+            <dependency>
+                <groupId>net.openhft</groupId>
+                <artifactId>zero-allocation-hashing</artifactId>
+                <version>${zah.version}</version>
             </dependency>
 
             <!-- Logging -->

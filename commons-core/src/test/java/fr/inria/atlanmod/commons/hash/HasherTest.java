@@ -80,20 +80,27 @@ public class HasherTest extends AbstractTest {
     }
 
     @Test
-    public void testMurmur32() {
-        // TODO Verify result
-        assertThat(hashWith(Hashers.murmur32()).toHexString()).isEqualToIgnoringCase("bb0589fd");
+    public void testMurmur3() {
+        assertThat(hashWith(Hashers.murmur3()).toHexString()).isEqualToIgnoringCase("6584465e14141afd");
     }
 
     @Test
-    public void testMurmur64() {
-        // TODO Verify result
-        assertThat(hashWith(Hashers.murmur64()).toHexString()).isEqualToIgnoringCase("09da52ee1adca312");
+    public void testXxHash() {
+        assertThat(hashWith(Hashers.xx()).toHexString()).isEqualToIgnoringCase("e82ce2b25b745d5d");
     }
 
     @Test
-    public void testMurmur128() {
-        // TODO Verify result
-        assertThat(hashWith(Hashers.murmur128()).toHexString()).isEqualToIgnoringCase("7c2c6c4a840c5f946e571accb2bfe8cf");
+    public void testCityHash() {
+        assertThat(hashWith(Hashers.city()).toHexString()).isEqualToIgnoringCase("04555fb0dfee9f5e");
+    }
+
+    @Test
+    public void testFarmHashNA() {
+        assertThat(hashWith(Hashers.farmNa()).toHexString()).isEqualToIgnoringCase("04555fb0dfee9f5e");
+    }
+
+    @Test
+    public void testFarmHashUO() {
+        assertThat(hashWith(Hashers.farmUo()).toHexString()).isEqualToIgnoringCase("04555fb0dfee9f5e");
     }
 }

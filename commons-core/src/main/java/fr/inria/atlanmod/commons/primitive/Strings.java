@@ -15,8 +15,11 @@ import fr.inria.atlanmod.commons.annotation.Static;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 import javax.annotation.CheckForNull;
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -35,12 +38,20 @@ public final class Strings {
     /**
      * The empty string {@code ""}.
      */
+    @Nonnull
     public static final String EMPTY = "";
 
     /**
      * A string for a space character.
      */
+    @Nonnull
     public static final String SPACE = " ";
+
+    /**
+     * The predicate to test an hexadecimal string.
+     */
+    @Nonnull
+    private static final Predicate<String> IS_BINARY = Pattern.compile("^[0-9a-f]+$", Pattern.CASE_INSENSITIVE).asPredicate();
 
     /**
      * This class should not be instantiated.
@@ -144,6 +155,7 @@ public final class Strings {
      *
      * @throws IllegalArgumentException if the {@code char} is not an hex digit
      */
+    @Nonnegative
     private static int toHexDigit(char c) {
         if (c >= '0' && c <= '9') {
             return c - '0';
@@ -155,5 +167,16 @@ public final class Strings {
         }
 
         throw new IllegalArgumentException(String.format("Unexpected hex digit: %c", c));
+    }
+
+    /**
+     * Returns {@code true} if the {@code value} represents an hexadecimal value.
+     *
+     * @param value the string to test
+     *
+     * @return {@code true} if the {@code value} represents an hexadecimal value
+     */
+    public static boolean isBinary(final String value) {
+        return !isNullOrEmpty(value) && IS_BINARY.test(value);
     }
 }

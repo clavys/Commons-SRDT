@@ -13,9 +13,9 @@ package fr.inria.atlanmod.commons.hash;
 
 import fr.inria.atlanmod.commons.annotation.Static;
 import fr.inria.atlanmod.commons.annotation.VisibleForTesting;
-import fr.inria.atlanmod.commons.hash.murmur.Murmur128;
-import fr.inria.atlanmod.commons.hash.murmur.Murmur32;
-import fr.inria.atlanmod.commons.hash.murmur.Murmur64;
+import fr.inria.atlanmod.commons.primitive.Longs;
+
+import net.openhft.hashing.LongHashFunction;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -87,42 +87,75 @@ public final class Hashers {
     }
 
     /**
-     * Returns a {@link Hasher} that uses the {@code Murmur 32-bit} algorithm (32 bits).
+     * Returns a {@link Hasher} that uses the {@code MurmurHash3 64-bit} algorithm (64 bits).
+     * <p>
+     * See <a href="https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp">Github</a> for more
+     * information.
      *
      * @return a new {@link Hasher}
      */
     @Nonnull
-    public static Hasher murmur32() {
-        return new Murmur32();
+    public static Hasher murmur3() {
+        return bytes -> zeroAllocatingHash(LongHashFunction.murmur_3(), bytes);
     }
 
     /**
-     * Returns a {@link Hasher} that uses the {@code Murmur 64-bit} algorithm (64 bits).
+     * Returns a {@link Hasher} that uses the {@code xxHash} algorithm (64 bits).
+     * <p>
+     * See <a href="https://github.com/Cyan4973/xxHash">Github</a> for more information.
      *
      * @return a new {@link Hasher}
      */
     @Nonnull
-    public static Hasher murmur64() {
-        return new Murmur64();
+    public static Hasher xx() {
+        return bytes -> zeroAllocatingHash(LongHashFunction.xx(), bytes);
     }
 
     /**
-     * Returns a {@link Hasher} that uses the {@code Murmur 128-bit} algorithm (128 bits).
+     * Returns a {@link Hasher} that uses the {@code CityHash} algorithm (64 bits).
+     * <p>
+     * See <a href="https://github.com/google/cityhash">Github</a> for more information.
      *
      * @return a new {@link Hasher}
      */
     @Nonnull
-    public static Hasher murmur128() {
-        return new Murmur128();
+    public static Hasher city() {
+        return bytes -> zeroAllocatingHash(LongHashFunction.city_1_1(), bytes);
+    }
+
+    /**
+     * Returns a {@link Hasher} that uses the {@code FarmHash NA} algorithm (64 bits).
+     * <p>
+     * See <a href="https://github.com/google/farmhash">Github</a> for more information.
+     *
+     * @return a new {@link Hasher}
+     */
+    @Nonnull
+    public static Hasher farmNa() {
+        return bytes -> zeroAllocatingHash(LongHashFunction.farmNa(), bytes);
+    }
+
+    /**
+     * Returns a {@link Hasher} that uses the {@code FarmHash UO} algorithm (64 bits).
+     * <p>
+     * See <a href="https://github.com/google/farmhash">Github</a> for more information.
+     *
+     * @return a new {@link Hasher}
+     */
+    @Nonnull
+    public static Hasher farmUo() {
+        return bytes -> zeroAllocatingHash(LongHashFunction.farmUo(), bytes);
     }
 
     /**
      * Creates a new {@link HashCode} from the given {@code bytes} by using the given {@code algorithm}.
+     * <p>
+     * See <a href="https://github.com/google/farmhash">Github repository</a> for more information.
      *
      * @param algorithm the name of the algorithm requested
      * @param bytes     the value to hash
      *
-     * @return a message hash instance
+     * @return a new {@link HashCode}
      */
     @Nonnull
     @VisibleForTesting
@@ -133,7 +166,23 @@ public final class Hashers {
             return new HashCode(MessageDigest.getInstance(algorithm).digest(bytes));
         }
         catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
+    }
+
+    /**
+     * Creates a new {@link HashCode} from the given {@code bytes} by using the given {@code hashFunction}.
+     *
+     * @param hashFunction the hash function to use
+     * @param bytes        the value to hash
+     *
+     * @return a new {@link HashCode}
+     */
+    @Nonnull
+    @VisibleForTesting
+    protected static HashCode zeroAllocatingHash(LongHashFunction hashFunction, byte[] bytes) {
+        checkNotNull(bytes);
+
+        return new HashCode(Longs.toBytes(hashFunction.hashBytes(bytes)));
     }
 }
