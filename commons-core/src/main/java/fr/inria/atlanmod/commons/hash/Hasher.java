@@ -11,6 +11,8 @@
 
 package fr.inria.atlanmod.commons.hash;
 
+import fr.inria.atlanmod.commons.primitive.Strings;
+
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -24,10 +26,22 @@ public interface Hasher {
     /**
      * Calculates the {@link HashCode} of the given {@code byte} array.
      *
-     * @param bytes the {@code byte} array to hash
+     * @param data the {@code byte} array to hash
      *
      * @return a new hash code
      */
     @Nonnull
-    HashCode hash(byte[] bytes);
+    HashCode hash(byte[] data);
+
+    /**
+     * Calculates the {@link HashCode} of the given {@code data}.
+     *
+     * @param data the string to hash
+     *
+     * @return a new hash code
+     */
+    @Nonnull
+    default HashCode hash(String data) {
+        return hash(Strings.toBytes(data));
+    }
 }

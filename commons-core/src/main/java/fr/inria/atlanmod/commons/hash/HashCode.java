@@ -12,6 +12,7 @@
 package fr.inria.atlanmod.commons.hash;
 
 import fr.inria.atlanmod.commons.primitive.Bytes;
+import fr.inria.atlanmod.commons.primitive.Longs;
 
 import java.io.Serializable;
 import java.security.MessageDigest;
@@ -42,10 +43,19 @@ public final class HashCode implements Serializable {
     /**
      * Constructs a new {@code HashCode} with the given {@code hashCode}.
      *
-     * @param bytes the bytes representation of this hash code
+     * @param hashCode the bytes representation of this hash code
      */
-    public HashCode(byte[] bytes) {
-        this.bytes = checkNotNull(bytes);
+    public HashCode(byte[] hashCode) {
+        this.bytes = checkNotNull(hashCode);
+    }
+
+    /**
+     * Constructs a new {@code HashCode} with the given {@code hashCode}.
+     *
+     * @param hashCode the long representation of this hash code
+     */
+    public HashCode(long hashCode) {
+        this(Longs.toBytes(hashCode));
     }
 
     /**
