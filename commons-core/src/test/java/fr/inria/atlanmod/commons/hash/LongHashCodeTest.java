@@ -12,47 +12,43 @@
 package fr.inria.atlanmod.commons.hash;
 
 import fr.inria.atlanmod.commons.AbstractTest;
-import fr.inria.atlanmod.commons.primitive.Strings;
+import fr.inria.atlanmod.commons.primitive.Longs;
 
 import org.junit.Test;
+
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * A test-case that checks the behavior of {@link HashCode}.
  */
-public class HashCodeTest extends AbstractTest {
+public class LongHashCodeTest extends AbstractTest {
 
-    private final static HashCode HASH = new HashCode(Strings.toBytes("HashCode0"));
+    private final static HashCode HASH = new LongHashCode(123456789);
 
     @Test
     public void testBits() {
-        assertThat(HASH.bits()).isEqualTo(72);
+        assertThat(HASH.bits()).isEqualTo(64);
     }
 
     @Test
     public void testToBytes() {
-        assertThat(HASH.toBytes()).isEqualTo(Strings.toBytes("HashCode0"));
+        assertThat(HASH.toBytes()).isEqualTo(Longs.toBytes(123456789));
     }
 
     @Test
     public void testToHexString() {
-        assertThat(HASH.toHexString()).isEqualToIgnoringCase("48617368436f646530");
+        assertThat(HASH.toHexString()).isEqualToIgnoringCase("75bcd15");
     }
 
     @Test
     public void testHashCode() {
-        final byte[] bytes = HASH.toBytes();
-        int hashCode = (bytes[0] & 0xff)
-                | ((bytes[1] & 0xff) << 8)
-                | ((bytes[2] & 0xff) << 16)
-                | ((bytes[3] & 0xff) << 24);
+        assertThat(HASH.hashCode()).isEqualTo(Objects.hash(123456789));
 
-        assertThat(HASH.hashCode()).isEqualTo(hashCode);
-
-        HashCode littleHash = new HashCode(Strings.toBytes("HC"));
-        assertThat(littleHash.bits()).isLessThan(32);
-        assertThat(littleHash.hashCode()).isEqualTo(17224);
+        HashCode littleHash = new LongHashCode(25);
+        assertThat(littleHash.bits()).isEqualTo(64);
+        assertThat(littleHash.hashCode()).isEqualTo(56);
     }
 
     @Test
@@ -64,9 +60,9 @@ public class HashCodeTest extends AbstractTest {
         assertThat(HASH.equals(null)).isFalse();
 
         //noinspection EqualsReplaceableByObjectsCall
-        assertThat(HASH.equals(new HashCode(Strings.toBytes("HashCode0")))).isTrue();
+        assertThat(HASH.equals(new LongHashCode(123456789))).isTrue();
 
         //noinspection EqualsReplaceableByObjectsCall
-        assertThat(HASH.equals(new HashCode(Strings.toBytes("HC")))).isFalse();
+        assertThat(HASH.equals(new LongHashCode(25))).isFalse();
     }
 }

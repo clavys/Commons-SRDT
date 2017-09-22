@@ -158,7 +158,7 @@ public final class Hashers {
     @VisibleForTesting
     protected static HashCode nativeHash(String algorithm, byte[] bytes) {
         try {
-            return new HashCode(MessageDigest.getInstance(algorithm).digest(bytes));
+            return new BinaryHashCode(MessageDigest.getInstance(algorithm).digest(bytes));
         }
         catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(e);
@@ -188,13 +188,13 @@ public final class Hashers {
         @Nonnull
         @Override
         public HashCode hash(byte[] data) {
-            return new HashCode(delegate.hashBytes(data));
+            return new LongHashCode(delegate.hashBytes(data));
         }
 
         @Nonnull
         @Override
         public HashCode hash(String data) {
-            return new HashCode(delegate.hashChars(data));
+            return new LongHashCode(delegate.hashChars(data));
         }
     }
 }
