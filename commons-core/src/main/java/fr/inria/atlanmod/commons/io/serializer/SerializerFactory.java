@@ -1,18 +1,23 @@
 package fr.inria.atlanmod.commons.io.serializer;
 
+import fr.inria.atlanmod.commons.annotation.Singleton;
 import fr.inria.atlanmod.commons.annotation.Static;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * A factory that creates {@link Serializer} instances.
  */
+@Singleton
+@ParametersAreNonnullByDefault
 public class SerializerFactory {
 
     /**
-     * The instance of {@link ObjectSerializer}.
+     * The default {@link Serializer}.
      */
-    private final Serializer<?> objectSerializer = new ObjectSerializer<>();
+    @Nonnull
+    private final Serializer<?> anySerializer = new ObjectSerializer<>();
 
     /**
      * Constructs a new {@code SerializerFactory}.
@@ -40,7 +45,7 @@ public class SerializerFactory {
     @Nonnull
     @SuppressWarnings("unchecked")
     public <T> Serializer<T> forAny() {
-        return (Serializer<T>) objectSerializer;
+        return (Serializer<T>) anySerializer;
     }
 
     /**

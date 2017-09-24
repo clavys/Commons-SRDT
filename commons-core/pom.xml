@@ -18,6 +18,7 @@
     <properties>
         <caffeine.version>2.5.5</caffeine.version>
         <zah.version>0.8</zah.version>
+        <fst.version>2.53</fst.version>
     </properties>
 
     <dependencies>
@@ -34,6 +35,13 @@
         <dependency>
             <groupId>net.openhft</groupId>
             <artifactId>zero-allocation-hashing</artifactId>
+        </dependency>
+
+        <!-- Serialization -->
+
+        <dependency>
+            <groupId>de.ruedigermoeller</groupId>
+            <artifactId>fst</artifactId>
         </dependency>
 
         <!-- Logging -->
@@ -84,6 +92,14 @@
                 <groupId>net.openhft</groupId>
                 <artifactId>zero-allocation-hashing</artifactId>
                 <version>${zah.version}</version>
+            </dependency>
+
+            <!-- Serialization -->
+
+            <dependency>
+                <groupId>de.ruedigermoeller</groupId>
+                <artifactId>fst</artifactId>
+                <version>${fst.version}</version>
             </dependency>
 
             <!-- Logging -->

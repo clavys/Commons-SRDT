@@ -5,7 +5,9 @@ import fr.inria.atlanmod.commons.AbstractTest;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInput;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
 /**
@@ -45,14 +47,14 @@ public abstract class AbstractSerializerTest extends AbstractTest {
     protected <T> T processWithStream(T value, Serializer<T> serializer) throws IOException {
         byte[] data;
 
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); ObjectOutputStream out = new ObjectOutputStream(baos)) {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); ObjectOutput out = new ObjectOutputStream(baos)) {
             serializer.serialize(value, out);
             out.flush();
 
             data = baos.toByteArray();
         }
 
-        try (ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(data))) {
+        try (ObjectInput in = new ObjectInputStream(new ByteArrayInputStream(data))) {
             return serializer.deserialize(in);
         }
     }

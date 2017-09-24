@@ -13,13 +13,11 @@ package fr.inria.atlanmod.commons.io.serializer;
 
 import fr.inria.atlanmod.commons.Converter;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 
 import javax.annotation.Nonnull;
@@ -68,8 +66,6 @@ public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
 
     /**
      * Write an object of type {@link T} to a {@code byte} array.
-     * <p>
-     * <b>Note:</b> The {@code value} <b>must</b> implement {@link Serializable}.
      *
      * @param t the object to serialize
      *
@@ -78,18 +74,23 @@ public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
      * @throws IOException if an I/O error occurs during the serialization
      */
     @Nonnull
-    default byte[] serialize(T t) throws IOException {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); ObjectOutputStream out = new ObjectOutputStream(baos)) {
-            serialize(t, out);
-            out.flush();
-            return baos.toByteArray();
-        }
-    }
+    byte[] serialize(T t) throws IOException;
+
+    /**
+     * Write an object of type {@link T} to the given {@code os}.
+     * <p>
+     * If the {@code os} also implements {@link DataOutput}, prefer using {@link #serialize(Object, DataOutput)}. This
+     * method will create a adapter on {@code os} before calling it.
+     *
+     * @param t  the object to serialize
+     * @param os the output stream
+     *
+     * @throws IOException if an I/O error occurs during the serialization
+     */
+    void serialize(T t, @WillNotClose OutputStream os) throws IOException;
 
     /**
      * Write an object of type {@link T} to the given {@code out}.
-     * <p>
-     * <b>Note:</b> The {@code value} <b>must</b> implement {@link Serializable}.
      *
      * @param t   the object to serialize
      * @param out the output stream
@@ -108,11 +109,22 @@ public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
      * @throws IOException if an I/O error occurs during the deserialization
      */
     @Nonnull
-    default T deserialize(byte[] data) throws IOException {
-        try (ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(data))) {
-            return deserialize(in);
-        }
-    }
+    T deserialize(byte[] data) throws IOException;
+
+    /**
+     * Reads and assembles an object of type {@link T} from the given {@code is}.
+     * <p>
+     * If the {@code is} also implements {@link DataInput}, prefer using {@link #deserialize(DataInput)}. This method
+     * will create a adapter on {@code is} before calling it.
+     *
+     * @param is the input stream
+     *
+     * @return the deserialized object
+     *
+     * @throws IOException if an I/O error occurs during the deserialization
+     */
+    @Nonnull
+    T deserialize(@WillNotClose InputStream is) throws IOException;
 
     /**
      * Reads and assembles an object of type {@link T} from the given {@code in}.

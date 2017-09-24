@@ -1,14 +1,3 @@
-/*
- * Copyright (c) 2013-2017 Atlanmod INRIA LINA Mines Nantes.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     Atlanmod INRIA LINA Mines Nantes - initial API and implementation
- */
-
 package fr.inria.atlanmod.commons.io.serializer;
 
 import java.io.DataInput;
@@ -16,9 +5,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInput;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 
@@ -29,18 +16,31 @@ import javax.annotation.WillNotClose;
 import static fr.inria.atlanmod.commons.Preconditions.checkArgument;
 
 /**
- * A {@link Serializer} for any object, using Java serialization.
+ * A {@link Serializer} for any object, using FST serialization.
  *
  * @param <T> the type of (de)serialized objects
  */
 @ParametersAreNonnullByDefault
-final class ObjectSerializer<T> implements Serializer<T> {
+final class ObjectSerializer<T> extends AbstractSerializer<T> {
 
     @SuppressWarnings("JavaDoc")
-    private static final long serialVersionUID = -4277343013443213864L;
+    private static final long serialVersionUID = 1069734448451637293L;
+
+    @Nonnull
+    @Override
+    public byte[] serialize(T t) throws IOException {
+        return FST.asByteArray(t);
+    }
+
+    @Nonnull
+    @Override
+    @SuppressWarnings("unchecked")
+    public T deserialize(byte[] data) throws IOException {
+        return (T) FST.asObject(data);
+    }
 
     @Override
-    public void serialize(T t, @WillNotClose DataOutput out) throws IOException {
+    public void serialize(T t, DataOutput out) throws IOException {
         checkArgument(Serializable.class.isInstance(t),
                 "Serializer requires a Serializable payload but received an object of type " + t.getClass().getName());
 
@@ -48,9 +48,7 @@ final class ObjectSerializer<T> implements Serializer<T> {
             serialize(t, ObjectOutput.class.cast(out));
         }
         else if (OutputStream.class.isInstance(out)) {
-            try (ObjectOutput os = new ObjectOutputStream(OutputStream.class.cast(out))) {
-                serialize(t, os);
-            }
+            serialize(t, OutputStream.class.cast(out));
         }
         else {
             throw new IllegalStateException(String.format("Unknown stream of type %s", out.getClass().getName()));
@@ -59,15 +57,12 @@ final class ObjectSerializer<T> implements Serializer<T> {
 
     @Nonnull
     @Override
-    @SuppressWarnings("unchecked")
-    public T deserialize(@WillNotClose DataInput in) throws IOException {
+    public T deserialize(DataInput in) throws IOException {
         if (ObjectInput.class.isInstance(in)) {
             return deserialize(ObjectInput.class.cast(in));
         }
         else if (InputStream.class.isInstance(in)) {
-            try (ObjectInput is = new ObjectInputStream(InputStream.class.cast(in))) {
-                return deserialize(is);
-            }
+            return deserialize(InputStream.class.cast(in));
         }
         else {
             throw new IllegalStateException(String.format("Unknown stream of type %s", in.getClass().getName()));
@@ -84,7 +79,7 @@ final class ObjectSerializer<T> implements Serializer<T> {
      *
      * @throws IOException if an I/O error occurs during the serialization
      */
-    public void serialize(T t, @WillNotClose ObjectOutput out) throws IOException {
+    private void serialize(T t, @WillNotClose ObjectOutput out) throws IOException {
         out.writeObject(t);
     }
 
@@ -97,8 +92,9 @@ final class ObjectSerializer<T> implements Serializer<T> {
      *
      * @throws IOException if an I/O error occurs during the deserialization
      */
+    @Nonnull
     @SuppressWarnings("unchecked")
-    public T deserialize(@WillNotClose ObjectInput in) throws IOException {
+    private T deserialize(@WillNotClose ObjectInput in) throws IOException {
         try {
             return (T) in.readObject();
         }
