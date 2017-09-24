@@ -31,22 +31,6 @@ import javax.annotation.Nonnull;
 public interface CacheBuilder<K, V> {
 
     /**
-     * The default maximum size of a size-based caches.
-     *
-     * @see #maximumSize(long)
-     */
-    @Nonnegative
-    long DEFAULT_MAX_SIZE = Runtime.getRuntime().maxMemory() / (2048 * 100);
-
-    /**
-     * The default maximum weight of a weight-based caches.
-     *
-     * @see #maximumWeight(ToIntBiFunction)
-     */
-    @Nonnegative
-    long DEFAULT_MAX_WEIGHT = DEFAULT_MAX_SIZE;
-
-    /**
      * Returns an immutable empty {@link Cache} that does nothing.
      *
      * @param <K> the type of keys maintained by this cache
@@ -71,9 +55,10 @@ public interface CacheBuilder<K, V> {
     }
 
     /**
-     * Enables the accumulation of {@link CacheStats} during the operation of the cache. Without this {@link
-     * Cache#stats} will return zero for all statistics. Note that recording statistics requires bookkeeping to be
-     * performed with each operation, and thus imposes a performance penalty on cache operation.
+     * Enables the accumulation of {@link CacheStats} during the operation of the cache.
+     * <p>
+     * Without this {@link Cache#stats} will return zero for all statistics. Note that recording statistics requires
+     * bookkeeping to be performed with each operation, and thus imposes a performance penalty on cache operation.
      *
      * @return this builder (for chaining)
      */
@@ -81,10 +66,27 @@ public interface CacheBuilder<K, V> {
     CacheBuilder<K, V> recordStats();
 
     /**
-     * Specifies the maximum number of entries the cache may contain. Note that the cache <b>may evict an entry before
-     * this limit is exceeded or temporarily exceed the threshold while evicting</b>. As the cache size grows close to
-     * the maximum, the cache evicts entries that are less likely to be used again. For example, the cache may evict an
-     * entry because it hasn't been used recently or very often.
+     * Sets the minimum total size for the internal data structures.
+     * <p>
+     * Providing a large enough estimate at construction time avoids the need for expensive resizing operations later,
+     * but setting this value unnecessarily high wastes memory.
+     *
+     * @param initialCapacity minimum total size for the internal data structures
+     *
+     * @return this builder instance
+     *
+     * @throws IllegalArgumentException if {@code initialCapacity} is negative
+     * @throws IllegalStateException    if an initial capacity was already set
+     */
+    @Nonnull
+    CacheBuilder<K, V> initialCapacity(@Nonnegative int initialCapacity);
+
+    /**
+     * Specifies the maximum number of entries the cache may contain.
+     * <p>
+     * Note that the cache <b>may evict an entry before this limit is exceeded or temporarily exceed the threshold while
+     * evicting</b>. As the cache size grows close to the maximum, the cache evicts entries that are less likely to be
+     * used again. For example, the cache may evict an entry because it hasn't been used recently or very often.
      * <p>
      * When {@code size} is zero, elements will be evicted immediately after being loaded into the cache. This can be
      * useful in testing, or to disable caching temporarily without a code change.
@@ -102,30 +104,11 @@ public interface CacheBuilder<K, V> {
     CacheBuilder<K, V> maximumSize(@Nonnegative long maximumSize);
 
     /**
-     * Specifies the maximum number of entries the cache may contain. Note that the cache <b>may evict an entry before
-     * this limit is exceeded or temporarily exceed the threshold while evicting</b>. As the cache size grows close to
-     * the maximum, the cache evicts entries that are less likely to be used again. For example, the cache may evict an
-     * entry because it hasn't been used recently or very often.
+     * Specifies the maximum weight of entries the cache may contain.
      * <p>
-     * When {@code size} is zero, elements will be evicted immediately after being loaded into the cache. This can be
-     * useful in testing, or to disable caching temporarily without a code change.
-     * <p>
-     * This feature cannot be used in conjunction with {@link #maximumWeight}.
-     *
-     * @return this builder (for chaining)
-     *
-     * @see #maximumSize(long)
-     * @see #DEFAULT_MAX_SIZE
-     */
-    @Nonnull
-    default CacheBuilder<K, V> maximumSize() {
-        return maximumSize(DEFAULT_MAX_SIZE);
-    }
-
-    /**
-     * Specifies the maximum weight of entries the cache may contain. Weight is determined using the {@link
-     * ToIntBiFunction} specified with {@code weigher}. Weights are measured and recorded when entries are inserted into
-     * or updated in the cache, and are thus effectively static during the lifetime of a cache entry.
+     * Weight is determined using the {@link ToIntBiFunction} specified with {@code weigher}. Weights are measured and
+     * recorded when entries are inserted into or updated in the cache, and are thus effectively static during the
+     * lifetime of a cache entry.
      * <p>
      * Note that the cache <b>may evict an entry before this limit is exceeded or temporarily exceed the threshold while
      * evicting</b>. As the cache size grows close to the maximum, the cache evicts entries that are less likely to be
@@ -150,39 +133,10 @@ public interface CacheBuilder<K, V> {
     <K1 extends K, V1 extends V> CacheBuilder<K, V> maximumWeight(@Nonnegative long maximumWeight, ToIntBiFunction<? super K1, ? extends V1> weigher);
 
     /**
-     * Specifies the maximum weight of entries the cache may contain. Weight is determined using the {@link
-     * ToIntBiFunction} specified with {@code weigher}. Weights are measured and recorded when entries are inserted into
-     * or updated in the cache, and are thus effectively static during the lifetime of a cache entry.
-     * <p>
-     * Note that the cache <b>may evict an entry before this limit is exceeded or temporarily exceed the threshold while
-     * evicting</b>. As the cache size grows close to the maximum, the cache evicts entries that are less likely to be
-     * used again. For example, the cache may evict an entry because it hasn't been used recently or very often.
-     * <p>
-     * When {@code maximumWeight} is zero, elements will be evicted immediately after being loaded into cache. This can
-     * be useful in testing, or to disable caching temporarily without a code change.
-     * <p>
-     * Note that weight is only used to determine whether the cache is over capacity; it has no effect on selecting
-     * which entry should be evicted next.
-     * <p>
-     * This feature cannot be used in conjunction with {@link #maximumSize}.
-     *
-     * @param weigher the weigher to use in calculating the weight of cache entries
-     *
-     * @return this builder (for chaining)
-     *
-     * @throws IllegalArgumentException if {@code maximumWeight} is negative
-     * @throws IllegalStateException    if a maximum weight or size was already set
-     * @see #DEFAULT_MAX_WEIGHT
-     */
-    default <K1 extends K, V1 extends V> CacheBuilder<K, V> maximumWeight(ToIntBiFunction<? super K1, ? extends V1> weigher) {
-        return maximumWeight(DEFAULT_MAX_WEIGHT, weigher);
-    }
-
-    /**
      * Specifies that each key (not value) stored in the cache should be wrapped in a {@link WeakReference} (by default,
      * strong references are used).
      * <p>
-     * <b>Warning:</b> when this method is used, the resulting cache will use identity ({@code ==}) comparison to
+     * <b>WARNING:</b> when this method is used, the resulting cache will use identity ({@code ==}) comparison to
      * determine equality of keys.
      *
      * @return this builder (for chaining)
@@ -193,11 +147,34 @@ public interface CacheBuilder<K, V> {
     CacheBuilder<K, V> weakKeys();
 
     /**
-     * Specifies that each value (not key) stored in the cache should be wrapped in a {@link SoftReference} (by default,
-     * strong references are used). Softly-referenced objects will be garbage-collected in a <i>globally</i>
-     * least-recently-used manner, in response to memory demand.
+     * Specifies that each value (not key) stored in the cache should be wrapped in a {@link WeakReference} (by default,
+     * strong references are used).
      * <p>
-     * <b>Warning:</b> when this method is used, the resulting cache will use identity ({@code ==}) comparison to
+     * Weak values will be garbage collected once they are weakly reachable. This makes them a poor candidate for
+     * caching; consider {@link #softValues} instead.
+     * <p>
+     * <b>WARNING:</b> when this method is used, the resulting cache will use identity ({@code ==}) comparison to
+     * determine equality of values.
+     * <p>
+     * Entries with values that have been garbage collected may be counted in {@link Cache#size()}, but will never be
+     * visible to read or write operations; such entries are cleaned up as part of the routine maintenance described in
+     * the class javadoc.
+     *
+     * @return this builder instance
+     *
+     * @throws IllegalStateException if the value strength was already set
+     */
+    @Nonnull
+    CacheBuilder<K, V> weakValues();
+
+    /**
+     * Specifies that each value (not key) stored in the cache should be wrapped in a {@link SoftReference} (by default,
+     * strong references are used).
+     * <p>
+     * Softly-referenced objects will be garbage-collected in a <i>globally</i> least-recently-used manner, in response
+     * to memory demand.
+     * <p>
+     * <b>WARNING:</b> when this method is used, the resulting cache will use identity ({@code ==}) comparison to
      * determine equality of values.
      *
      * @return this builder (for chaining)
