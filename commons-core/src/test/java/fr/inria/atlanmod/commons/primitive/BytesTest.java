@@ -25,18 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BytesTest extends AbstractTest {
 
     @Test
-    public void booleanToBytes() {
-        final byte zero = 0;
-
-        byte[] actual0 = Booleans.toBytes(Boolean.TRUE);
-        assertThat(actual0[0]).isNotEqualTo(zero);
-
-        byte[] actual1 = Booleans.toBytes(Boolean.FALSE);
-        assertThat(actual1[0]).isEqualTo(zero);
-    }
-
-    @Test
-    public void bytesToBoolean() {
+    public void testToBoolean() {
         boolean actual0 = Bytes.toBoolean(Booleans.toBytes(Boolean.TRUE));
         assertThat(actual0).isTrue();
 
@@ -45,15 +34,7 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void shortToBytes() {
-        final Short short0 = 28433;
-        byte[] actual0 = Shorts.toBytes(short0);
-        byte[] expected0 = ByteBuffer.allocate(Short.BYTES).putShort(short0).array();
-        assertThat(actual0).containsExactly(expected0);
-    }
-
-    @Test
-    public void bytesToShort() {
+    public void testToShort() {
         final short expected0 = 28433;
         byte[] bytes = ByteBuffer.allocate(Short.BYTES).putShort(expected0).array();
         short actual0 = Bytes.toShort(bytes);
@@ -61,15 +42,7 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void charToBytes() {
-        final Character chart0 = 'N';
-        byte[] actual0 = Chars.toBytes(chart0);
-        byte[] expected0 = ByteBuffer.allocate(Character.BYTES).putChar(chart0).array();
-        assertThat(actual0).containsExactly(expected0);
-    }
-
-    @Test
-    public void bytesToChar() {
+    public void testToChar() {
         final char expected0 = 'N';
         byte[] bytes = ByteBuffer.allocate(Character.BYTES).putChar(expected0).array();
         char actual0 = Bytes.toChar(bytes);
@@ -77,15 +50,7 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void intToBytes() {
-        final Integer int0 = 1654125381;
-        byte[] actual0 = Ints.toBytes(int0);
-        byte[] expected0 = ByteBuffer.allocate(Integer.BYTES).putInt(int0).array();
-        assertThat(actual0).containsExactly(expected0);
-    }
-
-    @Test
-    public void bytesToInt() {
+    public void testToInt() {
         final int expected0 = 1654125381;
         byte[] bytes = ByteBuffer.allocate(Integer.BYTES).putInt(expected0).array();
         int actual0 = Bytes.toInt(bytes);
@@ -93,15 +58,7 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void longToBytes() {
-        final Long long0 = 1354566516474223156L;
-        byte[] actual0 = Longs.toBytes(long0);
-        byte[] expected0 = ByteBuffer.allocate(Long.BYTES).putLong(long0).array();
-        assertThat(actual0).containsExactly(expected0);
-    }
-
-    @Test
-    public void bytesToLong() {
+    public void testToLong() {
         final long long0 = 1354566516474223156L;
         byte[] bytes = ByteBuffer.allocate(Long.BYTES).putLong(long0).array();
         long actual0 = Bytes.toLong(bytes);
@@ -109,15 +66,7 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void floatToBytes() {
-        final Float float0 = 139895433915.09579569E18f;
-        byte[] actual0 = Floats.toBytes(float0);
-        byte[] expected0 = ByteBuffer.allocate(Float.BYTES).putFloat(float0).array();
-        assertThat(actual0).containsExactly(expected0);
-    }
-
-    @Test
-    public void bytesToFloat() {
+    public void testToFloat() {
         final float expected0 = 139895433915.09579569E18f;
         byte[] bytes = ByteBuffer.allocate(Float.BYTES).putFloat(expected0).array();
         float actual0 = Bytes.toFloat(bytes);
@@ -125,15 +74,7 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void doubleToBytes() {
-        final Double double0 = 19876412.08910810486479E196;
-        byte[] actual0 = Doubles.toBytes(double0);
-        byte[] expected0 = ByteBuffer.allocate(Double.BYTES).putDouble(double0).array();
-        assertThat(actual0).containsExactly(expected0);
-    }
-
-    @Test
-    public void bytesToDouble() {
+    public void testToDouble() {
         final double expected0 = 19876412.08910810486479E196;
         byte[] bytes = ByteBuffer.allocate(Double.BYTES).putDouble(expected0).array();
         double actual0 = Bytes.toDouble(bytes);
@@ -141,15 +82,7 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void stringToBytes() {
-        final String string0 = "AtlanmodIsAwesome!";
-        byte[] actual0 = Strings.toBytes(string0);
-        byte[] expected0 = string0.getBytes();
-        assertThat(actual0).containsExactly(expected0);
-    }
-
-    @Test
-    public void bytesToString() {
+    public void testToString() {
         final String expected0 = "AtlanmodIsAwesome!";
         byte[] bytes = expected0.getBytes();
         String actual0 = Bytes.toString(bytes);
@@ -157,17 +90,7 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void objectToBytes() {
-        // TODO
-    }
-
-    @Test
-    public void bytesToObject() {
-        // TODO
-    }
-
-    @Test
-    public void stringToBytesBinaryAndReverse() {
+    public void testToStringBinaryAndReverse() {
         String expected0 = "AtlanmodIsAwesome!";
         byte[] bytes = Strings.toBytes(expected0);
 
