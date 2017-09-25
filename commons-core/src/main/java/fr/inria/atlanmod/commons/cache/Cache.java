@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 
-import javax.annotation.CheckForNull;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -46,7 +45,6 @@ public interface Cache<K, V> {
      * @return the value to which the specified key is mapped, or {@code null} if this map contains no mapping for the
      * key
      */
-    @CheckForNull
     V get(K key);
 
     /**
@@ -67,7 +65,6 @@ public interface Cache<K, V> {
      *                               otherwise never complete
      * @throws RuntimeException      if the mappingFunction does so, in which case the mapping is left unestablished
      */
-    @CheckForNull
     V get(K key, Function<? super K, ? extends V> mappingFunction);
 
     /**
