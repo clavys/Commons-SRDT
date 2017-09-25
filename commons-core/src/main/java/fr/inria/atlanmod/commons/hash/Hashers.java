@@ -85,69 +85,66 @@ public final class Hashers {
 
     /**
      * Returns a {@link Hasher} that uses the {@code MurmurHash3 64-bit} algorithm (64 bits).
-     * <p>
-     * See <a href="https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp">Github</a> for more
-     * information.
      *
      * @return a new {@link Hasher}
+     *
+     * @see <a href="https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp">aappleby/smhasher/../MurmurHash3.cpp</a>
      */
     @Nonnull
     public static Hasher murmur3() {
-        return new DelegatedHasher(LongHashFunction.murmur_3());
+        return new ZeroAllocationHasher(LongHashFunction.murmur_3());
     }
 
     /**
      * Returns a {@link Hasher} that uses the {@code xxHash} algorithm (64 bits).
-     * <p>
-     * See <a href="https://github.com/Cyan4973/xxHash">Github</a> for more information.
      *
      * @return a new {@link Hasher}
+     *
+     * @see <a href="https://github.com/Cyan4973/xxHash">Cyan4973/xxHash</a>
      */
     @Nonnull
     public static Hasher xx() {
-        return new DelegatedHasher(LongHashFunction.xx());
+        return new ZeroAllocationHasher(LongHashFunction.xx());
     }
 
     /**
      * Returns a {@link Hasher} that uses the {@code CityHash} algorithm (64 bits).
-     * <p>
-     * See <a href="https://github.com/google/cityhash">Github</a> for more information.
      *
      * @return a new {@link Hasher}
+     *
+     * @see <a href="https://github.com/google/cityhash">google/cityhash</a>
      */
     @Nonnull
     public static Hasher city() {
-        return new DelegatedHasher(LongHashFunction.city_1_1());
+        return new ZeroAllocationHasher(LongHashFunction.city_1_1());
     }
 
     /**
      * Returns a {@link Hasher} that uses the {@code FarmHash NA} algorithm (64 bits).
-     * <p>
-     * See <a href="https://github.com/google/farmhash">Github</a> for more information.
      *
      * @return a new {@link Hasher}
+     *
+     * @see <a href="https://github.com/google/farmhash">google/farmhash</a>
      */
     @Nonnull
     public static Hasher farmNa() {
-        return new DelegatedHasher(LongHashFunction.farmNa());
+        return new ZeroAllocationHasher(LongHashFunction.farmNa());
     }
 
     /**
      * Returns a {@link Hasher} that uses the {@code FarmHash UO} algorithm (64 bits).
-     * <p>
-     * See <a href="https://github.com/google/farmhash">Github</a> for more information.
      *
      * @return a new {@link Hasher}
+     *
+     * @see <a href="https://github.com/google/farmhash">google/farmhash</a>
      */
     @Nonnull
     public static Hasher farmUo() {
-        return new DelegatedHasher(LongHashFunction.farmUo());
+        return new ZeroAllocationHasher(LongHashFunction.farmUo());
     }
 
     /**
      * Creates a new {@link HashCode} from the given {@code bytes} by using the given {@code algorithm}.
-     * <p>
-     * See <a href="https://github.com/google/farmhash">Github repository</a> for more information.
      *
      * @param algorithm the name of the algorithm requested
      * @param bytes     the value to hash
@@ -162,39 +159,6 @@ public final class Hashers {
         }
         catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(e);
-        }
-    }
-
-    /**
-     * A {@link Hasher} that delegate its calls to a {@link LongHashFunction}.
-     */
-    @ParametersAreNonnullByDefault
-    private static final class DelegatedHasher implements Hasher {
-
-        /**
-         * The delegated hash function.
-         */
-        private final LongHashFunction delegate;
-
-        /**
-         * Constructs a new {@code DelegatedHasher}.
-         *
-         * @param delegate he delegated hash function
-         */
-        private DelegatedHasher(LongHashFunction delegate) {
-            this.delegate = delegate;
-        }
-
-        @Nonnull
-        @Override
-        public HashCode hash(byte[] data) {
-            return new LongHashCode(delegate.hashBytes(data));
-        }
-
-        @Nonnull
-        @Override
-        public HashCode hash(String data) {
-            return new LongHashCode(delegate.hashChars(data));
         }
     }
 }

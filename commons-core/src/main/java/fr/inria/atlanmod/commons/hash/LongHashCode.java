@@ -1,6 +1,5 @@
 package fr.inria.atlanmod.commons.hash;
 
-import fr.inria.atlanmod.commons.primitive.Bytes;
 import fr.inria.atlanmod.commons.primitive.Longs;
 
 import java.util.Objects;

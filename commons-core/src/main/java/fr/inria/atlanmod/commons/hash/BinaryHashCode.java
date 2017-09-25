@@ -12,9 +12,7 @@
 package fr.inria.atlanmod.commons.hash;
 
 import fr.inria.atlanmod.commons.primitive.Bytes;
-import fr.inria.atlanmod.commons.primitive.Longs;
 
-import java.io.Serializable;
 import java.security.MessageDigest;
 
 import javax.annotation.Nonnegative;
@@ -38,6 +36,7 @@ final class BinaryHashCode implements HashCode {
     /**
      * The bytes representation of this hash code.
      */
+    @Nonnull
     private final byte[] bytes;
 
     /**
