@@ -10,9 +10,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 /**
  * An abstract test-case that checks the behavior of {@link Serializer} instances.
  */
+@ParametersAreNonnullByDefault
 public abstract class AbstractSerializerTest extends AbstractTest {
 
     /**

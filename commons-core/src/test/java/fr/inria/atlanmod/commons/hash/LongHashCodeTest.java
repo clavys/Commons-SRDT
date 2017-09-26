@@ -14,15 +14,18 @@ package fr.inria.atlanmod.commons.hash;
 import fr.inria.atlanmod.commons.AbstractTest;
 import fr.inria.atlanmod.commons.primitive.Longs;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * A test-case that checks the behavior of {@link HashCode}.
  */
+@ParametersAreNonnullByDefault
 public class LongHashCodeTest extends AbstractTest {
 
     private final static HashCode HASH = new LongHashCode(123456789);

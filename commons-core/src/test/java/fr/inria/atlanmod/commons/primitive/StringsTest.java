@@ -1,12 +1,15 @@
 package fr.inria.atlanmod.commons.primitive;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * A test-case that checks the behavior of {@link Strings}.
  */
+@ParametersAreNonnullByDefault
 public class StringsTest {
 
     @Test

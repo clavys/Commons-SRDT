@@ -13,10 +13,12 @@ package fr.inria.atlanmod.commons.cache;
 
 import fr.inria.atlanmod.commons.AbstractTest;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -24,11 +26,12 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 /**
  * A test-case that checks the behavior of {@link CacheStats}.
  */
+@ParametersAreNonnullByDefault
 public class CacheStatsTest extends AbstractTest {
 
     private CacheStats stats;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         stats = new CacheStats(30, 10, 15, 5, 2000, 2);
     }

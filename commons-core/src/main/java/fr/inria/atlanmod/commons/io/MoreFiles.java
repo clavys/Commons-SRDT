@@ -27,8 +27,8 @@ public final class MoreFiles {
     }
 
     /**
-     * Returns the file extension for the given {@code file} name, or the empty string if the file has no extension.
-     * The result does not include the '{@code .}'.
+     * Returns the file extension for the given {@code file} name, or the empty string if the file has no extension. The
+     * result does not include the '{@code .}'.
      *
      * @param file the file name
      *

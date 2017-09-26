@@ -12,9 +12,8 @@
 package fr.inria.atlanmod.commons.hash;
 
 import fr.inria.atlanmod.commons.AbstractTest;
-import fr.inria.atlanmod.commons.primitive.Strings;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -22,6 +21,7 @@ import java.lang.reflect.Modifier;
 import java.security.NoSuchAlgorithmException;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -29,6 +29,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 /**
  * A test-case that checks the behavior of {@link Hasher}s.
  */
+@ParametersAreNonnullByDefault
 public class HasherTest extends AbstractTest {
 
     /**

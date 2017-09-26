@@ -1,12 +1,15 @@
 package fr.inria.atlanmod.commons.io;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * A test-case about {@link MoreFiles}.
  */
+@ParametersAreNonnullByDefault
 public class MoreFilesTest {
 
     @Test

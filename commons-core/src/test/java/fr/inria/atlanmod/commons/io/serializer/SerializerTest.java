@@ -1,16 +1,19 @@
 package fr.inria.atlanmod.commons.io.serializer;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * A test-case that checks the behavior of {@link Serializer} instances.
  */
+@ParametersAreNonnullByDefault
 public class SerializerTest extends AbstractSerializerTest {
 
     @Test

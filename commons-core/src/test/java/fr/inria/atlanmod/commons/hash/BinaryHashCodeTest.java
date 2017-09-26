@@ -14,13 +14,16 @@ package fr.inria.atlanmod.commons.hash;
 import fr.inria.atlanmod.commons.AbstractTest;
 import fr.inria.atlanmod.commons.primitive.Strings;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * A test-case that checks the behavior of {@link HashCode}.
  */
+@ParametersAreNonnullByDefault
 public class BinaryHashCodeTest extends AbstractTest {
 
     private final static HashCode HASH = new BinaryHashCode(Strings.toBytes("HashCode0"));

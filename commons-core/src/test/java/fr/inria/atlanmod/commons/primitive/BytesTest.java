@@ -13,15 +13,18 @@ package fr.inria.atlanmod.commons.primitive;
 
 import fr.inria.atlanmod.commons.AbstractTest;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.nio.ByteBuffer;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * A test-case that checks the behavior of {@link Bytes}.
  */
+@ParametersAreNonnullByDefault
 public class BytesTest extends AbstractTest {
 
     @Test

@@ -11,27 +11,106 @@
 
 package fr.inria.atlanmod.commons;
 
-import fr.inria.atlanmod.commons.extension.Watcher;
-import fr.inria.atlanmod.commons.extension.Workspace;
+import fr.inria.atlanmod.commons.concurrent.MoreThreads;
+import fr.inria.atlanmod.commons.extension.LoggingExtension;
 
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 /**
- * An abstract test-case that holds the {@link Workspace} and the logger.
+ * An abstract test-case that manages files and the logger.
  */
+@ExtendWith(LoggingExtension.class)
+@ParametersAreNonnullByDefault
 public abstract class AbstractTest {
 
     /**
-     * The workspace that manages temporary files and folders.
+     * The prefix for temporary folder.
      */
-    @ClassRule
-    public static final Workspace workspace = new Workspace();
+    private static final String PREFIX = "atlanmod";
 
     /**
-     * The test-case logger.
+     * The temporary folder.
      */
-    @Rule
-    public final TestRule watcher = new Watcher();
+    private static Path temporaryFolder;
+
+    /**
+     * Deletes the given directory with all its files and sub-directories.
+     *
+     * @param directory the directory to delete
+     */
+    private static void deleteDirectory(Path directory) {
+        try {
+            Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    Files.deleteIfExists(file);
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                    Files.deleteIfExists(dir);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+
+            Files.deleteIfExists(directory);
+        }
+        catch (Exception e) {
+            try {
+                MoreThreads.executeAtExit(() -> deleteDirectory(directory));
+            }
+            catch (IllegalStateException ignored) {
+            }
+        }
+    }
+
+    @BeforeAll
+    public static void beforeAllTests0() {
+    }
+
+    @AfterAll
+    public static void afterAllTests0() {
+        if (nonNull(temporaryFolder) && Files.exists(temporaryFolder)) {
+            deleteDirectory(temporaryFolder);
+        }
+
+        temporaryFolder = null;
+    }
+
+    /**
+     * Creates a new temporary file that begins with the given {@code prefix}.
+     *
+     * @param prefix the prefix of the file name
+     *
+     * @return a new {@code File} (not created)
+     *
+     * @throws IOException if an I/O error occurs
+     */
+    @Nonnull
+    public static File newFile(String prefix) throws IOException {
+        if (isNull(temporaryFolder)) {
+            temporaryFolder = Files.createTempDirectory(PREFIX);
+        }
+
+        Path createdFolder = Files.createTempDirectory(temporaryFolder, prefix);
+        Files.deleteIfExists(createdFolder);
+        return createdFolder.toFile();
+    }
 }

@@ -73,10 +73,10 @@
 
         <javax-annotations.version>3.0.2</javax-annotations.version>
 
-        <log4j.version>2.8.2</log4j.version><!-- 2.9.0+ : issue with maven-bundle-plugin -->
+        <log4j.version>2.8.2</log4j.version><!-- 2.9.0+ : issue with maven-bundle-plugin (JDK9 compatibility)-->
 
         <assertj.version>3.8.0</assertj.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>5.0.0</junit.version>
         <mockito.version>2.10.0</mockito.version>
     </properties>
 
@@ -98,8 +98,15 @@
             <!-- Test -->
 
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
@@ -292,12 +299,24 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.20.1</version>
+                    <version>2.19.1</version><!-- 2.20+ : Not compatible with 'junit-platform-surefire-provider:1.0.0' -->
                     <configuration>
                         <!-- Property @{argLine} : created by jacoco:prepare-agent -->
                         <argLine>@{argLine} ${argLine.global}</argLine>
                         <failIfNoTests>false</failIfNoTests>
                     </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.junit.platform</groupId>
+                            <artifactId>junit-platform-surefire-provider</artifactId>
+                            <version>1.0.0</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.junit.jupiter</groupId>
+                            <artifactId>junit-jupiter-engine</artifactId>
+                            <version>${junit.version}</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
 
                 <plugin> <!-- Disable by default -->

@@ -13,25 +13,28 @@ package fr.inria.atlanmod.commons.cache;
 
 import fr.inria.atlanmod.commons.AbstractTest;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * A test-case that checks the behavior of {@link Cache} with a loading {@link java.util.function.Function}.
  */
+@ParametersAreNonnullByDefault
 public class LoadingCacheTest extends AbstractTest {
 
     private Cache<Integer, String> cache;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         cache = CacheBuilder.builder()
                 .weakKeys()
@@ -43,7 +46,7 @@ public class LoadingCacheTest extends AbstractTest {
         assertThat(cache.size()).isEqualTo(0);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         cache.invalidateAll();
         cache.cleanUp();

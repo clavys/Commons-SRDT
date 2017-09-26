@@ -13,7 +13,7 @@ package fr.inria.atlanmod.commons.collect;
 
 import fr.inria.atlanmod.commons.AbstractTest;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -21,12 +21,15 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collections;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
 /**
  * A test-case that checks the behavior of {@link MoreIterables}.
  */
+@ParametersAreNonnullByDefault
 public class MoreIterablesTest extends AbstractTest {
 
     @Test
