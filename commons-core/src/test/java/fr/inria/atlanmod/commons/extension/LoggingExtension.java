@@ -87,6 +87,7 @@ public final class LoggingExtension implements BeforeEachCallback, AfterEachCall
     @Override
     public void handleTestExecutionException(ExtensionContext context, Throwable e) throws Throwable {
         onAnyException(context, e);
+        throw e;
     }
 
     /**
@@ -126,6 +127,9 @@ public final class LoggingExtension implements BeforeEachCallback, AfterEachCall
      * @see #onError(ExtensionContext, Throwable)
      */
     private void onAnyException(ExtensionContext context, Throwable e) {
+        if (hasErrors) { // Error has already been reported
+            return;
+        }
         hasErrors = true;
 
         if (AssertionError.class.isInstance(e)) {
