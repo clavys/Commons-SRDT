@@ -218,7 +218,7 @@ public final class MoreArrays {
      * Finds the index of the given {@code value} in the {@code array}.
      *
      * @param array the array to search through for the object
-     * @param value the value to find
+     * @param value the value to find, may be {@code null}
      *
      * @return the index of the value within the array, {@code -1} if not found
      *
@@ -237,7 +237,7 @@ public final class MoreArrays {
     }
 
     /**
-     * Finds the last index of the given object in the array.
+     * Finds the last index of the given {@code value} in the {@code array}.
      *
      * @param array the array to traverse for looking for the object
      * @param value the object to find, may be {@code null}

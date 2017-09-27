@@ -82,7 +82,7 @@ public final class MoreIterables {
      *
      * @return {@code true} if the iterable contains no element
      */
-    public static <E> boolean isEmpty(Iterable<E> iterable) {
+    public static boolean isEmpty(Iterable<?> iterable) {
         checkNotNull(iterable);
 
         return Collection.class.isInstance(iterable)
@@ -97,7 +97,7 @@ public final class MoreIterables {
      *
      * @return {@code true} if the iterable contains at least one element
      */
-    public static <E> boolean notEmpty(Iterable<E> iterable) {
+    public static boolean notEmpty(Iterable<?> iterable) {
         return !isEmpty(iterable);
     }
 
