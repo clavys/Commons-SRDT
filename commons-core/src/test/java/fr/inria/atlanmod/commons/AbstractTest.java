@@ -13,6 +13,7 @@ package fr.inria.atlanmod.commons;
 
 import fr.inria.atlanmod.commons.concurrent.MoreThreads;
 import fr.inria.atlanmod.commons.extension.LoggingExtension;
+import fr.inria.atlanmod.commons.extension.LoggingWithMemoryExtension;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

@@ -25,39 +25,34 @@ import org.opentest4j.TestSkippedException;
 import java.util.Arrays;
 import java.util.Optional;
 
-import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static fr.inria.atlanmod.commons.Preconditions.checkState;
 import static java.util.Objects.nonNull;
 
 /**
- * A JUnit {@link org.junit.jupiter.api.extension.Extension} that logs each test-case call.
+ * A JUnit {@link org.junit.jupiter.api.extension.Extension} that logs each test-case calls.
  */
 @ParametersAreNonnullByDefault
-public final class LoggingExtension implements BeforeEachCallback, AfterEachCallback, TestExecutionExceptionHandler {
-
-    /**
-     * {@code true} if the memory usage must be logged during testing.
-     */
-    private static final boolean MEMORY_USAGE = true;
+public class LoggingExtension implements BeforeEachCallback, AfterEachCallback, TestExecutionExceptionHandler {
 
     /**
      * The special logger without timestamp.
      */
     @Nonnull
-    private static final Logger LOG = Log.forName("test");
+    protected static final Logger LOG = Log.forName("test");
+
+    private static final String MSG_RUN = formatState("Running");
+    private static final String MSG_PASS = formatState("PASS");
+    private static final String MSG_SKIP = formatState("SKIP");
+    private static final String MSG_ABORT = formatState("ABORT");
+    private static final String MSG_FAIL = formatState("FAIL");
+    private static final String MSG_ERROR = formatState("ERROR");
 
     /**
      * {@code true} if the current test case had an error (failed, skipped, aborted,...)
      */
     private boolean hasErrors;
-
-    /**
-     * The used memory before starting the test memthod, in bytes.
-     */
-    private MemoryUsage memoryAtStart;
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
@@ -65,10 +60,24 @@ public final class LoggingExtension implements BeforeEachCallback, AfterEachCall
 
         LOG.info(Strings.EMPTY);
         onRunning(context);
+    }
 
-        if (MEMORY_USAGE) {
-            memoryAtStart = new MemoryUsage();
-        }
+    /**
+     * Formats a state.
+     *
+     * @param state the state to format
+     *
+     * @return a formatted {@code state}
+     */
+    @Nonnull
+    private static String formatState(String state) {
+        return String.format("--- %s", state);
+    }
+
+    @Override
+    public void handleTestExecutionException(ExtensionContext context, Throwable e) throws Throwable {
+        onAnyException(context, e);
+        throw e;
     }
 
     @Override
@@ -76,7 +85,7 @@ public final class LoggingExtension implements BeforeEachCallback, AfterEachCall
         context.getExecutionException().ifPresent(throwable -> onAnyException(context, throwable));
 
         if (!hasErrors) {
-            onSuccess(context);
+            onPass(context);
         }
         LOG.info(Strings.EMPTY);
 
@@ -84,10 +93,35 @@ public final class LoggingExtension implements BeforeEachCallback, AfterEachCall
         Runtime.getRuntime().gc();
     }
 
-    @Override
-    public void handleTestExecutionException(ExtensionContext context, Throwable e) throws Throwable {
-        onAnyException(context, e);
-        throw e;
+    /**
+     * Handles any {@link Throwable} that occurs during a test-case.
+     *
+     * @param context the current extension context
+     * @param e       the exception to handle
+     *
+     * @see #onFail(ExtensionContext, AssertionError)
+     * @see #onSkip(ExtensionContext, TestSkippedException)
+     * @see #onAbort(ExtensionContext, TestAbortedException)
+     * @see #onError(ExtensionContext, Throwable)
+     */
+    private void onAnyException(ExtensionContext context, Throwable e) {
+        if (hasErrors) { // Error has already been reported
+            return;
+        }
+        hasErrors = true;
+
+        if (AssertionError.class.isInstance(e)) {
+            onFail(context, AssertionError.class.cast(e));
+        }
+        else if (TestSkippedException.class.isInstance(e)) {
+            onSkip(context, TestSkippedException.class.cast(e));
+        }
+        else if (TestAbortedException.class.isInstance(e)) {
+            onAbort(context, TestAbortedException.class.cast(e));
+        }
+        else {
+            onError(context, e);
+        }
     }
 
     /**
@@ -103,7 +137,7 @@ public final class LoggingExtension implements BeforeEachCallback, AfterEachCall
                 .map(n -> Strings.SPACE + n)
                 .orElse(Strings.EMPTY);
 
-        LOG.info("--- Running: {0}{1}", methodName, displayName);
+        LOG.info("{0}: {1}{2}", MSG_RUN, methodName, displayName);
     }
 
     /**
@@ -111,49 +145,8 @@ public final class LoggingExtension implements BeforeEachCallback, AfterEachCall
      *
      * @param context the current extension context
      */
-    private void onSuccess(@SuppressWarnings("unused") ExtensionContext context) {
-        LOG.info("--- Succeeded{0}", memoryUsage());
-    }
-
-    /**
-     * Handles any {@link Throwable} that occurs during a test-case.
-     *
-     * @param context the current extension context
-     * @param e       the exception to handle
-     *
-     * @see #onFailure(ExtensionContext, AssertionError)
-     * @see #onSkip(ExtensionContext, TestSkippedException)
-     * @see #onAbort(ExtensionContext, TestAbortedException)
-     * @see #onError(ExtensionContext, Throwable)
-     */
-    private void onAnyException(ExtensionContext context, Throwable e) {
-        if (hasErrors) { // Error has already been reported
-            return;
-        }
-        hasErrors = true;
-
-        if (AssertionError.class.isInstance(e)) {
-            onFailure(context, AssertionError.class.cast(e));
-        }
-        else if (TestSkippedException.class.isInstance(e)) {
-            onSkip(context, TestSkippedException.class.cast(e));
-        }
-        else if (TestAbortedException.class.isInstance(e)) {
-            onAbort(context, TestAbortedException.class.cast(e));
-        }
-        else {
-            onError(context, e);
-        }
-    }
-
-    /**
-     * Handles a {@link Throwable}, when an unexpected error occured during a test.
-     *
-     * @param context the current extension context
-     * @param e       the exception to handle
-     */
-    private void onError(@SuppressWarnings("unused") ExtensionContext context, Throwable e) {
-        LOG.error(e, "--- Failed with error(s)");
+    private void onPass(ExtensionContext context) {
+        LOG.info("{0}{1}", MSG_PASS, additionalDetails(context));
     }
 
     /**
@@ -162,14 +155,14 @@ public final class LoggingExtension implements BeforeEachCallback, AfterEachCall
      * @param context the current extension context
      * @param e       the exception to handle
      */
-    private void onFailure(@SuppressWarnings("unused") ExtensionContext context, AssertionError e) {
+    private void onFail(ExtensionContext context, AssertionError e) {
         if (nonNull(e.getMessage())) {
             Arrays.stream(e.getMessage().split("\n"))
                     .filter(s -> nonNull(s) && !s.isEmpty())
                     .forEach(LOG::warn);
         }
 
-        LOG.warn("--- Failed{0}", memoryUsage());
+        LOG.warn("{0}{1}", MSG_FAIL, additionalDetails(context));
     }
 
     /**
@@ -180,10 +173,11 @@ public final class LoggingExtension implements BeforeEachCallback, AfterEachCall
      */
     private void onSkip(@SuppressWarnings("unused") ExtensionContext context, TestSkippedException e) {
         if (nonNull(e.getMessage())) {
-            LOG.warn("--- Skipped: {0}", e.getMessage());
+            final String explanation = e.getMessage();
+            LOG.warn("{0}: {1}", MSG_SKIP, explanation);
         }
         else {
-            LOG.warn("--- Skipped");
+            LOG.warn("{0}", MSG_SKIP);
         }
     }
 
@@ -196,130 +190,26 @@ public final class LoggingExtension implements BeforeEachCallback, AfterEachCall
      */
     private void onAbort(@SuppressWarnings("unused") ExtensionContext context, TestAbortedException e) {
         if (nonNull(e.getMessage())) {
-            LOG.warn("--- Aborted: {0}", e.getMessage().replaceFirst("Assumption failed: ", ""));
+            final String explanation = e.getMessage().replaceFirst("Assumption failed: ", "");
+            LOG.warn("{0}: {1}", MSG_ABORT, explanation);
         }
         else {
-            LOG.warn("--- Aborted");
+            LOG.warn("{0}", MSG_ABORT);
         }
     }
 
     /**
-     * Formats the memory usage of this test.
+     * Handles a {@link Throwable}, when an unexpected error occured during a test.
      *
-     * @return a formatted string of the memory used during this test
+     * @param context the current extension context
+     * @param e       the exception to handle
      */
-    @Nonnull
-    private String memoryUsage() {
-        if (MEMORY_USAGE) {
-            checkState(nonNull(memoryAtStart), "memoryAtStart has not been initialized");
-            return " [" + MemoryUsage.Diff.between(memoryAtStart, new MemoryUsage()).toString() + ']';
-        }
-
-        return Strings.EMPTY;
+    private void onError(ExtensionContext context, Throwable e) {
+        LOG.error(e, "{0}{1}", MSG_ERROR, additionalDetails(context));
     }
 
-    @ParametersAreNonnullByDefault
-    private static final class MemoryUsage {
-
-        /**
-         * The total amount of memory in the Java virtual machine, in bytes.
-         */
-        @Nonnegative
-        private final long total;
-
-        /**
-         * The amount of free memory in the Java Virtual Machine, in bytes.
-         */
-        @Nonnegative
-        private final long free;
-
-        /**
-         * Constructs a new {@code MemoryUsage}.
-         */
-        public MemoryUsage() {
-            Runtime runtime = Runtime.getRuntime();
-
-            this.total = runtime.totalMemory();
-            this.free = runtime.freeMemory();
-        }
-
-        /**
-         * Converts the {@code bytes} value to another unit (kilobytes, megabytes,...).
-         */
-        private static long convertUnit(long bytes) {
-            return bytes / 1024 / 1024;
-        }
-
-        /**
-         * Returns the total amount of memory in the Java virtual machine, in bytes.
-         */
-        @Nonnegative
-        public long total() {
-            return total;
-        }
-
-        /**
-         * Returns the amount of free memory in the Java Virtual Machine, in bytes.
-         */
-        @Nonnegative
-        public long free() {
-            return free;
-        }
-
-        /**
-         * Returns the amount of used memory in the Java Virtual Machine, in bytes.
-         */
-        @Nonnegative
-        public long used() {
-            return total() - free();
-        }
-
-        @ParametersAreNonnullByDefault
-        public static final class Diff {
-
-            @Nonnull
-            private final MemoryUsage start;
-
-            @Nonnull
-            private final MemoryUsage end;
-
-            /**
-             * Creates a new {@code Diff}.
-             */
-            private Diff(MemoryUsage start, MemoryUsage end) {
-                this.start = start;
-                this.end = end;
-            }
-
-            /**
-             * Creates a {@code Diff} reprensenting the difference between two memory usages.
-             */
-            public static Diff between(MemoryUsage start, MemoryUsage end) {
-                return new Diff(start, end);
-            }
-
-            public long total() {
-                return end.total() - start.total();
-            }
-
-            public long free() {
-                return end.free() - start.free();
-            }
-
-            public long used() {
-                return end.used() - start.used();
-            }
-
-            @Override
-            public String toString() {
-                final long usedDiff = convertUnit(used());
-                final long totalDiff = convertUnit(total());
-
-                return String.format("%s / %s%s MB",
-                        usedDiff < 0 ? "<0" : usedDiff,
-                        convertUnit(end.total()),
-                        totalDiff == 0 ? Strings.EMPTY : ("(" + (totalDiff > 0 ? "+" + totalDiff : totalDiff) + ")"));
-            }
-        }
+    @Nonnull
+    protected String additionalDetails(ExtensionContext context) {
+        return Strings.EMPTY;
     }
 }
