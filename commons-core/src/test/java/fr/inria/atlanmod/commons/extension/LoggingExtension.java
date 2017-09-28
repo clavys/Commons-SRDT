@@ -34,7 +34,7 @@ import static java.util.Objects.nonNull;
  * A JUnit {@link org.junit.jupiter.api.extension.Extension} that logs each test-case calls.
  */
 @ParametersAreNonnullByDefault
-public class LoggingExtension implements BeforeEachCallback, AfterEachCallback, TestExecutionExceptionHandler {
+public class LoggingExtension implements BeforeEachCallback, TestExecutionExceptionHandler, AfterEachCallback {
 
     /**
      * The special logger without timestamp.
@@ -54,14 +54,6 @@ public class LoggingExtension implements BeforeEachCallback, AfterEachCallback, 
      */
     private boolean hasErrors;
 
-    @Override
-    public void beforeEach(ExtensionContext context) throws Exception {
-        hasErrors = false;
-
-        LOG.info(Strings.EMPTY);
-        onRunning(context);
-    }
-
     /**
      * Formats a state.
      *
@@ -72,6 +64,14 @@ public class LoggingExtension implements BeforeEachCallback, AfterEachCallback, 
     @Nonnull
     private static String formatState(String state) {
         return String.format("--- %s", state);
+    }
+
+    @Override
+    public void beforeEach(ExtensionContext context) throws Exception {
+        hasErrors = false;
+
+        LOG.info(Strings.EMPTY);
+        onRunning(context);
     }
 
     @Override
