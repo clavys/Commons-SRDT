@@ -8,6 +8,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * @param <T> the type of the copied object
  */
 @ParametersAreNonnullByDefault
+@FunctionalInterface
 public interface Copiable<T> {
 
     /**

@@ -21,9 +21,10 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
- * Annotates a constructor that exists only for reflection usage.
+ * Annotates a program element that exists, or is more widely visible than otherwise necessary, only for reflection
+ * usage.
  * <p>
- * <b>These constructors should not be called in standard use.</b>
+ * <b>These elements should not be called in standard use.</b>
  */
 @Retention(SOURCE)
 @Target({TYPE, FIELD, METHOD, CONSTRUCTOR})

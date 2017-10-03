@@ -13,6 +13,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * @see BiConsumer
  */
 @ParametersAreNonnullByDefault
+@FunctionalInterface
 public interface Copier<T> extends BiConsumer<T, T> {
 
     @Override
