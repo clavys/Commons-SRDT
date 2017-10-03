@@ -9,7 +9,7 @@
  *     Atlanmod INRIA LINA Mines Nantes - initial API and implementation
  */
 
-package fr.inria.atlanmod.commons;
+package fr.inria.atlanmod.commons.function;
 
 import java.util.function.Function;
 

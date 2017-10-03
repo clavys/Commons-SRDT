@@ -11,6 +11,11 @@
 
 package fr.inria.atlanmod.commons.log;
 
+import fr.inria.atlanmod.commons.function.TriConsumer;
+
+import java.util.function.Predicate;
+
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
@@ -29,48 +34,65 @@ public enum Level {
     /**
      * A fine-grained debug message, typically capturing the flow through the application.
      */
-    TRACE(org.apache.logging.log4j.Level.TRACE),
+    TRACE(org.slf4j.Logger::trace, org.slf4j.Logger::isTraceEnabled),
 
     /**
      * A general debugging event.
      */
-    DEBUG(org.apache.logging.log4j.Level.DEBUG),
+    DEBUG(org.slf4j.Logger::debug, org.slf4j.Logger::isDebugEnabled),
 
     /**
      * An event for informational purposes.
      */
-    INFO(org.apache.logging.log4j.Level.INFO),
+    INFO(org.slf4j.Logger::info, org.slf4j.Logger::isInfoEnabled),
 
     /**
      * An event that might possible lead to an error.
      */
-    WARN(org.apache.logging.log4j.Level.WARN),
+    WARN(org.slf4j.Logger::warn, org.slf4j.Logger::isWarnEnabled),
 
     /**
      * An error in the application, possibly recoverable.
      */
-    ERROR(org.apache.logging.log4j.Level.ERROR);
+    ERROR(org.slf4j.Logger::error, org.slf4j.Logger::isErrorEnabled);
 
     /**
-     * The associated level.
+     * The logging function.
      */
-    private final org.apache.logging.log4j.Level level;
+    @Nonnull
+    private final TriConsumer<org.slf4j.Logger, String, Throwable> loggingFunction;
 
     /**
-     * Constructs a new {@code Level} with its associated {@code level}.
-     *
-     * @param level the associated level
+     * The predicate used to determine if this level is enabled for a {@link org.slf4j.Logger}.
      */
-    Level(org.apache.logging.log4j.Level level) {
-        this.level = level;
+    @Nonnull
+    private final Predicate<org.slf4j.Logger> isEnabledPredicate;
+
+    /**
+     * Constructs a new {@code Level}.
+     */
+    Level(TriConsumer<org.slf4j.Logger, String, Throwable> loggingFunction, Predicate<org.slf4j.Logger> isEnabledPredicate) {
+        this.loggingFunction = loggingFunction;
+        this.isEnabledPredicate = isEnabledPredicate;
     }
 
     /**
-     * Returns the {@link org.apache.logging.log4j.Level} associated with this {@code Level}.
+     * Returns the logging function.
      *
-     * @return the level
+     * @return the logging function
      */
-    org.apache.logging.log4j.Level level() {
-        return level;
+    @Nonnull
+    TriConsumer<org.slf4j.Logger, String, Throwable> logFunction() {
+        return loggingFunction;
+    }
+
+    /**
+     * Returns the predicate used to determine if this level is enabled for a {@link org.slf4j.Logger}.
+     *
+     * @return the predicate
+     */
+    @Nonnull
+    Predicate<org.slf4j.Logger> isEnablePredicate() {
+        return isEnabledPredicate;
     }
 }

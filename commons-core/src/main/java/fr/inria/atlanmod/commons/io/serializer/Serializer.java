@@ -11,7 +11,7 @@
 
 package fr.inria.atlanmod.commons.io.serializer;
 
-import fr.inria.atlanmod.commons.Converter;
+import fr.inria.atlanmod.commons.function.Converter;
 
 import java.io.DataInput;
 import java.io.DataOutput;

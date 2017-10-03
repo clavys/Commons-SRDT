@@ -12,7 +12,8 @@
 package fr.inria.atlanmod.commons.log;
 
 import fr.inria.atlanmod.commons.concurrent.MoreExecutors;
-import fr.inria.atlanmod.commons.primitive.Strings;
+
+import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.util.Optional;
@@ -25,8 +26,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
 
-import static java.util.Objects.isNull;
-
 /**
  * A {@link Logger} that asynchronously invokes logging operations, respecting the order of invocation.
  */
@@ -36,7 +35,7 @@ import static java.util.Objects.isNull;
 class AsyncLogger implements Logger {
 
     /**
-     * The concurrent pool.
+     * The logging concurrent pool.
      * <p>
      * A single thread pool is used for keeping events order.
      */
@@ -44,27 +43,17 @@ class AsyncLogger implements Logger {
     private static final ExecutorService POOL = MoreExecutors.newFixedThreadPool(1);
 
     static {
-        final String loggingManagerProperty = "java.util.logging.manager";
-        final String loggingManagerLog4j = "org.apache.logging.log4j.jul.LogManager";
-
-        // Don't modify the logging manager if it is already defined
-        if (isNull(System.getProperty(loggingManagerProperty))) {
-            try {
-                // Defines the Log4j manager if the dependencies are in the classpath
-                Class.forName(loggingManagerLog4j, true, Log.class.getClassLoader());
-                System.setProperty(loggingManagerProperty, loggingManagerLog4j);
-            }
-            catch (ClassNotFoundException ignored) {
-                // Use the default Java logging manager
-            }
-        }
+        // Configure the SimpleLogger, if no implementation is defined
+        System.setProperty("org.slf4j.simpleLogger.showThreadName", "false");
+        System.setProperty("org.slf4j.simpleLogger.showLogName", "false");
+        System.setProperty("org.slf4j.simpleLogger.levelInBrackets", "true");
     }
 
     /**
      * The internal logger.
      */
     @Nonnull
-    private final org.apache.logging.log4j.Logger logger;
+    private final org.slf4j.Logger logger;
 
     /**
      * Constructs a new {@code AsyncLogger} with the given {@code name}.
@@ -72,12 +61,12 @@ class AsyncLogger implements Logger {
      * @param name the name of this logger
      */
     public AsyncLogger(String name) {
-        this.logger = org.apache.logging.log4j.LogManager.getLogger(name);
+        this.logger = LoggerFactory.getLogger(name);
     }
 
     @Override
     public void log(Level level, @Nullable Throwable e, @Nullable CharSequence message, @Nullable Object... params) {
-        if (!logger.isEnabled(level.level())) {
+        if (!level.isEnablePredicate().test(logger)) {
             // Don't send the request if the associated level is not enabled
             return;
         }
@@ -86,12 +75,11 @@ class AsyncLogger implements Logger {
             try {
                 String formattedMessage = Optional.ofNullable(message)
                         .map(m -> MessageFormat.format(m.toString(), params))
-                        .orElse(Strings.EMPTY);
+                        .orElse(null);
 
-                logger.log(level.level(), formattedMessage, e);
+                level.logFunction().accept(logger, formattedMessage, e);
             }
-            catch (Exception fe) {
-                logger.log(org.apache.logging.log4j.Level.ERROR, fe); // Format exception
+            catch (Exception ignored) {
             }
         });
     }

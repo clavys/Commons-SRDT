@@ -1,4 +1,4 @@
-package fr.inria.atlanmod.commons;
+package fr.inria.atlanmod.commons.function;
 
 import java.util.function.BiFunction;
 
