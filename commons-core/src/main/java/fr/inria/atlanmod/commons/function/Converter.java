@@ -17,16 +17,18 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * An object that converts an object of type {@link T} to another of type {@link R}.
+ * A specialized {@link Function} that converts an object of type {@link T} to another of type {@link R}.
  * <p>
  * The reverse operation <b>may</b> be strict <i>inverse</i>, meaning that {@code converter.revert(converter.convert(a)).equals(a)}
  * always {@code true}.
  *
  * @param <T> the type of the input to the converter
  * @param <R> the type of the result of the converter
+ *
+ * @see Function
  */
 @ParametersAreNonnullByDefault
-public interface Converter<T, R> {
+public interface Converter<T, R> extends Function<T, R> {
 
     /**
      * Creates a converter that always converts or reverses an object to itself.
@@ -79,6 +81,11 @@ public interface Converter<T, R> {
         };
     }
 
+    @Override
+    default R apply(T t) {
+        return convert(t);
+    }
+
     /**
      * Returns a representation of {@code t} as an instance of type {@link R}.
      *
@@ -98,4 +105,14 @@ public interface Converter<T, R> {
      */
     @Nonnull
     T revert(R r);
+
+    /**
+     * Returns the reversed converter of this converter.
+     *
+     * @return the reversed converter
+     */
+    @Nonnull
+    default Converter<R, T> reverse() {
+        return from(this::revert, this::convert);
+    }
 }

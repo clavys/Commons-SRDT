@@ -6,8 +6,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * An object that converts an object of type {@link T} to another of type {@link R}, by using an object of type {@link
- * U}.
+ * A specialized {@link BiFunction} that converts an object of type {@link T} to another of type {@link R}, by using an
+ * object of type {@link U}.
  * <p>
  * The reverse operation <b>may</b> be strict <i>inverse</i>, meaning that {@code converter.revert(converter.convert(a,
  * c), c).equals(a)} always {@code true}.
@@ -15,9 +15,11 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * @param <T> the type of the first argument to the converter
  * @param <U> the type of the second argument to the converter
  * @param <R> the type of the result of the converter
+ *
+ * @see BiFunction
  */
 @ParametersAreNonnullByDefault
-public interface BiConverter<T, U, R> {
+public interface BiConverter<T, U, R> extends BiFunction<T, U, R> {
 
     /**
      * Creates a bi-converter that always converts or reverses an object to itself.
@@ -71,6 +73,11 @@ public interface BiConverter<T, U, R> {
         };
     }
 
+    @Override
+    default R apply(T t, U u) {
+        return convert(t, u);
+    }
+
     /**
      * Returns a representation of {@code t} as an instance of type {@link R}, by using an object of type {@link U}.
      *
@@ -90,4 +97,14 @@ public interface BiConverter<T, U, R> {
      * @return the converted instance
      */
     T revert(R r, U u);
+
+    /**
+     * Returns the reversed converter of this converter.
+     *
+     * @return the reversed converter
+     */
+    @Nonnull
+    default BiConverter<R, U, T> reverse() {
+        return from(this::revert, this::convert);
+    }
 }
