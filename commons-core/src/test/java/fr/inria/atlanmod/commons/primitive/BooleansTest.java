@@ -1,5 +1,7 @@
 package fr.inria.atlanmod.commons.primitive;
 
+import fr.inria.atlanmod.commons.AbstractTest;
+
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -10,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case that checks the behavior of {@link Booleans}.
  */
 @ParametersAreNonnullByDefault
-public class BooleansTest {
+public class BooleansTest extends AbstractTest {
 
     @Test
     public void testToBytes() {

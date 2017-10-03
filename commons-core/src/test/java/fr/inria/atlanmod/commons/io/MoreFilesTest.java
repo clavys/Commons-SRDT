@@ -1,5 +1,7 @@
 package fr.inria.atlanmod.commons.io;
 
+import fr.inria.atlanmod.commons.AbstractTest;
+
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -10,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case about {@link MoreFiles}.
  */
 @ParametersAreNonnullByDefault
-public class MoreFilesTest {
+public class MoreFilesTest extends AbstractTest {
 
     @Test
     public void testFileExtension() {

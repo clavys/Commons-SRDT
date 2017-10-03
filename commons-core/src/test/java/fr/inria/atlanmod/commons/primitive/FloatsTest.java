@@ -1,5 +1,7 @@
 package fr.inria.atlanmod.commons.primitive;
 
+import fr.inria.atlanmod.commons.AbstractTest;
+
 import org.junit.jupiter.api.Test;
 
 import java.nio.ByteBuffer;
@@ -12,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case that checks the behavior of {@link Floats}.
  */
 @ParametersAreNonnullByDefault
-public class FloatsTest {
+public class FloatsTest extends AbstractTest {
 
     @Test
     public void testToBytes() {

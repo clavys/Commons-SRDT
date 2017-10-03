@@ -51,7 +51,7 @@ class AsyncLogger implements Logger {
         if (isNull(System.getProperty(loggingManagerProperty))) {
             try {
                 // Defines the Log4j manager if the dependencies are in the classpath
-                Class.forName(loggingManagerLog4j, false, Log.class.getClassLoader());
+                Class.forName(loggingManagerLog4j, true, Log.class.getClassLoader());
                 System.setProperty(loggingManagerProperty, loggingManagerLog4j);
             }
             catch (ClassNotFoundException ignored) {

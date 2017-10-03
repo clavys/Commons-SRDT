@@ -1,5 +1,7 @@
 package fr.inria.atlanmod.commons.primitive;
 
+import fr.inria.atlanmod.commons.AbstractTest;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -12,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case that checks the behavior of {@link Primitives}.
  */
 @ParametersAreNonnullByDefault
-public class PrimitivesTest {
+public class PrimitivesTest extends AbstractTest {
 
     @Test
     public void testIsPrimitive() {
