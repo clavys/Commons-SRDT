@@ -14,6 +14,7 @@ package fr.inria.atlanmod.commons.log;
 import java.text.MessageFormat;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNullableByDefault;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -31,12 +32,39 @@ import javax.annotation.concurrent.ThreadSafe;
 public interface Logger {
 
     /**
+     * A throwable representing a logging without exception.
+     * <p>
+     * <b>WARNING:</b> This field is present to ease the redirection of the methods of this interface; don't use it
+     * elsewhere.
+     */
+    @Nullable
+    Throwable NO_EXCEPTION = null;
+
+    /**
+     * A string representing a logging without message.
+     * <p>
+     * <b>WARNING:</b> This field is present to ease the redirection of the methods of this interface; don't use it
+     * elsewhere.
+     */
+    @Nullable
+    CharSequence NO_MESSAGE = null;
+
+    /**
+     * An empty array representing logging without parameters.
+     * <p>
+     * <b>WARNING:</b> This field is present to ease the redirection of the methods of this interface; don't use it
+     * elsewhere.
+     */
+    @Nonnull
+    Object[] NO_PARAMS = new Object[0];
+
+    /**
      * Logs a message at the {@link Level#TRACE TRACE} level.
      *
      * @param message the message to log
      */
     default void trace(CharSequence message) {
-        log(Level.TRACE, message);
+        trace(NO_EXCEPTION, message, NO_PARAMS);
     }
 
     /**
@@ -46,7 +74,7 @@ public interface Logger {
      * @param params  parameters to the message
      */
     default void trace(CharSequence message, Object... params) {
-        log(Level.TRACE, message, params);
+        trace(NO_EXCEPTION, message, params);
     }
 
     /**
@@ -55,7 +83,7 @@ public interface Logger {
      * @param e the exception to log, including its stack trace
      */
     default void trace(Throwable e) {
-        log(Level.TRACE, e);
+        trace(e, NO_MESSAGE, NO_PARAMS);
     }
 
     /**
@@ -65,7 +93,7 @@ public interface Logger {
      * @param message the message to log
      */
     default void trace(Throwable e, CharSequence message) {
-        log(Level.TRACE, e, message);
+        trace(e, message, NO_PARAMS);
     }
 
     /**
@@ -86,7 +114,7 @@ public interface Logger {
      * @param message the message to log
      */
     default void debug(CharSequence message) {
-        log(Level.DEBUG, message);
+        debug(NO_EXCEPTION, message, NO_PARAMS);
     }
 
     /**
@@ -96,7 +124,7 @@ public interface Logger {
      * @param params  parameters to the message
      */
     default void debug(CharSequence message, Object... params) {
-        log(Level.DEBUG, message, params);
+        debug(NO_EXCEPTION, message, params);
     }
 
     /**
@@ -105,7 +133,7 @@ public interface Logger {
      * @param e the exception to log, including its stack trace
      */
     default void debug(Throwable e) {
-        log(Level.DEBUG, e);
+        debug(e, NO_MESSAGE, NO_PARAMS);
     }
 
     /**
@@ -115,7 +143,7 @@ public interface Logger {
      * @param message the message to log
      */
     default void debug(Throwable e, CharSequence message) {
-        log(Level.DEBUG, e, message);
+        debug(e, message, NO_PARAMS);
     }
 
     /**
@@ -136,7 +164,7 @@ public interface Logger {
      * @param message the message to log
      */
     default void info(CharSequence message) {
-        log(Level.INFO, message);
+        info(NO_EXCEPTION, message, NO_PARAMS);
     }
 
     /**
@@ -146,7 +174,7 @@ public interface Logger {
      * @param params  parameters to the message
      */
     default void info(CharSequence message, Object... params) {
-        log(Level.INFO, message, params);
+        info(NO_EXCEPTION, message, params);
     }
 
     /**
@@ -155,7 +183,7 @@ public interface Logger {
      * @param e the exception to log, including its stack trace
      */
     default void info(Throwable e) {
-        log(Level.INFO, e);
+        info(e, NO_MESSAGE, NO_PARAMS);
     }
 
     /**
@@ -165,7 +193,7 @@ public interface Logger {
      * @param message the message to log
      */
     default void info(Throwable e, CharSequence message) {
-        log(Level.INFO, e, message);
+        info(e, message, NO_PARAMS);
     }
 
     /**
@@ -186,7 +214,7 @@ public interface Logger {
      * @param message the message to log
      */
     default void warn(CharSequence message) {
-        log(Level.WARN, message);
+        warn(NO_EXCEPTION, message, NO_PARAMS);
     }
 
     /**
@@ -196,7 +224,7 @@ public interface Logger {
      * @param params  parameters to the message
      */
     default void warn(CharSequence message, Object... params) {
-        log(Level.WARN, message, params);
+        warn(NO_EXCEPTION, message, params);
     }
 
     /**
@@ -205,7 +233,7 @@ public interface Logger {
      * @param e the exception to log, including its stack trace
      */
     default void warn(Throwable e) {
-        log(Level.WARN, e);
+        warn(e, NO_MESSAGE, NO_PARAMS);
     }
 
     /**
@@ -215,7 +243,7 @@ public interface Logger {
      * @param message the message to log
      */
     default void warn(Throwable e, CharSequence message) {
-        log(Level.WARN, e, message);
+        warn(e, message, NO_PARAMS);
     }
 
     /**
@@ -236,7 +264,7 @@ public interface Logger {
      * @param message the message to log
      */
     default void error(CharSequence message) {
-        log(Level.ERROR, message);
+        error(NO_EXCEPTION, message, NO_PARAMS);
     }
 
     /**
@@ -246,7 +274,7 @@ public interface Logger {
      * @param params  parameters to the message
      */
     default void error(CharSequence message, Object... params) {
-        log(Level.ERROR, message, params);
+        error(NO_EXCEPTION, message, params);
     }
 
     /**
@@ -255,7 +283,7 @@ public interface Logger {
      * @param e the exception to log, including its stack trace
      */
     default void error(Throwable e) {
-        log(Level.ERROR, e);
+        error(e, NO_MESSAGE, NO_PARAMS);
     }
 
     /**
@@ -265,7 +293,7 @@ public interface Logger {
      * @param message the message to log
      */
     default void error(Throwable e, CharSequence message) {
-        log(Level.ERROR, e, message);
+        error(e, message, NO_PARAMS);
     }
 
     /**
@@ -287,7 +315,7 @@ public interface Logger {
      * @param message the message to log
      */
     default void log(@Nonnull Level level, CharSequence message) {
-        log(level, null, message, new Object[0]);
+        log(level, NO_EXCEPTION, message, NO_PARAMS);
     }
 
     /**
@@ -298,7 +326,7 @@ public interface Logger {
      * @param params  parameters to the message
      */
     default void log(@Nonnull Level level, CharSequence message, Object... params) {
-        log(level, null, message, params);
+        log(level, NO_EXCEPTION, message, params);
     }
 
     /**
@@ -308,7 +336,7 @@ public interface Logger {
      * @param e     the exception to log, including its stack trace
      */
     default void log(@Nonnull Level level, Throwable e) {
-        log(level, e, null, new Object[0]);
+        log(level, e, NO_MESSAGE, NO_PARAMS);
     }
 
     /**
@@ -319,7 +347,7 @@ public interface Logger {
      * @param message the message to log
      */
     default void log(@Nonnull Level level, Throwable e, CharSequence message) {
-        log(level, e, message, new Object[0]);
+        log(level, e, message, NO_PARAMS);
     }
 
     /**
