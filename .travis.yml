@@ -1,13 +1,12 @@
-language: java
-
 os: linux
+sudo: false
+dist: trusty
 
+language: java
 jdk: oraclejdk8
 
 env:
   global:
-    - JAVA_OPTS="-Xms256m -Xmx2g"
-    - MAVEN_OPTS="-Xms256m -Xmx2g -XX:+UseConcMarkSweepGC"
     # GH_TOKEN
     - secure: pyp2JIxKKpzerEBJyE3QgWJGDr9yyiU4iyqmo0gPM5H1oSpYLbz4QAClyq5HwMnCvH1jVX2dwZfR2jBNNrsEK3CmIm+Aktb+Ly0sDQ0XfQBpJzgyIKQFmaDVfHcNwdtElw9aiWlSWkH+dmL2baZ91Bi8W/phnRrw9hAQOrUvTeBsqctI9RApMdyHSRLW5llHwLSubNcbcroPLV7BabJFh6yd15SPZP+vEn9KQnk0jtciaWSzMrPY2H0Cr8CaXyV/ehUI3dYWhmdWVK3qYZ3djOqRLwctYRxeHf7To2KF2cuk1vWGHqORsjqaOupUv9LqLsKRA/p/GB+UwGx4p3gzIYiWp7RKwJ4csixpAOpMyVDaRtJgXiiU+K1+2Y9CvygTw7bxIkpJsldMAaCr5ig4MfvNhzH5pbru6o6sjQEvWpM+e9CI2xAsdQzcMPqa/YgRlwkQZI2xX17e4aPEbv3W070r5rydYqvrmfNLhwP/AiaWx2mXUOFrPcMSob2YG9tALjZJvsdDGwNGD/T5Nu6WMkG1PPR4M/EIUPGdWJDzNiMH15hVb67f3mc0n7gVL64qepH7DwRuhTDnmFWwEaj2CflI6Wo9tpHZ4FWw46Eu8IubdUt6Mxm5sCMWic0G94fkvNW81MtrAjHVX4VtjuamC+wTfsN7adBBBW3l3gXbRQ0=
     # CI_DEPLOY_USERNAME
@@ -15,16 +14,20 @@ env:
     # CI_DEPLOY_PASSWORD
     - secure: KIC2AfZyy97cbP7TGkIRtkQyubjET0PFjqeGy1uFZtt7Y31osFVDI1e5lfmkqFt12TLvpK8mXvL3d1DtjbKMFG9xvZusOofLik0BEIJN6lOpObx4tL1ItY2oARUyep0GXxRcZ/XIGBctVaHzNqcvoEkoiZ/oBmK3XK2WZ+B1v+evtzdBtOBzg7RzFhSVBaeVkZycWhXmDciFZBY/BhLge5TZqiiK3iA+FwSItz/BQ2VfNN9jWFTHtOxvUx46LHFAKdUqM3TT4rzKCK1Of02Pwds+oTSGlupdcB5r2PZx0X6w1kjr5qLmcQu0mn7W2S+RLHY8TlgNFJVRENfaLUFUCfiXjed1ukC1WfGAbrnlDowgAXsqnYN+pRN00VvjMH96NczSFGv8JX0jvTYyE39UvHEt5Ki7K9EoME2VMelGp9lOB8S9aTf4ejFmWs548IMavqvv/twFwGRyH1wBj0OFOVdL61yzyb+ihmK+u1pryeh8dmvBmJ3e90fBSn6cJzcHDdpkauGOMBw+YYAQcK16qfCvPZsxiGAiEZI2wgbErpdxQ1X1aCFpndUE1D5AVixPo3NXiHvuzhkpPzFOh9UQN9wQcn2f97FMKwNhVPt66VTl4wl3aGlq5/2tVrGQNJ8CiRuAzjXr4dEPUmOy/NlT2mVZow4KmOVcD5clv2QoUTk=
 
+install:
+  # Resolve all dependencies
+  - mvn -B -V -q -DskipTests install
+
 script:
   # Build and test with code coverage
-  - mvn -B jacoco:prepare-agent install jacoco:report jacoco:report-aggregate
+  - mvn -B jacoco:prepare-agent test jacoco:report jacoco:report-aggregate
 
 after_success:
   # Publish code coverage in CodeCov
   - bash <(curl -s https://codecov.io/bash)
 
+  # Deploy snapshot in Maven central
+  - bash .util/deploy_snapshot.sh
+
   # Publish Javadoc in Github
   - bash .util/publish_javadoc.sh
-
-  # Publish snapshot in Maven central
-  - bash .util/publish_snapshot.sh
