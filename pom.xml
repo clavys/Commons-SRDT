@@ -76,7 +76,7 @@
         <log4j.version>2.8.2</log4j.version><!-- 2.9.0+ : issue with maven-bundle-plugin (JDK9 compatibility)-->
 
         <assertj.version>3.8.0</assertj.version>
-        <junit.version>5.0.0</junit.version>
+        <junit.version>5.0.1</junit.version>
         <mockito.version>2.10.0</mockito.version>
     </properties>
 
