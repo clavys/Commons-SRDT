@@ -111,15 +111,6 @@ public abstract class AbstractFileBasedTest extends AbstractTest {
 
     @AfterEach
     void cleanTempFile() throws Exception {
-        if (nonNull(currentTempFile) && Files.exists(currentTempFile)) {
-            if (Files.isDirectory(currentTempFile)) {
-                deleteDirectory(currentTempFile);
-            }
-            else {
-                Files.deleteIfExists(currentTempFile);
-            }
-        }
-
         currentTempFile = null;
     }
 
