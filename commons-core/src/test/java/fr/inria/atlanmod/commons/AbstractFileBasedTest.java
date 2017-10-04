@@ -1,7 +1,6 @@
 package fr.inria.atlanmod.commons;
 
 import fr.inria.atlanmod.commons.concurrent.MoreThreads;
-import fr.inria.atlanmod.commons.log.Log;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -76,11 +75,7 @@ public abstract class AbstractFileBasedTest extends AbstractTest {
     @Nonnull
     private static Path createTempFolder() throws IOException {
         if (isNull(tempFolder)) {
-            Log.info("Trying to create a new temporary folder...");
-
             tempFolder = Files.createTempDirectory("atlanmod");
-
-            Log.info("Temporary folder located at {0}", tempFolder);
         }
 
         return tempFolder;
@@ -92,8 +87,6 @@ public abstract class AbstractFileBasedTest extends AbstractTest {
     @AfterAll
     static void cleanTempFolder() throws Exception {
         if (nonNull(tempFolder) && Files.exists(tempFolder)) {
-            Log.info("Cleaning temporay folder...");
-
             deleteDirectory(tempFolder);
         }
 
@@ -108,12 +101,8 @@ public abstract class AbstractFileBasedTest extends AbstractTest {
     @Nonnull
     private Path createTempFile() throws IOException {
         if (isNull(currentTempFile)) {
-            Log.info("Trying to create a new temporary file...");
-
             Path createdFolder = Files.createTempDirectory(createTempFolder(), "test");
             Files.deleteIfExists(createdFolder);
-
-            Log.info("Temporary file located at {0}", createdFolder);
             currentTempFile = createdFolder;
         }
 
@@ -123,8 +112,6 @@ public abstract class AbstractFileBasedTest extends AbstractTest {
     @AfterEach
     void cleanTempFile() throws Exception {
         if (nonNull(currentTempFile) && Files.exists(currentTempFile)) {
-            Log.info("Cleaning temporay file...");
-
             if (Files.isDirectory(currentTempFile)) {
                 deleteDirectory(currentTempFile);
             }
