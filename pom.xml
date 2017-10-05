@@ -15,7 +15,7 @@
     <inceptionYear>2017</inceptionYear>
 
     <organization>
-        <name>Atlanmod INRIA LINA Mines Nantes</name>
+        <name>Atlanmod, Inria, LS2N, and IMT Nantes</name>
         <url>http://www.emn.fr/z-info/atlanmod/index.php/Main_Page</url>
     </organization>
 
@@ -48,6 +48,9 @@
 
     <licenses>
         <license>
+            <name>Eclipse Public License v2.0</name>
+            <url>https://www.eclipse.org/legal/epl-2.0/</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
 
