@@ -67,9 +67,14 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+
+        <maven-surefire.version>2.19.1</maven-surefire.version><!-- 2.20+ : Not compatible with 'junit-platform-surefire-provider:1.0.0' -->
+        <project.build.itSourceDirectory>${project.basedir}/src/it/java</project.build.itSourceDirectory>
 
         <argLine /><!-- Keep it empty -->
         <argLine.global />
@@ -150,11 +155,17 @@
                     <exclude>**/.empty</exclude>
                 </excludes>
             </testResource>
+            <testResource>
+                <directory>${project.basedir}/src/it/resources</directory>
+                <excludes>
+                    <exclude>**/.empty</exclude>
+                </excludes>
+            </testResource>
         </testResources>
 
         <plugins>
-            
-            <plugin> <!-- Generate 'test-jar's beside source 'jar's -->
+
+            <plugin><!-- Generate 'test-jar's beside source 'jar's -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <executions>
@@ -185,6 +196,30 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin><!-- Add integration tests structure -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>add-it-source</id>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.basedir}/src/it/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin><!-- Run integration tests : phase = verify -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
 
         </plugins>
@@ -302,15 +337,46 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.19.1</version><!-- 2.20+ : Not compatible with 'junit-platform-surefire-provider:1.0.0' -->
+                    <version>${maven-surefire.version}</version>
                     <configuration>
                         <!-- Property @{argLine} : created by jacoco:prepare-agent -->
                         <argLine>@{argLine} ${argLine.global}</argLine>
                         <failIfNoTests>false</failIfNoTests>
                         <systemPropertyVariables>
                             <!-- Set JUL Formatting -->
-                            <java.util.logging.SimpleFormatter.format>[%4$s] %5$s%6$s%n</java.util.logging.SimpleFormatter.format>
+                            <java.util.logging.SimpleFormatter.format>[%4$s] %5$s%6$s%n
+                            </java.util.logging.SimpleFormatter.format>
                         </systemPropertyVariables>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.junit.platform</groupId>
+                            <artifactId>junit-platform-surefire-provider</artifactId>
+                            <version>1.0.0</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.junit.jupiter</groupId>
+                            <artifactId>junit-jupiter-engine</artifactId>
+                            <version>${junit.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven-surefire.version}
+                    </version><!-- 2.20+ : Not compatible with 'junit-platform-surefire-provider:1.0.0' -->
+                    <configuration>
+                        <!-- Property @{argLine} : created by jacoco:prepare-agent -->
+                        <argLine>@{argLine} ${argLine.global}</argLine>
+                        <failIfNoTests>false</failIfNoTests>
+                        <systemPropertyVariables>
+                            <!-- Set JUL Formatting -->
+                            <java.util.logging.SimpleFormatter.format>[%4$s] %5$s%6$s%n
+                            </java.util.logging.SimpleFormatter.format>
+                        </systemPropertyVariables>
+                        <testSourceDirectory>${project.build.itSourceDirectory}</testSourceDirectory>
                     </configuration>
                     <dependencies>
                         <dependency>
