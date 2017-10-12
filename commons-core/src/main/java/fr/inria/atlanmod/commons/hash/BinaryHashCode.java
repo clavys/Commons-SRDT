@@ -77,11 +77,11 @@ final class BinaryHashCode implements HashCode {
                     | ((bytes[3] & 0xff) << 24);
         }
 
-        byte[] bytes = toBytes();
+        byte[] cloneBytes = toBytes();
 
-        int value = bytes[0] & 0xFF;
-        for (int i = 1; i < bytes.length; i++) {
-            value |= (bytes[i] & 0xFF) << i * 8;
+        int value = cloneBytes[0] & 0xFF;
+        for (int i = 1; i < cloneBytes.length; i++) {
+            value |= (cloneBytes[i] & 0xFF) << i * 8;
         }
         return value;
     }

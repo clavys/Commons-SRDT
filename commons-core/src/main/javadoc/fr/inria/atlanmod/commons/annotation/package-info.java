@@ -16,4 +16,4 @@
  * <b>Note:</b> Current annotation are not processed and are only used for documentation purposes.
  */
 
-package fr.inria.atlanmod.commons.annotations;
+package fr.inria.atlanmod.commons.annotation;

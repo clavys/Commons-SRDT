@@ -10,4 +10,4 @@
  * Provides hash functions and related structures.
  */
 
-package fr.inria.atlanmod.commons.io.hash;
+package fr.inria.atlanmod.commons.hash;

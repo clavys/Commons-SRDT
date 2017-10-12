@@ -31,7 +31,7 @@ public abstract class AbstractSerializer<T> implements Serializer<T> {
      * The default FST configuration.
      */
     @Nonnull
-    final static FSTConfiguration FST = FSTConfiguration.createDefaultConfiguration();
+    static final FSTConfiguration FST = FSTConfiguration.createDefaultConfiguration();
 
     @Nonnull
     @Override
