@@ -188,9 +188,4 @@ public class CacheStatsTest extends AbstractTest {
         //noinspection EqualsReplaceableByObjectsCall
         assertThat(stats.equals(new CacheStats(30, 10, 15, 5, 2000, 0))).isFalse();
     }
-
-    @Test
-    public void testToString() {
-        assertThat(stats.toString());
-    }
 }
