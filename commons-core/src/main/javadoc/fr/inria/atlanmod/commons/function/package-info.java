@@ -7,7 +7,7 @@
  */
 
 /**
- * Provides classes and methods related to concurrency.
+ * Provides functional interfaces that extend the Java functions.
  */
 
-package fr.inria.atlanmod.commons.concurrent;
+package fr.inria.atlanmod.commons.function;

@@ -7,7 +7,7 @@
  */
 
 /**
- * ???
+ * Provides utility classes and methods related to {@link java.util.Collection}s and arrays.
  */
 
 package fr.inria.atlanmod.commons.collect;

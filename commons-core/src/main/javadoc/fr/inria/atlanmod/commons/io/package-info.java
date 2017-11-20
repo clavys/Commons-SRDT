@@ -7,7 +7,7 @@
  */
 
 /**
- * Provides classes and methods related to concurrency.
+ * Provides classes and methods related to an I/O process.
  */
 
-package fr.inria.atlanmod.commons.concurrent;
+package fr.inria.atlanmod.commons.io;

@@ -7,7 +7,7 @@
  */
 
 /**
- * Provides classes and methods related to concurrency.
+ * Provides classes and methods related to Java primitives.
  */
 
-package fr.inria.atlanmod.commons.concurrent;
+package fr.inria.atlanmod.commons.primitive;

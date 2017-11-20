@@ -7,7 +7,7 @@
  */
 
 /**
- * Provides classes and methods related to concurrency.
+ * Provides serialization methods and related structures.
  */
 
-package fr.inria.atlanmod.commons.concurrent;
+package fr.inria.atlanmod.commons.io.serializer;

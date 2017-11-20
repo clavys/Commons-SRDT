@@ -7,7 +7,7 @@
  */
 
 /**
- * ???
+ * The base package for common utility classes and methods.
  */
 
 package fr.inria.atlanmod.commons;
