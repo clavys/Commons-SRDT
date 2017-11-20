@@ -5,7 +5,7 @@
     <parent>
         <groupId>fr.inria.atlanmod.commons</groupId>
         <artifactId>commons</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>commons-core</artifactId>
@@ -13,7 +13,7 @@
     <packaging>bundle</packaging>
 
     <name>Commons Core</name>
-    <description />
+    <description>A library of classes and methods common to all Atlanmod projects</description>
 
     <properties>
         <caffeine.version>2.6.0</caffeine.version>
