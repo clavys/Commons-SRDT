@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * A specialized {@link Function} that converts an object of type {@link T} to another of type {@link R}.
+ * A specialized {@link Function} that converts an object of type {@code T} to another of type {@code R}.
  * <p>
  * The reverse operation <b>may</b> be strict <i>inverse</i>, meaning that {@code converter.revert(converter.convert(a)).equals(a)}
  * always {@code true}.
@@ -84,7 +84,7 @@ public interface Converter<T, R> extends Function<T, R> {
     }
 
     /**
-     * Returns a representation of {@code t} as an instance of type {@link R}.
+     * Returns a representation of {@code t} as an instance of type {@code R}.
      *
      * @param t the instance to convert
      *
@@ -94,7 +94,7 @@ public interface Converter<T, R> extends Function<T, R> {
     R convert(T t);
 
     /**
-     * Returns a representation of {@code r} as an instance of type {@link T}.
+     * Returns a representation of {@code r} as an instance of type {@code T}.
      *
      * @param r the instance to convert
      *

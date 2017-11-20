@@ -14,8 +14,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * A specialized {@link BiFunction} that converts an object of type {@link T} to another of type {@link R}, by using an
- * object of type {@link U}.
+ * A specialized {@link BiFunction} that converts an object of type {@code T} to another of type {@code R}, by using an
+ * object of type {@code U}.
  * <p>
  * The reverse operation <b>may</b> be strict <i>inverse</i>, meaning that {@code converter.revert(converter.convert(a,
  * c), c).equals(a)} always {@code true}.
@@ -87,7 +87,7 @@ public interface BiConverter<T, U, R> extends BiFunction<T, U, R> {
     }
 
     /**
-     * Returns a representation of {@code t} as an instance of type {@link R}, by using an object of type {@link U}.
+     * Returns a representation of {@code t} as an instance of type {@code R}, by using an object of type {@code U}.
      *
      * @param t the instance to convert
      * @param u the helper instance
@@ -97,7 +97,7 @@ public interface BiConverter<T, U, R> extends BiFunction<T, U, R> {
     R convert(T t, U u);
 
     /**
-     * Returns a representation of {@code r} as an instance of type {@link T}, by using an object of type {@link U}.
+     * Returns a representation of {@code r} as an instance of type {@code T}, by using an object of type {@code U}.
      *
      * @param r the instance to convert
      * @param u the helper instance

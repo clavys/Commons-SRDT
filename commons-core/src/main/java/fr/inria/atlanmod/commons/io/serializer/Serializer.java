@@ -62,7 +62,7 @@ public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
     }
 
     /**
-     * Write an object of type {@link T} to a {@code byte} array.
+     * Write an object of type {@code T} to a {@code byte} array.
      *
      * @param t the object to serialize
      *
@@ -74,7 +74,7 @@ public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
     byte[] serialize(T t) throws IOException;
 
     /**
-     * Write an object of type {@link T} to the given {@code os}.
+     * Write an object of type {@code T} to the given {@code os}.
      * <p>
      * If the {@code os} also implements {@link DataOutput}, prefer using {@link #serialize(Object, DataOutput)}. This
      * method will create a adapter on {@code os} before calling it.
@@ -87,7 +87,7 @@ public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
     void serialize(T t, @WillNotClose OutputStream os) throws IOException;
 
     /**
-     * Write an object of type {@link T} to the given {@code out}.
+     * Write an object of type {@code T} to the given {@code out}.
      *
      * @param t   the object to serialize
      * @param out the output stream
@@ -97,7 +97,7 @@ public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
     void serialize(T t, @WillNotClose DataOutput out) throws IOException;
 
     /**
-     * Reads and assembles an object of type {@link T} from the given {@code data}.
+     * Reads and assembles an object of type {@code T} from the given {@code data}.
      *
      * @param data a byte array
      *
@@ -109,7 +109,7 @@ public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
     T deserialize(byte[] data) throws IOException;
 
     /**
-     * Reads and assembles an object of type {@link T} from the given {@code is}.
+     * Reads and assembles an object of type {@code T} from the given {@code is}.
      * <p>
      * If the {@code is} also implements {@link DataInput}, prefer using {@link #deserialize(DataInput)}. This method
      * will create a adapter on {@code is} before calling it.
@@ -124,7 +124,7 @@ public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
     T deserialize(@WillNotClose InputStream is) throws IOException;
 
     /**
-     * Reads and assembles an object of type {@link T} from the given {@code in}.
+     * Reads and assembles an object of type {@code T} from the given {@code in}.
      *
      * @param in the input stream
      *

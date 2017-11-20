@@ -190,7 +190,7 @@ public interface Range<C extends Comparable<C>> {
     }
 
     /**
-     * Creates a {@code Range} that contains every value of type {@link C}.
+     * Creates a {@code Range} that contains every value of type {@code C}.
      *
      * @param <C> the type of the range
      *
