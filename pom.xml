@@ -4,7 +4,7 @@
 
     <groupId>fr.inria.atlanmod.commons</groupId>
     <artifactId>commons</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -212,7 +212,7 @@
                     <configuration>
                         <instructions>
                             <Bundle-Version>
-                                1.0.0<!--.${maven.build.timestamp}-->
+                                1.0.1.${maven.build.timestamp}
                             </Bundle-Version>
                             <Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
                             <Import-Package />
