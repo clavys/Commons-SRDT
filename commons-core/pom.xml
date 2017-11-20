@@ -16,9 +16,9 @@
     <description />
 
     <properties>
-        <caffeine.version>2.5.6</caffeine.version>
+        <caffeine.version>2.6.0</caffeine.version>
         <zah.version>0.8</zah.version>
-        <fst.version>2.54</fst.version>
+        <fst.version>2.56</fst.version>
         <slf4j.version>1.7.25</slf4j.version>
     </properties>
 
@@ -132,6 +132,7 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}</Bundle-SymbolicName>
                         <Export-Package>
+                            !fr.inria.atlanmod.commons.*.internal.*,
                             fr.inria.atlanmod.commons.*
                         </Export-Package>
                     </instructions>
