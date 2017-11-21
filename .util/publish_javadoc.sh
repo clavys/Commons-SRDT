@@ -9,7 +9,7 @@ API_BRANCH="gh-pages"
 
 INPUT_DIR="target/site/apidocs"
 OUTPUT_DIR="releases/snapshot/doc"
-TEMP_DIR="~/doc"
+TEMP_DIR="$HOME/doc"
 
 if [ "$TRAVIS_REPO_SLUG" != "$SLUG" ]; then
   echo "Skipping Javadoc publication: wrong repository. Expected '$SLUG' but was '$TRAVIS_REPO_SLUG'."
@@ -36,7 +36,7 @@ else
     mkdir "$TEMP_DIR/"
     cp -Rf "$INPUT_DIR/*" "$TEMP_DIR/"
 
-    cd ~
+    cd "$HOME"
 
     if ! [ -d "$API_BRANCH" ]; then
         echo -e "Cloning '$API_BRANCH' branch..."
