@@ -58,6 +58,10 @@ else
     pwd
     ls -a
 
+    mkdir ${API_DIR}
+
+    ls -a
+
     cp -R ${TEMP_DIR} ${API_DIR}
 
     git add -Af
@@ -71,7 +75,7 @@ else
 
     echo -e "Publishing Javadoc..."
 
-    git commit --quiet -m "[auto] update the Javadoc from Travis build $TRAVIS_BUILD_NUMBER"
+    git commit --quiet -m "[auto] update the Javadoc from Travis #$TRAVIS_BUILD_NUMBER"
     git push --quiet -f origin gh-pages
 
     echo -e "Javadoc published."
