@@ -27,10 +27,10 @@ else
 
     echo -e "Copying Javadoc..."
 
-    cp -Rfvp target/site/apidocs/ ~/doc/
+    cp -Rfvp target/site/apidocs/* ~/doc/
     cd ~
 
-    if ! [ -d ~/gh-pages ]; then
+    if ! [ -d gh-pages ]; then
         echo -e "Cloning 'gh-pages' branch..."
 
         git config --global user.email "travis@travis-ci.org"
@@ -46,12 +46,12 @@ else
     if [ -d gh-pages/releases/snapshot/doc ]; then
         echo -e "Cleaning existing artifacts..."
 
-        git rm -rf gh-pages/releases/snapshot/doc/
+        git -C gh-pages rm -rf gh-pages/releases/snapshot/doc/
     fi
 
-    cp -Rfvp doc/ gh-pages/releases/snapshot/doc/
+    cp -Rfvp doc/* gh-pages/releases/snapshot/doc/
 
-    git add -Af
+    git -C gh-pages add -Af
 
     echo -e "Checking for differences..."
 
