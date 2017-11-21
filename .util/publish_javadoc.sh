@@ -31,7 +31,7 @@ else
 
     echo -e "Copying Javadoc..."
 
-    cp -rf target/site/apidocs/ ${TEMP_DIR}
+    cp -Rfv target/site/apidocs/ ${TEMP_DIR}
     cd ${HOME}
 
     if ! [ -d "gh-pages" ]; then
@@ -46,16 +46,16 @@ else
 
     cd gh-pages
 
-    mkdir -p ${ROOT_API_DIR}
+    mkdir -p --verbose ${ROOT_API_DIR}
     cd ${ROOT_API_DIR}
 
     if [ -d "${API_DIR}" ]; then
         echo -e "Cleaning existing artifacts..."
 
-        git rm --quiet -rf ${API_DIR}/*
+        git rm -rf ${API_DIR}/*
     fi
 
-    cp -R ${TEMP_DIR}/ ${API_DIR}
+    cp -Rfv ${TEMP_DIR}/ ${API_DIR}
 
     git add -Af
 
