@@ -58,7 +58,7 @@ public final class Chars {
      */
     @Nonnull
     public static byte[] toBytes(final Character value) {
-        checkNotNull(value);
+        checkNotNull(value, "value");
 
         return toBytes(value.charValue());
     }

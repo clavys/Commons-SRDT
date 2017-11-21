@@ -61,7 +61,7 @@ public final class Ints {
      */
     @Nonnull
     public static byte[] toBytes(final Integer value) {
-        checkNotNull(value);
+        checkNotNull(value, "value");
 
         return toBytes(value.intValue());
     }

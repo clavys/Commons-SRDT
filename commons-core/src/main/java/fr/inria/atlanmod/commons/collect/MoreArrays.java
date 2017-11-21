@@ -59,8 +59,8 @@ public final class MoreArrays {
     @Nonnull
     @SuppressWarnings("unchecked")
     public static <T> T[] newArray(Class<?> type, @Nonnegative int length) {
-        checkNotNull(type);
-        checkArgument(length >= 0);
+        checkNotNull(type, "type");
+        checkArgument(length >= 0, "length (%d) must not be negative", length);
 
         return (type == Object.class)
                 ? (T[]) new Object[length]
@@ -81,8 +81,8 @@ public final class MoreArrays {
      */
     @Nonnull
     public static <T> T[] resize(T[] array, @Nonnegative int length) {
-        checkNotNull(array);
-        checkArgument(length >= array.length);
+        checkNotNull(array, "array");
+        checkArgument(length >= array.length, "length (%d) must be not less than array.length (%d)", length, array.length);
 
         T[] newArray = newArray(array.getClass().getComponentType(), length);
         System.arraycopy(array, 0, newArray, 0, array.length);
@@ -121,7 +121,7 @@ public final class MoreArrays {
      */
     @Nonnull
     public static <T> T[] add(T[] array, @Nonnegative int index, @Nullable T element) {
-        checkNotNull(array);
+        checkNotNull(array, "array");
         checkElementIndex(index, array.length + 1);
 
         T[] newArray = newArray(array.getClass().getComponentType(), array.length + 1);
@@ -148,8 +148,8 @@ public final class MoreArrays {
      * @throws NullPointerException if any argument is {@code null}
      */
     public static <T> T[] addAll(T[] array, int index, Collection<? extends T> elements) {
-        checkNotNull(array);
-        checkNotNull(elements);
+        checkNotNull(array, "array");
+        checkNotNull(elements, "elements");
 
         T[] newArray = newArray(array.getClass().getComponentType(), array.length + elements.size());
         System.arraycopy(array, 0, newArray, 0, index);
@@ -182,7 +182,7 @@ public final class MoreArrays {
      */
     @Nonnull
     public static <T> T[] remove(T[] array, @Nonnegative int index) {
-        checkNotNull(array);
+        checkNotNull(array, "array");
         checkElementIndex(index, array.length);
 
         T[] newArray = newArray(array.getClass().getComponentType(), array.length - 1);
@@ -206,7 +206,7 @@ public final class MoreArrays {
      * @throws NullPointerException if the {@code array} is {@code null}
      */
     public static <T> boolean contains(T[] array, @Nullable T value) {
-        checkNotNull(array);
+        checkNotNull(array, "array");
 
         return indexOf(array, value) != NO_INDEX;
     }
@@ -222,7 +222,7 @@ public final class MoreArrays {
      * @throws NullPointerException if the {@code array} is {@code null}
      */
     public static <T> int indexOf(T[] array, @Nullable T value) {
-        checkNotNull(array);
+        checkNotNull(array, "array");
 
         for (int i = 0; i < array.length; i++) {
             if (Objects.equals(value, array[i])) {
@@ -244,7 +244,7 @@ public final class MoreArrays {
      * @throws NullPointerException if the {@code array} is {@code null}
      */
     public static <T> int lastIndexOf(T[] array, @Nullable T value) {
-        checkNotNull(array);
+        checkNotNull(array, "array");
 
         for (int i = array.length - 1; i >= 0; i--) {
             if (Objects.equals(value, array[i])) {

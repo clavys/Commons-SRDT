@@ -58,7 +58,7 @@ public final class Doubles {
      */
     @Nonnull
     public static byte[] toBytes(final Double value) {
-        checkNotNull(value);
+        checkNotNull(value, "value");
 
         return toBytes(value.doubleValue());
     }

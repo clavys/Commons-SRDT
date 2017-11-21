@@ -198,12 +198,12 @@ public final class Preconditions {
      * @throws IllegalArgumentException  if {@code size} is negative
      */
     @Nonnegative
-    public static int checkElementIndex(int index, int size) {
+    public static int checkElementIndex(@Nonnegative int index, @Nonnegative int size) {
         if (index < 0) {
             throw new IndexOutOfBoundsException(format("index (%d) must not be negative", index));
         }
         else if (size < 0) {
-            throw new IllegalArgumentException(format("negative size: %d", size));
+            throw new IllegalArgumentException(format("size (%d) must not be negative", size));
         }
         else if (index >= size) {
             throw new IndexOutOfBoundsException(format("index (%d) must be less than size (%d)", index, size));
@@ -224,12 +224,12 @@ public final class Preconditions {
      * @throws IllegalArgumentException  if {@code size} is negative
      */
     @Nonnegative
-    public static int checkPositionIndex(int index, int size) {
+    public static int checkPositionIndex(@Nonnegative int index, @Nonnegative int size) {
         if (index < 0) {
             throw new IndexOutOfBoundsException(format("index (%d) must not be negative", index));
         }
         else if (size < 0) {
-            throw new IllegalArgumentException(format("negative size: %d", size));
+            throw new IllegalArgumentException(format("size (%d) must not be negative", size));
         }
         else if (index > size) {
             throw new IndexOutOfBoundsException(format("index (%d) must not be greater than size (%d)", index, size));

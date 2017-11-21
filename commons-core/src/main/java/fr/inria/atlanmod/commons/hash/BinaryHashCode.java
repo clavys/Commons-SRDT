@@ -42,7 +42,7 @@ final class BinaryHashCode implements HashCode {
      * @param hashCode the bytes representation of this hash code
      */
     public BinaryHashCode(byte[] hashCode) {
-        this.bytes = checkNotNull(hashCode);
+        this.bytes = checkNotNull(hashCode, "hashCode");
     }
 
     @Nonnegative

@@ -9,8 +9,8 @@
 /**
  * Provides classes for logging information and events.
  * <p>
- * This package contains the classes related to logging service. The {@link fr.inria.atlanmod.commons.log.Log}
- * class defines a set of static methods to log information, warnings, or errors. It is possible to use {@link
+ * This package contains the classes related to logging service. The {@link fr.inria.atlanmod.commons.log.Log} class
+ * defines a set of static methods to log information, warnings, or errors. It is possible to use {@link
  * java.text.MessageFormat} style in logged information.
  * <p>
  * Client code can use the logger to log application-level information if needed using the following code:

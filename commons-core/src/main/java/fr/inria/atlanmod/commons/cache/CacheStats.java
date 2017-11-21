@@ -73,12 +73,12 @@ public final class CacheStats {
      * @param evictionCount    the number of entries evicted from the cache
      */
     protected CacheStats(@Nonnegative long hitCount, @Nonnegative long missCount, @Nonnegative long loadSuccessCount, @Nonnegative long loadFailureCount, @Nonnegative long totalLoadTime, @Nonnegative long evictionCount) {
-        checkArgument(hitCount >= 0);
-        checkArgument(missCount >= 0);
-        checkArgument(loadSuccessCount >= 0);
-        checkArgument(loadFailureCount >= 0);
-        checkArgument(totalLoadTime >= 0);
-        checkArgument(evictionCount >= 0);
+        checkArgument(hitCount >= 0, "hitCount (%d) must not be negative", hitCount);
+        checkArgument(missCount >= 0, "missCount (%d) must not be negative", missCount);
+        checkArgument(loadSuccessCount >= 0, "loadSuccessCount (%d) must not be negative", loadSuccessCount);
+        checkArgument(loadFailureCount >= 0, "loadFailureCount (%d) must not be negative", loadFailureCount);
+        checkArgument(totalLoadTime >= 0, "totalLoadTime (%d) must not be negative", totalLoadTime);
+        checkArgument(evictionCount >= 0, "evictionCount (%d) must not be negative", evictionCount);
 
         this.hitCount = hitCount;
         this.missCount = missCount;

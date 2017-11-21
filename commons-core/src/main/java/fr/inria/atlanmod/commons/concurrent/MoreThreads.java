@@ -68,7 +68,7 @@ public final class MoreThreads {
      * @throws NullPointerException if the {@code task} is {@code null}
      */
     public static void executeAtExit(Runnable task) {
-        checkNotNull(task);
+        checkNotNull(task, "task");
 
         Runtime.getRuntime().addShutdownHook(DEFAULT_THREAD_FACTORY.newThread(task));
     }

@@ -54,7 +54,7 @@ public final class Booleans {
      */
     @Nonnull
     public static byte[] toBytes(final Boolean value) {
-        checkNotNull(value);
+        checkNotNull(value, "value");
 
         return toBytes(value.booleanValue());
     }

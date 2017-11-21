@@ -40,7 +40,8 @@ public final class MoreStreams {
      * @param stream the stream to search through for the object
      * @param value  the value to find
      *
-     * @return an {@link Optional} containing the index of the value within the stream, {@link Optional#empty()} if not found
+     * @return an {@link Optional} containing the index of the value within the stream, {@link Optional#empty()} if not
+     * found
      */
     @Nonnull
     public static Optional<Integer> indexOf(Stream<?> stream, Object value) {
@@ -60,7 +61,8 @@ public final class MoreStreams {
      * @param stream the stream to traverse for looking for the object
      * @param value  the value to find, may be {@code null}
      *
-     * @return an {@link Optional} containing the index of the value within the stream, {@link Optional#empty()} if not found
+     * @return an {@link Optional} containing the index of the value within the stream, {@link Optional#empty()} if not
+     * found
      */
     @Nonnull
     public static Optional<Integer> lastIndexOf(Stream<?> stream, Object value) {

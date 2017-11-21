@@ -148,7 +148,7 @@ public class PreconditionsTest extends AbstractTest {
         assertThat(catchThrowable(() -> Preconditions.checkElementIndex(0, -1)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasNoCause()
-                .hasMessage("negative size: -1");
+                .hasMessage("size (-1) must not be negative");
 
         // index == size
         assertThat(catchThrowable(() -> Preconditions.checkElementIndex(0, 0)))
@@ -179,7 +179,7 @@ public class PreconditionsTest extends AbstractTest {
         assertThat(catchThrowable(() -> Preconditions.checkPositionIndex(0, -1)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasNoCause()
-                .hasMessage("negative size: -1");
+                .hasMessage("size (-1) must not be negative");
 
         // index == size
         assertThat(catchThrowable(() -> Preconditions.checkPositionIndex(0, 0)))

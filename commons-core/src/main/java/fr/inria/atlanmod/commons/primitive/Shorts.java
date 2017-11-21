@@ -61,7 +61,7 @@ public final class Shorts {
      */
     @Nonnull
     public static byte[] toBytes(final Short value) {
-        checkNotNull(value);
+        checkNotNull(value, "value");
 
         return toBytes(value.shortValue());
     }

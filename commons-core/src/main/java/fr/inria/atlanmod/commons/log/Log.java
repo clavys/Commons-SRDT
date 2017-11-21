@@ -70,7 +70,7 @@ public final class Log {
      */
     @Nonnull
     public static Logger forName(@Nonnull String name) {
-        return LOGGERS.get(checkNotNull(name));
+        return LOGGERS.get(checkNotNull(name, "name"));
     }
 
     /**

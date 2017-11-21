@@ -26,6 +26,11 @@ import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
 public final class MoreFiles {
 
     /**
+     * The dot character.
+     */
+    private static final char DOT = '.';
+
+    /**
      * This class should not be instantiated.
      *
      * @throws IllegalStateException every time
@@ -44,10 +49,10 @@ public final class MoreFiles {
      */
     @Nonnull
     public static String fileExtension(String file) {
-        checkNotNull(file);
+        checkNotNull(file, "file");
 
         String fileName = new File(file).getName();
-        int dotIndex = fileName.lastIndexOf('.');
+        int dotIndex = fileName.lastIndexOf(DOT);
         return (dotIndex == -1) ? Strings.EMPTY : fileName.substring(dotIndex + 1);
     }
 
@@ -61,10 +66,10 @@ public final class MoreFiles {
      */
     @Nonnull
     public static String nameWithoutExtension(String file) {
-        checkNotNull(file);
+        checkNotNull(file, "file");
 
         String fileName = new File(file).getName();
-        int dotIndex = fileName.lastIndexOf('.');
+        int dotIndex = fileName.lastIndexOf(DOT);
         return (dotIndex == -1) ? fileName : fileName.substring(0, dotIndex);
     }
 }

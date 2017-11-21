@@ -57,7 +57,7 @@ final class CaffeineCacheBuilder<K, V> implements CacheBuilder<K, V> {
     @Nonnull
     @Override
     public CacheBuilder<K, V> maximumSize(@Nonnegative long maximumSize) {
-        checkArgument(maximumSize >= 0);
+        checkArgument(maximumSize >= 0, "maximumSize (%d) must not be negative", maximumSize);
 
         builder.maximumSize(maximumSize);
         return this;
@@ -65,7 +65,7 @@ final class CaffeineCacheBuilder<K, V> implements CacheBuilder<K, V> {
 
     @Override
     public <K1 extends K, V1 extends V> CacheBuilder<K, V> maximumWeight(@Nonnegative long maximumWeight, ToIntBiFunction<? super K1, ? extends V1> weigher) {
-        checkArgument(maximumWeight >= 0);
+        checkArgument(maximumWeight >= 0, "maximumWeight (%d) must not be negative", maximumWeight);
 
         builder.maximumWeight(maximumWeight);
         builder.weigher(weigher::applyAsInt);
@@ -102,7 +102,7 @@ final class CaffeineCacheBuilder<K, V> implements CacheBuilder<K, V> {
     @Nonnull
     @Override
     public <K1 extends K, V1 extends V> Cache<K1, V1> build(Function<? super K1, ? extends V1> mappingFunction) {
-        checkNotNull(mappingFunction);
+        checkNotNull(mappingFunction, "mappingFunction");
 
         return new CaffeineLoadingCache<>(builder.build(mappingFunction::apply));
     }

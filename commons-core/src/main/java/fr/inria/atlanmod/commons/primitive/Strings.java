@@ -106,7 +106,7 @@ public final class Strings {
      */
     @Nonnull
     public static byte[] toBytes(final String value) {
-        checkNotNull(value);
+        checkNotNull(value, "value");
 
         try {
             return value.getBytes(StandardCharsets.UTF_8);
@@ -131,8 +131,8 @@ public final class Strings {
      */
     @Nonnull
     public static byte[] toBytesBinary(final String value) {
-        checkNotNull(value);
-        checkArgument(value.length() % 2 == 0);
+        checkNotNull(value, "value");
+        checkArgument(value.length() % 2 == 0, "value.length (%d) must be pair", value.length());
 
         byte[] bytes = new byte[value.length() / 2];
 

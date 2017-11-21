@@ -63,8 +63,8 @@ public final class Bytes {
      * @throws IllegalArgumentException if the {@code bytes.length} is different from {@code 1}
      */
     public static boolean toBoolean(final byte[] bytes) {
-        checkNotNull(bytes);
-        checkArgument(bytes.length == 1, "Array has wrong size: %d", bytes.length);
+        checkNotNull(bytes, "bytes");
+        checkArgument(bytes.length == 1, "bytes has wrong size: %d", bytes.length);
 
         return bytes[0] != (byte) 0;
     }
@@ -80,8 +80,8 @@ public final class Bytes {
      * @throws IllegalArgumentException if the {@code bytes.length} is different from {@link Short#BYTES}
      */
     public static short toShort(final byte[] bytes) {
-        checkNotNull(bytes);
-        checkArgument(bytes.length == Short.BYTES, "Array has wrong size: %d", bytes.length);
+        checkNotNull(bytes, "bytes");
+        checkArgument(bytes.length == Short.BYTES, "bytes has wrong size: %d", bytes.length);
 
         short value = 0;
 
@@ -120,8 +120,8 @@ public final class Bytes {
      * @throws IllegalArgumentException if the {@code bytes.length} is different from {@link Integer#BYTES}
      */
     public static int toInt(final byte[] bytes) {
-        checkNotNull(bytes);
-        checkArgument(bytes.length == Integer.BYTES, "Array has wrong size: %d", bytes.length);
+        checkNotNull(bytes, "bytes");
+        checkArgument(bytes.length == Integer.BYTES, "bytes has wrong size: %d", bytes.length);
 
         int value = 0;
 
@@ -144,8 +144,8 @@ public final class Bytes {
      * @throws IllegalArgumentException if the {@code bytes.length} is different from {@link Long#BYTES}
      */
     public static long toLong(final byte[] bytes) {
-        checkNotNull(bytes);
-        checkArgument(bytes.length == Long.BYTES, "Array has wrong size: %d", bytes.length);
+        checkNotNull(bytes, "bytes");
+        checkArgument(bytes.length == Long.BYTES, "bytes has wrong size: %d", bytes.length);
 
         long value = 0L;
 
@@ -170,7 +170,7 @@ public final class Bytes {
      * @see Float#intBitsToFloat(int)
      */
     public static float toFloat(final byte[] bytes) {
-        checkNotNull(bytes);
+        checkNotNull(bytes, "bytes");
 
         // Decoded from integer
         return Float.intBitsToFloat(toInt(bytes));
@@ -189,7 +189,7 @@ public final class Bytes {
      * @see Double#longBitsToDouble(long)
      */
     public static double toDouble(final byte[] bytes) {
-        checkNotNull(bytes);
+        checkNotNull(bytes, "bytes");
 
         // Decoded from long
         return Double.longBitsToDouble(toLong(bytes));
@@ -207,7 +207,7 @@ public final class Bytes {
      */
     @Nonnull
     public static String toString(final byte[] bytes) {
-        checkNotNull(bytes);
+        checkNotNull(bytes, "bytes");
 
         try {
             return new String(bytes, StandardCharsets.UTF_8);
@@ -231,7 +231,7 @@ public final class Bytes {
      */
     @Nonnull
     public static String toStringBinary(final byte[] bytes) {
-        checkNotNull(bytes);
+        checkNotNull(bytes, "bytes");
 
         char[] result = new char[bytes.length * 2];
 

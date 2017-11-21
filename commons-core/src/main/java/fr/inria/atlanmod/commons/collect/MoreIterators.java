@@ -43,7 +43,7 @@ public final class MoreIterators {
      * @return {@code true} if the iterator contains no element
      */
     public static boolean isEmpty(Iterator<?> iterator) {
-        checkNotNull(iterator);
+        checkNotNull(iterator, "iterator");
 
         return Collection.class.isInstance(iterator)
                 ? Collection.class.cast(iterator).isEmpty()

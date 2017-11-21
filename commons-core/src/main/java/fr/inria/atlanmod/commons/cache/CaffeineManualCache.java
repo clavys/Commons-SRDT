@@ -44,15 +44,15 @@ class CaffeineManualCache<K, V> implements Cache<K, V> {
     @Nullable
     @Override
     public V get(K key) {
-        checkNotNull(key);
+        checkNotNull(key, "key");
 
         return cache.getIfPresent(key);
     }
 
     @Override
     public V get(K key, Function<? super K, ? extends V> mappingFunction) {
-        checkNotNull(key);
-        checkNotNull(mappingFunction);
+        checkNotNull(key, "key");
+        checkNotNull(mappingFunction, "mappingFunction");
 
         return cache.get(key, mappingFunction);
     }
@@ -60,36 +60,36 @@ class CaffeineManualCache<K, V> implements Cache<K, V> {
     @Nonnull
     @Override
     public Map<K, V> getAll(Iterable<? extends K> keys) {
-        checkNotNull(keys);
+        checkNotNull(keys, "keys");
 
         return cache.getAllPresent(keys);
     }
 
     @Override
     public void put(K key, V value) {
-        checkNotNull(key);
-        checkNotNull(value);
+        checkNotNull(key, "key");
+        checkNotNull(value, "value");
 
         cache.put(key, value);
     }
 
     @Override
     public void putAll(Map<? extends K, ? extends V> map) {
-        checkNotNull(map);
+        checkNotNull(map, "map");
 
         cache.putAll(map);
     }
 
     @Override
     public void invalidate(K key) {
-        checkNotNull(key);
+        checkNotNull(key, "key");
 
         cache.invalidate(key);
     }
 
     @Override
     public void invalidateAll(Iterable<? extends K> keys) {
-        checkNotNull(keys);
+        checkNotNull(keys, "keys");
 
         cache.invalidateAll(keys);
     }

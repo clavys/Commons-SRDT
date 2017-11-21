@@ -93,9 +93,9 @@ public final class MoreExecutors {
      */
     @Nonnull
     public static ExecutorService shutdownAtExit(ExecutorService service, long timeout, TimeUnit unit, boolean executeUnfinished) {
-        checkNotNull(service);
-        checkNotNull(unit);
-        checkArgument(timeout >= 0);
+        checkNotNull(service, "service");
+        checkNotNull(unit, "unit");
+        checkArgument(timeout >= 0, "timeout (%d) must not be negative", timeout);
 
         MoreThreads.executeAtExit(() -> {
             try {

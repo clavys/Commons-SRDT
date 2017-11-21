@@ -38,7 +38,7 @@ class CaffeineLoadingCache<K, V> extends CaffeineManualCache<K, V> {
     @Nullable
     @Override
     public V get(K key) {
-        checkNotNull(key);
+        checkNotNull(key, "key");
 
         return ((com.github.benmanes.caffeine.cache.LoadingCache<K, V>) cache).get(key);
     }
@@ -46,14 +46,14 @@ class CaffeineLoadingCache<K, V> extends CaffeineManualCache<K, V> {
     @Nonnull
     @Override
     public Map<K, V> getAll(Iterable<? extends K> keys) {
-        checkNotNull(keys);
+        checkNotNull(keys, "keys");
 
         return ((com.github.benmanes.caffeine.cache.LoadingCache<K, V>) cache).getAll(keys);
     }
 
     @Override
     public void refresh(K key) {
-        checkNotNull(key);
+        checkNotNull(key, "key");
 
         ((com.github.benmanes.caffeine.cache.LoadingCache<K, V>) cache).refresh(key);
     }

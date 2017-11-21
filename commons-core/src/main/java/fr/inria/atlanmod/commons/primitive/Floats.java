@@ -58,7 +58,7 @@ public final class Floats {
      */
     @Nonnull
     public static byte[] toBytes(final Float value) {
-        checkNotNull(value);
+        checkNotNull(value, "value");
 
         return toBytes(value.floatValue());
     }

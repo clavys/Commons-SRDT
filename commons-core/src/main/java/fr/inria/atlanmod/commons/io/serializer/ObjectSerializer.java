@@ -50,7 +50,7 @@ final class ObjectSerializer<T> extends AbstractSerializer<T> {
     @Override
     public void serialize(T t, DataOutput out) throws IOException {
         checkArgument(Serializable.class.isInstance(t),
-                "Serializer requires a Serializable payload but received an object of type " + t.getClass().getName());
+                "Serializer requires a Serializable payload but received an object of type %s", t.getClass().getName());
 
         if (ObjectOutput.class.isInstance(out)) {
             serialize(t, ObjectOutput.class.cast(out));

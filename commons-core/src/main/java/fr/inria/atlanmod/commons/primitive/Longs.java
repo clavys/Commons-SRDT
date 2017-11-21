@@ -61,7 +61,7 @@ public final class Longs {
      */
     @Nonnull
     public static byte[] toBytes(final Long value) {
-        checkNotNull(value);
+        checkNotNull(value, "value");
 
         return toBytes(value.longValue());
     }

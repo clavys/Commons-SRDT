@@ -40,9 +40,9 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> open(C lower, C upper) {
-        checkNotNull(lower);
-        checkNotNull(upper);
-        checkArgument(lower.compareTo(upper) <= 0);
+        checkNotNull(lower, "lower");
+        checkNotNull(upper, "upper");
+        checkArgument(lower.compareTo(upper) <= 0, "upper (%d) must not be less than lower (%d)", upper, lower);
         return v -> v.compareTo(lower) > 0 && v.compareTo(upper) < 0;
     }
 
@@ -61,9 +61,9 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> closed(C lower, C upper) {
-        checkNotNull(lower);
-        checkNotNull(upper);
-        checkArgument(lower.compareTo(upper) <= 0);
+        checkNotNull(lower, "lower");
+        checkNotNull(upper, "upper");
+        checkArgument(lower.compareTo(upper) <= 0, "upper (%d) must not be less than lower (%d)", upper, lower);
         return v -> v.compareTo(lower) >= 0 && v.compareTo(upper) <= 0;
     }
 
@@ -82,9 +82,9 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> openClosed(C lower, C upper) {
-        checkNotNull(lower);
-        checkNotNull(upper);
-        checkArgument(lower.compareTo(upper) <= 0);
+        checkNotNull(lower, "lower");
+        checkNotNull(upper, "upper");
+        checkArgument(lower.compareTo(upper) <= 0, "upper (%d) must not be less than lower (%d)", upper, lower);
         return v -> v.compareTo(lower) > 0 && v.compareTo(upper) <= 0;
     }
 
@@ -103,9 +103,9 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> closedOpen(C lower, C upper) {
-        checkNotNull(lower);
-        checkNotNull(upper);
-        checkArgument(lower.compareTo(upper) <= 0);
+        checkNotNull(lower, "lower");
+        checkNotNull(upper, "upper");
+        checkArgument(lower.compareTo(upper) <= 0, "upper (%d) must not be less than lower (%d)", upper, lower);
         return v -> v.compareTo(lower) >= 0 && v.compareTo(upper) < 0;
     }
 
@@ -137,7 +137,7 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> atLeast(C lower) {
-        checkNotNull(lower);
+        checkNotNull(lower, "lower");
         return v -> v.compareTo(lower) >= 0;
     }
 
@@ -153,7 +153,7 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> atMost(C upper) {
-        checkNotNull(upper);
+        checkNotNull(upper, "upper");
         return v -> v.compareTo(upper) <= 0;
     }
 
@@ -169,7 +169,7 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> greaterThan(C lower) {
-        checkNotNull(lower);
+        checkNotNull(lower, "lower");
         return v -> v.compareTo(lower) > 0;
     }
 
@@ -185,7 +185,7 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> lessThan(C upper) {
-        checkNotNull(upper);
+        checkNotNull(upper, "upper");
         return v -> v.compareTo(upper) < 0;
     }
 
@@ -233,8 +233,8 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> and(Range<C> r1, Range<C> r2) {
-        checkNotNull(r1);
-        checkNotNull(r2);
+        checkNotNull(r1, "r1");
+        checkNotNull(r2, "r2");
         return v -> Boolean.logicalAnd(r1.contains(v), r2.contains(v));
     }
 
@@ -252,8 +252,8 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> or(Range<C> r1, Range<C> r2) {
-        checkNotNull(r1);
-        checkNotNull(r2);
+        checkNotNull(r1, "r1");
+        checkNotNull(r2, "r2");
         return v -> Boolean.logicalOr(r1.contains(v), r2.contains(v));
     }
 
@@ -271,8 +271,8 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> xor(Range<C> r1, Range<C> r2) {
-        checkNotNull(r1);
-        checkNotNull(r2);
+        checkNotNull(r1, "r1");
+        checkNotNull(r2, "r2");
         return v -> Boolean.logicalXor(r1.contains(v), r2.contains(v));
     }
 
@@ -298,7 +298,7 @@ public interface Range<C extends Comparable<C>> {
      * @see #contains(Comparable)
      */
     default boolean containsAll(Iterable<? extends C> values) {
-        checkNotNull(values);
+        checkNotNull(values, "values");
         return MoreIterables.stream(values).allMatch(this::contains);
     }
 }
