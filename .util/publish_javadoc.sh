@@ -27,7 +27,7 @@ else
 
     echo -e "Copying Javadoc..."
 
-    cp -Rfv target/site/apidocs/ ~/doc/
+    cp -Rfv target/site/apidocs/* ~/doc/
 
     if ! [ -d ~/gh-pages ]; then
         echo -e "Cloning 'gh-pages' branch..."
@@ -46,10 +46,10 @@ else
     if [ -d ~/gh-pages/releases/snapshot/doc ]; then
         echo -e "Cleaning existing artifacts..."
 
-        git rm -rf ~/gh-pages/releases/snapshot/doc/*
+        rm -rf ~/gh-pages/releases/snapshot/doc/
     fi
 
-    cp -Rfv ~/doc/ ~/gh-pages/releases/snapshot/doc/
+    cp -Rfv ~/doc/* ~/gh-pages/releases/snapshot/doc/
 
     git add -Af
 
@@ -62,8 +62,8 @@ else
 
     echo -e "Publishing Javadoc..."
 
-    git -C ~/gh-pages commit --quiet -m "[auto] update the Javadoc from Travis #${TRAVIS_BUILD_NUMBER}"
-    git -C ~/gh-pages push --quiet -f origin gh-pages
+    git -C ~/gh-pages commit -m "[auto] update the Javadoc from Travis #${TRAVIS_BUILD_NUMBER}"
+    git -C ~/gh-pages push -f origin gh-pages
 
     echo -e "Javadoc published."
 fi
