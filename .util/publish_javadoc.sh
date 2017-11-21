@@ -7,7 +7,7 @@ OS="linux"
 
 API_DIR="doc"
 ROOT_API_DIR="releases/snapshot"
-TEMP_DIR="${HOME}/$API_DIR"
+TEMP_DIR="$HOME/$API_DIR"
 
 if [ "$TRAVIS_REPO_SLUG" != "$SLUG" ]; then
   echo "Skipping Javadoc publication: wrong repository. Expected '$SLUG' but was '$TRAVIS_REPO_SLUG'."
@@ -31,9 +31,10 @@ else
 
     echo -e "Copying Javadoc..."
 
-    mkdir -p ${TEMP_DIR}
     cp -rf target/site/apidocs ${TEMP_DIR}
-    cd ${HOME}
+    cd $HOME
+
+    ls
 
     if ! [ -d "gh-pages" ]; then
         echo -e "Cloning 'gh-pages' branch..."
@@ -50,10 +51,13 @@ else
     mkdir -p ${ROOT_API_DIR}
     cd ${ROOT_API_DIR}
 
-    if [ -d "${API_DIR}" ]; then
+    if [ -d "$API_DIR" ]; then
+        echo -e "Cleaning existing artifacts..."
+
         git rm --quiet -rf ${API_DIR}
     fi
 
+    mkdir -p ${API_DIR}
     cp -rf ${TEMP_DIR} ${API_DIR}
 
     git add -Af
