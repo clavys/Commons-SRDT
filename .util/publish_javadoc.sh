@@ -34,8 +34,6 @@ else
     cp -rf target/site/apidocs ${TEMP_DIR}
     cd $HOME
 
-    ls
-
     if ! [ -d "gh-pages" ]; then
         echo -e "Cloning 'gh-pages' branch..."
 
@@ -57,8 +55,10 @@ else
         git rm --quiet -rf ${API_DIR}
     fi
 
-    mkdir -p ${API_DIR}
-    cp -rf ${TEMP_DIR} ${API_DIR}
+    pwd
+    ls -a
+
+    cp -R ${TEMP_DIR} ${API_DIR}
 
     git add -Af
 
