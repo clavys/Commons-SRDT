@@ -27,7 +27,8 @@ else
 
     echo -e "Copying Javadoc..."
 
-    cp -Rfv target/site/apidocs/* ~/doc/
+    cp -Rfvp target/site/apidocs/ ~/doc/
+    cd ~
 
     if ! [ -d ~/gh-pages ]; then
         echo -e "Cloning 'gh-pages' branch..."
@@ -35,21 +36,20 @@ else
         git config --global user.email "travis@travis-ci.org"
         git config --global user.name "travis-ci"
 
-        mkdir ~/gh-pages
-        git -C ~/ clone --branch=gh-pages https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG} gh-pages
+        git clone --branch=gh-pages https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG} gh-pages
     fi
 
     echo -e "Merging Javadoc..."
 
-    mkdir -p --verbose ~/gh-pages/releases/snapshot
+    mkdir -p --verbose gh-pages/releases/snapshot
 
-    if [ -d ~/gh-pages/releases/snapshot/doc ]; then
+    if [ -d gh-pages/releases/snapshot/doc ]; then
         echo -e "Cleaning existing artifacts..."
 
-        rm -rf ~/gh-pages/releases/snapshot/doc/
+        git rm -rf gh-pages/releases/snapshot/doc/
     fi
 
-    cp -Rfv ~/doc/* ~/gh-pages/releases/snapshot/doc/
+    cp -Rfvp doc/ gh-pages/releases/snapshot/doc/
 
     git add -Af
 
@@ -62,8 +62,8 @@ else
 
     echo -e "Publishing Javadoc..."
 
-    git -C ~/gh-pages commit -m "[auto] update the Javadoc from Travis #${TRAVIS_BUILD_NUMBER}"
-    git -C ~/gh-pages push -f origin gh-pages
+    git -C gh-pages commit -m "[auto] update the Javadoc from Travis #${TRAVIS_BUILD_NUMBER}"
+    git -C gh-pages push -f origin gh-pages
 
     echo -e "Javadoc published."
 fi
