@@ -7,18 +7,18 @@ OS="linux"
 
 API_DIR="doc"
 ROOT_API_DIR="releases/snapshot"
-TEMP_DIR="$HOME/$API_DIR"
+TEMP_DIR="${HOME}/${API_DIR}"
 
-if [ "$TRAVIS_REPO_SLUG" != "$SLUG" ]; then
-  echo "Skipping Javadoc publication: wrong repository. Expected '$SLUG' but was '$TRAVIS_REPO_SLUG'."
-elif [ "$TRAVIS_JDK_VERSION" != "$JDK" ]; then
-  echo "Skipping Javadoc publication: wrong JDK. Expected '$JDK' but was '$TRAVIS_JDK_VERSION'."
-elif [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+if [ "${TRAVIS_REPO_SLUG}" != "${SLUG}" ]; then
+  echo "Skipping Javadoc publication: wrong repository. Expected '${SLUG}' but was '${TRAVIS_REPO_SLUG}'."
+elif [ "${TRAVIS_JDK_VERSION}" != "${JDK}" ]; then
+  echo "Skipping Javadoc publication: wrong JDK. Expected '${JDK}' but was '${TRAVIS_JDK_VERSION}'."
+elif [ "${TRAVIS_PULL_REQUEST}" != "false" ]; then
   echo "Skipping Javadoc publication: was pull request."
-elif [ "$TRAVIS_BRANCH" != "$BRANCH" ]; then
-  echo "Skipping Javadoc publication: wrong branch. Expected '$BRANCH' but was '$TRAVIS_BRANCH'."
-elif [ "$TRAVIS_OS_NAME" != "$OS" ]; then
-  echo "Skipping Javadoc publication: wrong OS. Expected '$OS' but was '$TRAVIS_OS_NAME'."
+elif [ "${TRAVIS_BRANCH}" != "${BRANCH}" ]; then
+  echo "Skipping Javadoc publication: wrong branch. Expected '${BRANCH}' but was '${TRAVIS_BRANCH}'."
+elif [ "${TRAVIS_OS_NAME}" != "${OS}" ]; then
+  echo "Skipping Javadoc publication: wrong OS. Expected '${OS}' but was '${TRAVIS_OS_NAME}'."
 else
     echo -e "Generating Javadoc..."
 
@@ -31,8 +31,8 @@ else
 
     echo -e "Copying Javadoc..."
 
-    cp -rf target/site/apidocs ${TEMP_DIR}
-    cd $HOME
+    cp -rf target/site/apidocs/ ${TEMP_DIR}
+    cd ${HOME}
 
     if ! [ -d "gh-pages" ]; then
         echo -e "Cloning 'gh-pages' branch..."
@@ -49,20 +49,13 @@ else
     mkdir -p ${ROOT_API_DIR}
     cd ${ROOT_API_DIR}
 
-    if [ -d "$API_DIR" ]; then
+    if [ -d "${API_DIR}" ]; then
         echo -e "Cleaning existing artifacts..."
 
-        git rm --quiet -rf ${API_DIR}
+        git rm --quiet -rf ${API_DIR}/*
     fi
 
-    pwd
-    ls -a
-
-    mkdir ${API_DIR}
-
-    ls -a
-
-    cp -R ${TEMP_DIR} ${API_DIR}
+    cp -R ${TEMP_DIR}/ ${API_DIR}
 
     git add -Af
 
@@ -75,7 +68,7 @@ else
 
     echo -e "Publishing Javadoc..."
 
-    git commit --quiet -m "[auto] update the Javadoc from Travis #$TRAVIS_BUILD_NUMBER"
+    git commit --quiet -m "[auto] update the Javadoc from Travis #${TRAVIS_BUILD_NUMBER}"
     git push --quiet -f origin gh-pages
 
     echo -e "Javadoc published."
