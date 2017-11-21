@@ -9,7 +9,7 @@ API_BRANCH="gh-pages"
 
 INPUT_DIR="target/site/apidocs"
 OUTPUT_DIR="releases/snapshot/doc"
-TEMP_DIR="$HOME/doc"
+TEMP_DIR="$HOME/apidocs"
 
 if [ "$TRAVIS_REPO_SLUG" != "$SLUG" ]; then
   echo "Skipping Javadoc publication: wrong repository. Expected '$SLUG' but was '$TRAVIS_REPO_SLUG'."
@@ -24,17 +24,12 @@ elif [ "$TRAVIS_OS_NAME" != "$OS" ]; then
 else
     echo -e "Generating Javadoc..."
 
-    mvn -B -q javadoc:javadoc javadoc:aggregate -P "deploy-javadoc" &> /dev/null
+    mvn -B -q javadoc:javadoc javadoc:aggregate -DreportOutputDirectory="$HOME" -P "deploy-javadoc" &> /dev/null
 
-    if ! [ -d "$INPUT_DIR" ]; then
+    if ! [ -d "$TEMP_DIR" ]; then
         echo -e "Skipping Javadoc publication: no Javadoc has been generated."
         exit
     fi
-
-    echo -e "Copying Javadoc..."
-
-    mkdir "$TEMP_DIR/"
-    cp -Rf "$INPUT_DIR/*" "$TEMP_DIR/"
 
     cd "$HOME"
 
@@ -55,7 +50,7 @@ else
     fi
 
     mkdir -p "$OUTPUT_DIR"
-    cp -Rf "$TEMP_DIR/*" "$OUTPUT_DIR/"
+    cp -Rfp "$TEMP_DIR/*" "$OUTPUT_DIR/"
 
     git add -Af
 
