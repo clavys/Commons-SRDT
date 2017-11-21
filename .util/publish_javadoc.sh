@@ -7,9 +7,8 @@ OS="linux"
 
 API_BRANCH="gh-pages"
 
-INPUT_DIR="target/site/apidocs"
-OUTPUT_DIR="releases/snapshot/doc"
-TEMP_DIR="$HOME/apidocs"
+API_DIR=releases/snapshot/doc
+TEMP_DIR=${HOME}/apidocs
 
 if [ "$TRAVIS_REPO_SLUG" != "$SLUG" ]; then
   echo "Skipping Javadoc publication: wrong repository. Expected '$SLUG' but was '$TRAVIS_REPO_SLUG'."
@@ -45,12 +44,12 @@ else
 
     cd "$API_BRANCH"
 
-    if [ -d "$OUTPUT_DIR" ]; then
-        git rm --quiet -rf "$OUTPUT_DIR/"
+    if [ -d "$API_DIR" ]; then
+        git rm --quiet -rf "$API_DIR/"
     fi
 
-    mkdir -p "$OUTPUT_DIR"
-    cp -Rfp "$TEMP_DIR/*" "$OUTPUT_DIR/"
+    mkdir -p "$API_DIR"
+    cp -Rfp "$TEMP_DIR/"* "$API_DIR/"
 
     git add -Af
 
