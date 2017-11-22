@@ -7,3 +7,45 @@ Atlanmod Commons
 [![Javadoc](https://img.shields.io/badge/javadoc--blue.svg)](https://atlanmod.github.io/Commons/releases/latest/doc/)
 [![Licence](https://img.shields.io/badge/licence-EPL--2.0-blue.svg)](https://www.eclipse.org/legal/epl-2.0/)
 
+This library is a set of common classes and methods, including:
+-   Lazy objects and references for on-demand loading, and local caching
+-   An asynchronous logger
+-   A wrapper for caching, using [Caffeine][caffeine-home]
+-   A wrapper for hashing, using [Zero-allocation Hashing][zah-home]
+-   A wrapper for serialization, using [FST][fst-home]
+-   Utility classes about primitives, collections, functional interfaces, concurrency, reflection,...
+
+It was created to regroup and share classes, methods and dependencies between the different projects of the Atlanmod team, and was designed to ease updating without interfering with other projects.
+
+Some of methods are inspired by [Guava][guava-home].
+
+## Latest release
+
+The most recent release is Atlanmod Commons 1.0.1, released November 22, 2017.
+-   Javadoc: [neoemf][release-doc]
+
+To add a dependency on this library using Maven, use the following:
+```xml
+<dependencies>
+  <dependency>
+    <groupId>fr.inria.atlanmod.commons</groupId>
+    <artifactId>commons-core</artifactId>
+    <version>1.0.1</version>
+  </dependency>
+</dependencies>
+```
+
+
+## Snapshots
+
+Snapshots are automatically build from the `master` and are available throught Maven using `1.0.2-SNAPSHOT`.
+-   Javadoc: [neoemf][snapshot-doc]
+
+
+[release-doc]: https://atlanmod.github.io/Commons/releases/latest/doc/
+[snapshot-doc]: https://atlanmod.github.io/Commons/releases/snapshot/doc/
+
+[guava-home]: https://github.com/google/guava
+[caffeine-home]: https://github.com/ben-manes/caffeine
+[zah-home]: https://github.com/OpenHFT/Zero-Allocation-Hashing
+[fst-home]: https://github.com/RuedigerMoeller/fast-serialization
