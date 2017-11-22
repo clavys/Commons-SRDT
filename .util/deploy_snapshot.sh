@@ -1,6 +1,5 @@
 #!/bin/bash
 
-SLUG="atlanmod/Commons"
 JDK="oraclejdk8"
 
 TYPE="Maven snapshot"
@@ -24,9 +23,7 @@ skip() {
 
 # Check that the context is valid for deployment
 checkBuildInfo() {
-    if [ "$TRAVIS_REPO_SLUG" != "$SLUG" ]; then
-        skip "Wrong repository. Expected '$SLUG' but was '$TRAVIS_REPO_SLUG'"
-    elif [ "$TRAVIS_JDK_VERSION" != "$JDK" ]; then
+    if [ "$TRAVIS_JDK_VERSION" != "$JDK" ]; then
         skip "Wrong JDK. Expected '$JDK' but was '$TRAVIS_JDK_VERSION'"
     elif [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
         skip "Was pull request"

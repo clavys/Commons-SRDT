@@ -1,10 +1,8 @@
 #!/bin/bash
 
-SLUG="atlanmod/Commons"
 JDK="oraclejdk8"
 
 TYPE="Javadoc"
-TEMP_DIR=${HOME}/apidocs
 
 # Print a message
 e() {
@@ -25,9 +23,7 @@ skip() {
 
 # Check that the context is valid for publication
 checkBuildInfo() {
-    if [ "$TRAVIS_REPO_SLUG" != "$SLUG" ]; then
-        skip "Wrong repository. Expected '$SLUG' but was '$TRAVIS_REPO_SLUG'"
-    elif [ "$TRAVIS_JDK_VERSION" != "$JDK" ]; then
+    if [ "$TRAVIS_JDK_VERSION" != "$JDK" ]; then
         skip "Wrong JDK. Expected '$JDK' but was '$TRAVIS_JDK_VERSION'"
     elif [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
         skip "Was pull request"
@@ -42,10 +38,10 @@ checkBuildInfo() {
 generate() {
     e "Generating $TYPE..."
 
-    mvn -B -q javadoc:javadoc javadoc:aggregate -DreportOutputDirectory="$HOME" -P "deploy-javadoc" &> /dev/null
+    mvn -B -q javadoc:javadoc javadoc:aggregate -DreportOutputDirectory="$(dirname $1)" -P "deploy-javadoc" &> /dev/null
 
     # Check the generation
-    if ! [ -d "$TEMP_DIR" ]; then
+    if ! [ -d "$1" ]; then
         skip "No $TYPE has been generated"
     fi
 }
@@ -65,16 +61,14 @@ cloneBranch() {
 mergeIntoBranch() {
     e "Merging $TYPE..."
 
-    local outputDir=releases/snapshot/doc
-
     # Remove existing artifacts
-    if [ -d "$outputDir" ]; then
-        git rm --quiet -rf "$outputDir/"
+    if [ -d "$2" ]; then
+        git rm --quiet -rf "$2/"
     fi
 
     # Copy new artifacts
-    mkdir -p "$outputDir"
-    cp -Rfp "$TEMP_DIR/"* "$outputDir/"
+    mkdir -p "$2"
+    cp -Rfp "$1/"* "$2/"
 
     git add -Af
 
@@ -97,11 +91,14 @@ publish() {
 }
 
 main() {
+    local tmpDir=${HOME}/apidocs
+
     local branch="gh-pages"
+    local branchOutputDir=releases/snapshot/doc
 
     # Working in the build directory
     checkBuildInfo
-    generate
+    generate ${tmpDir}
 
     # Working in the home directory
     cd "$HOME"
@@ -109,7 +106,7 @@ main() {
 
     # Working in branch directory
     cd "$branch"
-    mergeIntoBranch
+    mergeIntoBranch ${tmpDir} ${branchOutputDir}
     publish ${branch}
 }
 
