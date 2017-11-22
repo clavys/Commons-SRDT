@@ -1,8 +1,13 @@
-## *1.0.1*
+## *1.0.2*
 
 Current SNAPSHOT.
 
--   __\[UPD\]__ Add missing `package-info.java` files
+
+## 1.0.1
+
+*Released on 2017-11-22.*
+
+-   __\[UPD\]__ Update Javadoc and add missing `package-info.java` files
 -   __\[UPD\]__ Add message for `Preconditions` uses
 
 
