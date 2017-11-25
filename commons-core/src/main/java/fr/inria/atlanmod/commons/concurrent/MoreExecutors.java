@@ -97,22 +97,43 @@ public final class MoreExecutors {
         checkNotNull(unit, "unit");
         checkArgument(timeout >= 0, "timeout (%d) must not be negative", timeout);
 
-        MoreThreads.executeAtExit(() -> {
-            try {
-                service.shutdown();
-
-                if (service.awaitTermination(timeout, unit)) {
-                    List<? extends Runnable> runnables = service.shutdownNow();
-
-                    if (executeUnfinished) {
-                        runnables.forEach(Runnable::run);
-                    }
-                }
-            }
-            catch (InterruptedException ignored) {
-            }
-        });
+        MoreThreads.executeAtExit(() -> shutdownAtExit(service, timeout, unit, executeUnfinished));
 
         return service;
+    }
+
+    /**
+     * Cleanly closes the {@code service}.
+     *
+     * @param service           the service to close
+     * @param timeout           the maximum time to wait
+     * @param unit              the time unit of the timeout argument
+     * @param executeUnfinished {@code true} if the remaining tasks must be executed synchronously if they have not
+     *                          completed their execution after the shutdown request
+     *
+     * @throws NullPointerException     if any argument is {@code null}
+     * @throws IllegalArgumentException if {@code timeout < 0}
+     * @see ExecutorService#shutdown()
+     * @see ExecutorService#awaitTermination(long, TimeUnit)
+     * @see ExecutorService#shutdownNow()
+     */
+    public static void shutdown(ExecutorService service, long timeout, TimeUnit unit, boolean executeUnfinished) {
+        checkNotNull(service, "service");
+        checkNotNull(unit, "unit");
+        checkArgument(timeout >= 0, "timeout (%d) must not be negative", timeout);
+
+        try {
+            service.shutdown();
+
+            if (service.awaitTermination(timeout, unit)) {
+                List<? extends Runnable> runnables = service.shutdownNow();
+
+                if (executeUnfinished) {
+                    runnables.forEach(Runnable::run);
+                }
+            }
+        }
+        catch (InterruptedException ignored) {
+        }
     }
 }
