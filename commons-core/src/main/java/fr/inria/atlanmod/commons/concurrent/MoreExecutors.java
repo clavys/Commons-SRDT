@@ -97,7 +97,7 @@ public final class MoreExecutors {
         checkNotNull(unit, "unit");
         checkArgument(timeout >= 0, "timeout (%d) must not be negative", timeout);
 
-        MoreThreads.executeAtExit(() -> shutdownAtExit(service, timeout, unit, executeUnfinished));
+        MoreThreads.executeAtExit(() -> shutdown(service, timeout, unit, executeUnfinished));
 
         return service;
     }
