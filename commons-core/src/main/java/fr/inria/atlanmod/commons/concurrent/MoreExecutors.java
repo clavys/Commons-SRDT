@@ -122,6 +122,10 @@ public final class MoreExecutors {
         checkNotNull(unit, "unit");
         checkArgument(timeout >= 0, "timeout (%d) must not be negative", timeout);
 
+        if (service.isShutdown() || service.isTerminated()) {
+            return;
+        }
+
         try {
             service.shutdown();
 
