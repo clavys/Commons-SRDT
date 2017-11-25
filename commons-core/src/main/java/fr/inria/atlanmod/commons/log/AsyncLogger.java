@@ -16,12 +16,15 @@ import java.text.MessageFormat;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
+
+import static java.util.Objects.nonNull;
 
 /**
  * A {@link Logger} that asynchronously invokes logging operations, respecting the order of invocation.
@@ -68,15 +71,22 @@ class AsyncLogger implements Logger {
             return;
         }
 
+        final Function<String, String> formatFunc = m ->
+                nonNull(params) && params.length > 0
+                        ? MessageFormat.format(m, params)
+                        : m;
+
         execute(() -> {
             try {
                 String formattedMessage = Optional.ofNullable(message)
-                        .map(m -> MessageFormat.format(m.toString(), params))
+                        .map(CharSequence::toString)
+                        .map(formatFunc)
                         .orElse(null);
 
                 level.logFunction().accept(logger, formattedMessage, e);
             }
-            catch (Exception ignored) {
+            catch (Exception fe) {
+                Log.error(fe);
             }
         });
     }
