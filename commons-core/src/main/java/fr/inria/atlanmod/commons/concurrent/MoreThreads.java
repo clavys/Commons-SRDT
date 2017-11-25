@@ -13,11 +13,14 @@ import fr.inria.atlanmod.commons.annotation.Static;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
+import static java.util.Objects.nonNull;
 
 /**
  * Static utility methods related to {@link Thread} instances.
@@ -33,7 +36,7 @@ public final class MoreThreads {
      * @see #executeAtExit(Runnable)
      */
     @Nonnull
-    private static final ThreadFactory DEFAULT_THREAD_FACTORY = newThreadFactory();
+    private static final ThreadFactory DEFAULT_THREAD_FACTORY = newThreadFactory("shutdown-hook-manager");
 
     /**
      * This class should not be instantiated.
@@ -49,13 +52,34 @@ public final class MoreThreads {
      *
      * @return a new thread factory
      *
-     * @see Executors#defaultThreadFactory()
+     * @see #newThreadFactory(String)
      */
     @Nonnull
     public static ThreadFactory newThreadFactory() {
+        return newThreadFactory(null);
+    }
+
+    /**
+     * Creates a new {@link ThreadFactory} that creates daemon threads with a defined prefixed name.
+     *
+     * @param prefix the prefix of the name of created threads; if {@code null} the default name will be used
+     *
+     * @return a new thread factory
+     *
+     * @see Executors#defaultThreadFactory()
+     */
+    @Nonnull
+    public static ThreadFactory newThreadFactory(@Nullable String prefix) {
+        final AtomicInteger threadCount = new AtomicInteger(1);
+
         return task -> {
             Thread thread = Executors.defaultThreadFactory().newThread(task);
             thread.setDaemon(true);
+
+            if (nonNull(prefix)) {
+                thread.setName(prefix + "-" + threadCount.getAndIncrement());
+            }
+
             return thread;
         };
     }

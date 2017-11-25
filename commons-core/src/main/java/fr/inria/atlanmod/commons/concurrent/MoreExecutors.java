@@ -16,6 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import static fr.inria.atlanmod.commons.Preconditions.checkArgument;
@@ -38,23 +39,17 @@ public final class MoreExecutors {
     }
 
     /**
-     * Creates a new {@link ExecutorService} using {@code nThreads} processors, that will be closed when the application
-     * will exit.
-     *
-     * @param nThreads the number of threads in the pool
+     * Creates a new {@link ExecutorService} using the maximum {@link Runtime#availableProcessors() available
+     * processors}, that will be closed when the application will exit.
      *
      * @return a new immutable service
      *
      * @throws IllegalArgumentException if {@code nThreads <= 0}
-     * @see Executors#newFixedThreadPool(int)
-     * @see MoreThreads#newThreadFactory()
-     * @see #shutdownAtExit(ExecutorService, long, TimeUnit, boolean)
+     * @see #newFixedThreadPool(int)
      */
     @Nonnull
-    public static ExecutorService newFixedThreadPool(int nThreads) {
-        ExecutorService service = Executors.newFixedThreadPool(nThreads, MoreThreads.newThreadFactory());
-        service = Executors.unconfigurableExecutorService(service);
-        return shutdownAtExit(service, 100, TimeUnit.MILLISECONDS, true);
+    public static ExecutorService newFixedThreadPool() {
+        return newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     }
 
     /**
@@ -64,42 +59,48 @@ public final class MoreExecutors {
      * @return a new immutable service
      *
      * @throws IllegalArgumentException if {@code nThreads <= 0}
+     * @see #newFixedThreadPool(int)
+     */
+    @Nonnull
+    public static ExecutorService newFixedThreadPool(String name) {
+        return newFixedThreadPool(Runtime.getRuntime().availableProcessors(), name);
+    }
+
+    /**
+     * Creates a new {@link ExecutorService} using {@code nThreads} processors, that will be closed when the application
+     * will exit.
+     *
+     * @param nThreads the number of threads in the pool
+     *
+     * @return a new immutable service
+     *
+     * @throws IllegalArgumentException if {@code nThreads <= 0}
+     * @see #newFixedThreadPool(int, String)
+     */
+    @Nonnull
+    public static ExecutorService newFixedThreadPool(int nThreads) {
+        return newFixedThreadPool(nThreads, null);
+    }
+
+    /**
+     * Creates a new {@link ExecutorService} using {@code nThreads} processors, that will be closed when the application
+     * will exit.
+     *
+     * @param nThreads the number of threads in the pool
+     * @param name     the name of the pool
+     *
+     * @return a new immutable service
+     *
+     * @throws IllegalArgumentException if {@code nThreads <= 0}
      * @see Executors#newFixedThreadPool(int)
-     * @see Runtime#availableProcessors()
      * @see MoreThreads#newThreadFactory()
      * @see #shutdownAtExit(ExecutorService, long, TimeUnit, boolean)
      */
     @Nonnull
-    public static ExecutorService newFixedThreadPool() {
-        return newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-    }
-
-    /**
-     * Adds a shutdown hook to cleanly closes the {@code service} when the application will exit.
-     *
-     * @param service           the service to close
-     * @param timeout           the maximum time to wait
-     * @param unit              the time unit of the timeout argument
-     * @param executeUnfinished {@code true} if the remaining tasks must be executed synchronously if they have not
-     *                          completed their execution after the shutdown request
-     *
-     * @return the {@code service}
-     *
-     * @throws NullPointerException     if any argument is {@code null}
-     * @throws IllegalArgumentException if {@code timeout < 0}
-     * @see ExecutorService#shutdown()
-     * @see ExecutorService#awaitTermination(long, TimeUnit)
-     * @see ExecutorService#shutdownNow()
-     */
-    @Nonnull
-    public static ExecutorService shutdownAtExit(ExecutorService service, long timeout, TimeUnit unit, boolean executeUnfinished) {
-        checkNotNull(service, "service");
-        checkNotNull(unit, "unit");
-        checkArgument(timeout >= 0, "timeout (%d) must not be negative", timeout);
-
-        MoreThreads.executeAtExit(() -> shutdown(service, timeout, unit, executeUnfinished));
-
-        return service;
+    public static ExecutorService newFixedThreadPool(int nThreads, @Nullable String name) {
+        ExecutorService service = Executors.newFixedThreadPool(nThreads, MoreThreads.newThreadFactory(name));
+        service = Executors.unconfigurableExecutorService(service);
+        return shutdownAtExit(service, 100, TimeUnit.MILLISECONDS, true);
     }
 
     /**
@@ -139,5 +140,33 @@ public final class MoreExecutors {
         }
         catch (InterruptedException ignored) {
         }
+    }
+
+    /**
+     * Adds a shutdown hook to cleanly closes the {@code service} when the application will exit.
+     *
+     * @param service           the service to close
+     * @param timeout           the maximum time to wait
+     * @param unit              the time unit of the timeout argument
+     * @param executeUnfinished {@code true} if the remaining tasks must be executed synchronously if they have not
+     *                          completed their execution after the shutdown request
+     *
+     * @return the {@code service}
+     *
+     * @throws NullPointerException     if any argument is {@code null}
+     * @throws IllegalArgumentException if {@code timeout < 0}
+     * @see ExecutorService#shutdown()
+     * @see ExecutorService#awaitTermination(long, TimeUnit)
+     * @see ExecutorService#shutdownNow()
+     */
+    @Nonnull
+    public static ExecutorService shutdownAtExit(ExecutorService service, long timeout, TimeUnit unit, boolean executeUnfinished) {
+        checkNotNull(service, "service");
+        checkNotNull(unit, "unit");
+        checkArgument(timeout >= 0, "timeout (%d) must not be negative", timeout);
+
+        MoreThreads.executeAtExit(() -> shutdown(service, timeout, unit, executeUnfinished));
+
+        return service;
     }
 }
