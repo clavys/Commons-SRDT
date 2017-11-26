@@ -9,14 +9,16 @@
 package fr.inria.atlanmod.commons.extension;
 
 import fr.inria.atlanmod.commons.Timeout;
+import fr.inria.atlanmod.commons.log.Log;
 
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-import java.util.OptionalInt;
+import java.util.OptionalLong;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -48,8 +50,10 @@ public final class TimeoutExtension implements BeforeEachCallback, AfterEachCall
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    // TODO JUnit5 does not support yet the call interception
-                    throw new AssertionError(String.format("Timeout exceeded: %d", timeout));
+                    String msg = String.format("timeout exceeded: %d ms", timeout);
+
+                    // TODO Replace logging: JUnit5 does not support yet the call interception
+                    Log.error(msg);
                 }
             }, timeout);
         });
@@ -63,9 +67,16 @@ public final class TimeoutExtension implements BeforeEachCallback, AfterEachCall
         }
     }
 
+    /**
+     * Retrieves the defined timeout from the given {@code context}.
+     *
+     * @param context the execution context
+     *
+     * @return the timeout in ms, wrapped in an {@link OptionalLong}
+     */
     @Nonnull
     @Nonnegative
-    private OptionalInt getTimeout(ExtensionContext context) {
+    private OptionalLong getTimeout(ExtensionContext context) {
         Timeout annotation = null;
 
         if (context.getRequiredTestMethod().isAnnotationPresent(Timeout.class)) {
@@ -76,11 +87,12 @@ public final class TimeoutExtension implements BeforeEachCallback, AfterEachCall
         }
 
         if (nonNull(annotation)) {
-            int timeout = annotation.timeout();
+            long timeout = annotation.timeout();
+            TimeUnit unit = annotation.unit();
             checkArgument(timeout >= 0, "timeout (%d) must not be negative", timeout);
-            return OptionalInt.of(timeout);
+            return OptionalLong.of(unit.toMillis(timeout));
         }
 
-        return OptionalInt.empty();
+        return OptionalLong.empty();
     }
 }

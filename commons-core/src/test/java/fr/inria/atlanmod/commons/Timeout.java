@@ -13,6 +13,7 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.concurrent.TimeUnit;
 
 @Inherited
 @Target({ElementType.TYPE, ElementType.METHOD})
@@ -20,9 +21,16 @@ import java.lang.annotation.Target;
 public @interface Timeout {
 
     /**
-     * The maximum execution time for the annotated element, in ms.
+     * The maximum execution time for the annotated element.
      *
      * @return the maximum execution time
      */
-    int timeout() default 60000;
+    long timeout() default 1L;
+
+    /**
+     * The time unit of the timeout.
+     *
+     * @return the time unit
+     */
+    TimeUnit unit() default TimeUnit.MINUTES;
 }

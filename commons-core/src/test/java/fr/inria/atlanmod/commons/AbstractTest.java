@@ -9,6 +9,7 @@
 package fr.inria.atlanmod.commons;
 
 import fr.inria.atlanmod.commons.extension.LoggingWithMemoryExtension;
+import fr.inria.atlanmod.commons.extension.TimeoutExtension;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -18,6 +19,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * An abstract test-case that manages the logger.
  */
 @ExtendWith(LoggingWithMemoryExtension.class)
+@ExtendWith(TimeoutExtension.class)
 @ParametersAreNonnullByDefault
 public abstract class AbstractTest {
 }
