@@ -11,6 +11,7 @@ package fr.inria.atlanmod.commons.concurrent;
 import fr.inria.atlanmod.commons.annotation.Static;
 import fr.inria.atlanmod.commons.log.Log;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -119,30 +120,50 @@ public final class MoreExecutors {
      * @see ExecutorService#shutdownNow()
      */
     public static void shutdown(ExecutorService service, long timeout, TimeUnit unit, boolean executeUnstarted) {
+        List<Runnable> unstartedTasks = shutdown(service, timeout, unit);
+
+        if (executeUnstarted) {
+            unstartedTasks.forEach(Runnable::run);
+        }
+        else if (!unstartedTasks.isEmpty()) {
+            Log.warn("{0} pending execution(s) will not be executed", unstartedTasks.size());
+        }
+    }
+
+    /**
+     * Cleanly closes the {@code service}.
+     *
+     * @param service the service to close
+     * @param timeout the maximum time to wait
+     * @param unit    the time unit of the timeout argument
+     *
+     * @return a list of remaining tasks that never commenced execution
+     *
+     * @throws NullPointerException     if any argument is {@code null}
+     * @throws IllegalArgumentException if {@code timeout < 0}
+     * @see ExecutorService#shutdown()
+     * @see ExecutorService#awaitTermination(long, TimeUnit)
+     * @see ExecutorService#shutdownNow()
+     */
+    @Nonnull
+    public static List<Runnable> shutdown(ExecutorService service, long timeout, TimeUnit unit) {
         checkNotNull(service, "service");
         checkNotNull(unit, "unit");
         checkArgument(timeout >= 0, "timeout (%d) must not be negative", timeout);
 
-        if (service.isShutdown() || service.isTerminated()) {
-            return;
-        }
+        if (!service.isShutdown() && !service.isTerminated()) {
+            try {
+                service.shutdown();
 
-        try {
-            service.shutdown();
-
-            if (service.awaitTermination(timeout, unit)) {
-                List<? extends Runnable> runnables = service.shutdownNow();
-
-                if (executeUnstarted) {
-                    runnables.forEach(Runnable::run);
-                }
-                else if (!runnables.isEmpty()) {
-                    Log.warn("{0} pending execution(s) will not be executed", runnables.size());
+                if (service.awaitTermination(timeout, unit)) {
+                    return service.shutdownNow();
                 }
             }
+            catch (InterruptedException ignored) {
+            }
         }
-        catch (InterruptedException ignored) {
-        }
+
+        return Collections.emptyList();
     }
 
     /**
