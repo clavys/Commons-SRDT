@@ -54,8 +54,8 @@ public class SizedIterator<E> implements Iterator<E> {
         checkNotNull(mappingFunction);
         checkArgument(size >= 0, "size (%d) must not be negative");
 
-        this.mappingFunction = mappingFunction;
         this.size = size;
+        this.mappingFunction = mappingFunction;
     }
 
     @Override
