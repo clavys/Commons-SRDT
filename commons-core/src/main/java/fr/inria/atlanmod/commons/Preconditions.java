@@ -10,6 +10,8 @@ package fr.inria.atlanmod.commons;
 
 import fr.inria.atlanmod.commons.annotation.Static;
 
+import java.util.Collection;
+
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -131,7 +133,7 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that an object reference passed as a parameter to the calling method is not null.
+     * Ensures that an object {@code reference} passed as a parameter to the calling method is not {@code null}.
      *
      * @param reference an object reference
      *
@@ -148,7 +150,7 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that an object reference passed as a parameter to the calling method is not null.
+     * Ensures that an object {@code reference} passed as a parameter to the calling method is not {@code null}.
      *
      * @param reference an object reference
      * @param message   the exception message to use if the check fails
@@ -166,7 +168,7 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that an object reference passed as a parameter to the calling method is not null.
+     * Ensures that an object {@code reference} passed as a parameter to the calling method is not {@code null}.
      *
      * @param reference an object reference
      * @param pattern   a template for the exception message should the check fail
@@ -186,6 +188,25 @@ public final class Preconditions {
     }
 
     /**
+     * Ensures that a {@code collection} passed as a parameter to the calling method is not {@code null} and does not contains any {@code null} element.
+     *
+     * @param collection a collection
+
+     * @return the non-null collection that was validated
+     *
+     * @throws NullPointerException if {@code collection} is null or contains at least one {@code null} element
+     */
+    @Nonnull
+    public static <C extends Collection<? extends T>, T> C checkNotContainsNull(C collection) {
+        checkNotNull(collection, "collection");
+
+        if (collection.contains(null)) {
+            throw new NullPointerException("the collection contains at least one null element");
+        }
+        return collection;
+    }
+
+    /**
      * Ensures that {@code index} specifies a valid <i>element</i> in an array, list or string of {@code size}. An
      * element index may range from zero, inclusive, to {@code size}, exclusive.
      *
@@ -198,7 +219,7 @@ public final class Preconditions {
      * @throws IllegalArgumentException  if {@code size} is negative
      */
     @Nonnegative
-    public static int checkElementIndex(@Nonnegative int index, @Nonnegative int size) {
+    public static boolean checkElementIndex(@Nonnegative int index, @Nonnegative int size) {
         if (index < 0) {
             throw new IndexOutOfBoundsException(format("index (%d) must not be negative", index));
         }
@@ -208,7 +229,7 @@ public final class Preconditions {
         else if (index >= size) {
             throw new IndexOutOfBoundsException(format("index (%d) must be less than size (%d)", index, size));
         }
-        return index;
+        return true;
     }
 
     /**
@@ -224,7 +245,7 @@ public final class Preconditions {
      * @throws IllegalArgumentException  if {@code size} is negative
      */
     @Nonnegative
-    public static int checkPositionIndex(@Nonnegative int index, @Nonnegative int size) {
+    public static boolean checkPositionIndex(@Nonnegative int index, @Nonnegative int size) {
         if (index < 0) {
             throw new IndexOutOfBoundsException(format("index (%d) must not be negative", index));
         }
@@ -234,7 +255,7 @@ public final class Preconditions {
         else if (index > size) {
             throw new IndexOutOfBoundsException(format("index (%d) must not be greater than size (%d)", index, size));
         }
-        return index;
+        return true;
     }
 
     /**
