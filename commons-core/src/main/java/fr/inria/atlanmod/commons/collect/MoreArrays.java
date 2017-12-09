@@ -68,6 +68,30 @@ public final class MoreArrays {
     }
 
     /**
+     * Sets the specified {@code element} at the {@code index} in the {@code array}.
+     * <p>
+     * This method is similar to:
+     * <pre>{@code
+     * array[index] = value;
+     * return array;
+     * }</pre>
+     *
+     * @param array the array to set the element to
+     * @param index the position of the object
+     * @param value the object to set
+     * @param <T>   the component type of the array
+     *
+     * @return the {@code array} containing the existing elements and the new element
+     */
+    @Nonnull
+    public static <T> T[] set(T[] array, @Nonnegative int index, @Nullable T value) {
+        checkNotNull(array, "array");
+
+        array[index] = value;
+        return array;
+    }
+
+    /**
      * Resizes the {@code array} with the given {@code length}.
      *
      * @param array  the array to resize
@@ -147,6 +171,7 @@ public final class MoreArrays {
      *
      * @throws NullPointerException if any argument is {@code null}
      */
+    @Nonnull
     public static <T> T[] addAll(T[] array, int index, Collection<? extends T> elements) {
         checkNotNull(array, "array");
         checkNotNull(elements, "elements");
