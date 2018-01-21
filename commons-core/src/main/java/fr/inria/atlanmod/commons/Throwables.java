@@ -63,4 +63,16 @@ public final class Throwables {
             }
         }
     }
+
+    /**
+     * Returns a new {@link RuntimeException} thrown when a method is not implemented yet.
+     *
+     * @param methodName the name of the not implemented method
+     *
+     * @return a new runtime exception
+     */
+    @Nonnull
+    public static RuntimeException notImplementedYet(String methodName) {
+        return new UnsupportedOperationException(String.format("Not implemented yet: %s", methodName));
+    }
 }
