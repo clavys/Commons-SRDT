@@ -88,9 +88,10 @@
 
         <javax-annotations.version>3.0.2</javax-annotations.version>
 
-        <assertj.version>3.8.0</assertj.version>
-        <junit.version>5.0.2</junit.version>
-        <mockito.version>2.12.0</mockito.version>
+        <assertj.version>3.9.0</assertj.version>
+        <mockito.version>2.13.0</mockito.version>
+        <junit.version>5.0.3</junit.version>
+        <junit-surefire.version>1.0.3</junit-surefire.version>
     </properties>
 
     <dependencies>
@@ -326,7 +327,7 @@
                         <dependency>
                             <groupId>org.junit.platform</groupId>
                             <artifactId>junit-platform-surefire-provider</artifactId>
-                            <version>1.0.2</version>
+                            <version>${junit-surefire.version}</version>
                         </dependency>
                         <dependency>
                             <groupId>org.junit.jupiter</groupId>

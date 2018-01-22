@@ -16,9 +16,9 @@
     <description>A library of classes and methods common to all Atlanmod projects</description>
 
     <properties>
-        <caffeine.version>2.6.0</caffeine.version>
+        <caffeine.version>2.6.1</caffeine.version>
         <zah.version>0.8</zah.version>
-        <fst.version>2.56</fst.version>
+        <fst.version>2.57</fst.version>
         <slf4j.version>1.7.25</slf4j.version>
     </properties>
 
