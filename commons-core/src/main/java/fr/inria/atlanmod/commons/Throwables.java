@@ -72,6 +72,8 @@ public final class Throwables {
      * @param type the non-instantiable class
      *
      * @return a new runtime exception
+     *
+     * @see Static
      */
     @Nonnull
     public static RuntimeException notInstantiableClass(Class<?> type) {
