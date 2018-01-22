@@ -8,6 +8,7 @@
 
 package fr.inria.atlanmod.commons.primitive;
 
+import fr.inria.atlanmod.commons.Throwables;
 import fr.inria.atlanmod.commons.annotation.Static;
 
 import java.nio.charset.StandardCharsets;
@@ -50,13 +51,8 @@ public final class Strings {
     @Nonnull
     private static final Predicate<String> IS_BINARY = Pattern.compile("^[0-9a-f]+$", Pattern.CASE_INSENSITIVE).asPredicate();
 
-    /**
-     * This class should not be instantiated.
-     *
-     * @throws IllegalStateException every time
-     */
     private Strings() {
-        throw new IllegalStateException("This class should not be instantiated");
+        throw Throwables.notInstantiableClass(getClass());
     }
 
     /**

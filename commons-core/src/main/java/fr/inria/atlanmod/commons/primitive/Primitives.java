@@ -8,6 +8,8 @@
 
 package fr.inria.atlanmod.commons.primitive;
 
+import fr.inria.atlanmod.commons.Throwables;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,13 +38,8 @@ public final class Primitives {
         PRIMITIVE_TYPES.add(Void.class);
     }
 
-    /**
-     * This class should not be instantiated.
-     *
-     * @throws IllegalStateException every time
-     */
     private Primitives() {
-        throw new IllegalStateException("This class should not be instantiated");
+        throw Throwables.notInstantiableClass(getClass());
     }
 
     /**

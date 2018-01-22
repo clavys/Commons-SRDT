@@ -8,6 +8,7 @@
 
 package fr.inria.atlanmod.commons.collect;
 
+import fr.inria.atlanmod.commons.Throwables;
 import fr.inria.atlanmod.commons.annotation.Static;
 
 import java.util.Collection;
@@ -29,13 +30,8 @@ import static java.util.Objects.isNull;
 @ParametersAreNonnullByDefault
 public final class MoreIterables {
 
-    /**
-     * This class should not be instantiated.
-     *
-     * @throws IllegalStateException every time
-     */
     private MoreIterables() {
-        throw new IllegalStateException("This class should not be instantiated");
+        throw Throwables.notInstantiableClass(getClass());
     }
 
     /**

@@ -8,6 +8,7 @@
 
 package fr.inria.atlanmod.commons.collect;
 
+import fr.inria.atlanmod.commons.Throwables;
 import fr.inria.atlanmod.commons.annotation.Static;
 
 import java.lang.reflect.Array;
@@ -35,13 +36,8 @@ public final class MoreArrays {
      */
     public static final int NO_INDEX = -1;
 
-    /**
-     * This class should not be instantiated.
-     *
-     * @throws IllegalStateException every time
-     */
     private MoreArrays() {
-        throw new IllegalStateException("This class should not be instantiated");
+        throw Throwables.notInstantiableClass(getClass());
     }
 
     /**

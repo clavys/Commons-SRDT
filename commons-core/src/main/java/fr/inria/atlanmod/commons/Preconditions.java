@@ -34,13 +34,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public final class Preconditions {
 
-    /**
-     * This class should not be instantiated.
-     *
-     * @throws IllegalStateException every time
-     */
     private Preconditions() {
-        throw new IllegalStateException("This class should not be instantiated");
+        throw Throwables.notInstantiableClass(getClass());
     }
 
     /**
@@ -218,7 +213,6 @@ public final class Preconditions {
      * @throws IndexOutOfBoundsException if {@code index} is negative or is not less than {@code size}
      * @throws IllegalArgumentException  if {@code size} is negative
      */
-    @Nonnegative
     public static boolean checkElementIndex(@Nonnegative int index, @Nonnegative int size) {
         if (index < 0) {
             throw new IndexOutOfBoundsException(format("index (%d) must not be negative", index));
@@ -244,7 +238,6 @@ public final class Preconditions {
      * @throws IndexOutOfBoundsException if {@code index} is negative or is greater than {@code size}
      * @throws IllegalArgumentException  if {@code size} is negative
      */
-    @Nonnegative
     public static boolean checkPositionIndex(@Nonnegative int index, @Nonnegative int size) {
         if (index < 0) {
             throw new IndexOutOfBoundsException(format("index (%d) must not be negative", index));

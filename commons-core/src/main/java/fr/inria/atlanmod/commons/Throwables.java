@@ -10,9 +10,6 @@ package fr.inria.atlanmod.commons;
 
 import fr.inria.atlanmod.commons.annotation.Static;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -25,13 +22,8 @@ import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
 @ParametersAreNonnullByDefault
 public final class Throwables {
 
-    /**
-     * This class should not be instantiated.
-     *
-     * @throws IllegalStateException every time
-     */
     private Throwables() {
-        throw new IllegalStateException("This class should not be instantiated");
+        throw notInstantiableClass(getClass());
     }
 
     /**
@@ -50,29 +42,39 @@ public final class Throwables {
         checkNotNull(throwable, "throwable");
         checkNotNull(type, "type");
 
-        if (type.isInstance(throwable)) {
-            return type.cast(throwable);
+        try {
+            Throwable e = type.isInstance(throwable)
+                    ? throwable
+                    : type.newInstance().initCause(throwable);
+
+            return type.cast(e);
         }
-        else {
-            try {
-                Constructor<E> constructor = type.getConstructor(Throwable.class);
-                return constructor.newInstance(throwable);
-            }
-            catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException re) {
-                throw new IllegalStateException(re);
-            }
+        catch (IllegalAccessException | InstantiationException re) {
+            throw new IllegalStateException(re); // Should never happen
         }
     }
 
     /**
-     * Returns a new {@link RuntimeException} thrown when a method is not implemented yet.
+     * Returns a new {@link RuntimeException} thrown when calling a method that is not yet implemented.
      *
-     * @param methodName the name of the not implemented method
+     * @param methodName the name of the method not implemented
      *
      * @return a new runtime exception
      */
     @Nonnull
     public static RuntimeException notImplementedYet(String methodName) {
         return new UnsupportedOperationException(String.format("Not implemented yet: %s", methodName));
+    }
+
+    /**
+     * Returns a new {@link RuntimeException} thrown when calling a constructor of a non-instantiable class.
+     *
+     * @param type the non-instantiable class
+     *
+     * @return a new runtime exception
+     */
+    @Nonnull
+    public static RuntimeException notInstantiableClass(Class<?> type) {
+        return new IllegalStateException(String.format("%s is not instantiable; this constructor should not be called", type.getSimpleName()));
     }
 }

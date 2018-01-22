@@ -8,6 +8,7 @@
 
 package fr.inria.atlanmod.commons.primitive;
 
+import fr.inria.atlanmod.commons.Throwables;
 import fr.inria.atlanmod.commons.annotation.Static;
 
 import java.nio.charset.StandardCharsets;
@@ -43,13 +44,8 @@ public final class Bytes {
      */
     private static final char[] HEX_DIGITS = "0123456789abcdef".toCharArray();
 
-    /**
-     * This class should not be instantiated.
-     *
-     * @throws IllegalStateException every time
-     */
     private Bytes() {
-        throw new IllegalStateException("This class should not be instantiated");
+        throw Throwables.notInstantiableClass(getClass());
     }
 
     /**

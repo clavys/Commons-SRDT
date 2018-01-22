@@ -8,6 +8,7 @@
 
 package fr.inria.atlanmod.commons.concurrent;
 
+import fr.inria.atlanmod.commons.Throwables;
 import fr.inria.atlanmod.commons.annotation.Static;
 
 import java.util.concurrent.ExecutorService;
@@ -38,13 +39,8 @@ public final class MoreThreads {
     @Nonnull
     private static final ThreadFactory DEFAULT_THREAD_FACTORY = newThreadFactory("shutdown-hook-manager");
 
-    /**
-     * This class should not be instantiated.
-     *
-     * @throws IllegalStateException every time
-     */
     private MoreThreads() {
-        throw new IllegalStateException("This class should not be instantiated");
+        throw Throwables.notInstantiableClass(getClass());
     }
 
     /**

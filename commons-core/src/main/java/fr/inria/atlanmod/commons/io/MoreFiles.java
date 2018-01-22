@@ -8,6 +8,7 @@
 
 package fr.inria.atlanmod.commons.io;
 
+import fr.inria.atlanmod.commons.Throwables;
 import fr.inria.atlanmod.commons.annotation.Static;
 import fr.inria.atlanmod.commons.primitive.Strings;
 
@@ -30,13 +31,8 @@ public final class MoreFiles {
      */
     private static final char DOT = '.';
 
-    /**
-     * This class should not be instantiated.
-     *
-     * @throws IllegalStateException every time
-     */
     private MoreFiles() {
-        throw new IllegalStateException("This class should not be instantiated");
+        throw Throwables.notInstantiableClass(getClass());
     }
 
     /**

@@ -8,6 +8,7 @@
 
 package fr.inria.atlanmod.commons.hash;
 
+import fr.inria.atlanmod.commons.Throwables;
 import fr.inria.atlanmod.commons.annotation.Static;
 import fr.inria.atlanmod.commons.annotation.VisibleForTesting;
 
@@ -41,13 +42,8 @@ public final class Hashers {
      */
     private static final String SHA256 = "SHA-256";
 
-    /**
-     * This class should not be instantiated.
-     *
-     * @throws IllegalStateException every time
-     */
     private Hashers() {
-        throw new IllegalStateException("This class should not be instantiated");
+        throw Throwables.notInstantiableClass(getClass());
     }
 
     /**
