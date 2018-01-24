@@ -15,7 +15,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static fr.inria.atlanmod.commons.Preconditions.checkArgument;
+import static fr.inria.atlanmod.commons.Preconditions.checkGreaterThanOrEqualTo;
 import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
 
 /**
@@ -57,7 +57,7 @@ final class CaffeineCacheBuilder<K, V> implements CacheBuilder<K, V> {
     @Nonnull
     @Override
     public CacheBuilder<K, V> maximumSize(@Nonnegative long maximumSize) {
-        checkArgument(maximumSize >= 0, "maximumSize (%d) must not be negative", maximumSize);
+        checkGreaterThanOrEqualTo(maximumSize, 0L, "maximumSize (%d) must not be negative", maximumSize);
 
         builder.maximumSize(maximumSize);
         return this;
@@ -65,7 +65,7 @@ final class CaffeineCacheBuilder<K, V> implements CacheBuilder<K, V> {
 
     @Override
     public <K1 extends K, V1 extends V> CacheBuilder<K, V> maximumWeight(@Nonnegative long maximumWeight, ToIntBiFunction<? super K1, ? extends V1> weigher) {
-        checkArgument(maximumWeight >= 0, "maximumWeight (%d) must not be negative", maximumWeight);
+        checkGreaterThanOrEqualTo(maximumWeight, 0L, "maximumWeight (%d) must not be negative", maximumWeight);
 
         builder.maximumWeight(maximumWeight);
         builder.weigher(weigher::applyAsInt);

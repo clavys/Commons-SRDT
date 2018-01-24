@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static fr.inria.atlanmod.commons.Preconditions.checkArgument;
+import static fr.inria.atlanmod.commons.Preconditions.checkGreaterThanOrEqualTo;
 import static java.util.Objects.nonNull;
 
 /**
@@ -89,7 +89,7 @@ public final class TimeoutExtension implements BeforeEachCallback, AfterEachCall
         if (nonNull(annotation)) {
             long timeout = annotation.timeout();
             TimeUnit unit = annotation.unit();
-            checkArgument(timeout >= 0, "timeout (%d) must not be negative", timeout);
+            checkGreaterThanOrEqualTo(timeout, 0L, "timeout (%d) must not be negative", timeout);
             return OptionalLong.of(unit.toMillis(timeout));
         }
 

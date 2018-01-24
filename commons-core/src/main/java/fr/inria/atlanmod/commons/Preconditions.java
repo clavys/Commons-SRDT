@@ -11,6 +11,7 @@ package fr.inria.atlanmod.commons;
 import fr.inria.atlanmod.commons.annotation.Static;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -32,11 +33,26 @@ import javax.annotation.ParametersAreNonnullByDefault;
  */
 @Static
 @ParametersAreNonnullByDefault
+@SuppressWarnings("ConstantConditions") // Preconditions ensure that these conditions are validated
 public final class Preconditions {
+
+    /**
+     * A string representing a logging without message.
+     */
+    @Nullable
+    private static final String NO_MESSAGE = null;
+
+    /**
+     * An empty array representing logging without parameters.
+     */
+    @Nonnull
+    private static final Object[] NO_PARAMS = new Object[0];
 
     private Preconditions() {
         throw Throwables.notInstantiableClass(getClass());
     }
+
+    // region Argument
 
     /**
      * Ensures the truth of an expression involving one or more parameters to the calling method.
@@ -46,9 +62,7 @@ public final class Preconditions {
      * @throws IllegalArgumentException if {@code expression} is false
      */
     public static void checkArgument(boolean expression) {
-        if (!expression) {
-            throw new IllegalArgumentException();
-        }
+        checkArgument(expression, NO_MESSAGE);
     }
 
     /**
@@ -60,9 +74,7 @@ public final class Preconditions {
      * @throws IllegalArgumentException if {@code expression} is false
      */
     public static void checkArgument(boolean expression, String message) {
-        if (!expression) {
-            throw new IllegalArgumentException(message);
-        }
+        checkArgument(expression, message, NO_PARAMS);
     }
 
     /**
@@ -81,6 +93,10 @@ public final class Preconditions {
         }
     }
 
+    // endregion
+
+    // region State
+
     /**
      * Ensures the truth of an expression involving the state of the calling instance, but not involving any parameters
      * to the calling method.
@@ -90,9 +106,7 @@ public final class Preconditions {
      * @throws IllegalStateException if {@code expression} is false
      */
     public static void checkState(boolean expression) {
-        if (!expression) {
-            throw new IllegalStateException();
-        }
+        checkState(expression, NO_MESSAGE);
     }
 
     /**
@@ -105,9 +119,7 @@ public final class Preconditions {
      * @throws IllegalStateException if {@code expression} is false
      */
     public static void checkState(boolean expression, String message) {
-        if (!expression) {
-            throw new IllegalStateException(message);
-        }
+        checkState(expression, message, NO_PARAMS);
     }
 
     /**
@@ -127,6 +139,10 @@ public final class Preconditions {
         }
     }
 
+    // endregion
+
+    // region Nullity
+
     /**
      * Ensures that an object {@code reference} passed as a parameter to the calling method is not {@code null}.
      *
@@ -138,10 +154,7 @@ public final class Preconditions {
      */
     @Nonnull
     public static <T> T checkNotNull(@Nullable T reference) {
-        if (null == reference) {
-            throw new NullPointerException();
-        }
-        return reference;
+        return checkNotNull(reference, NO_MESSAGE);
     }
 
     /**
@@ -156,10 +169,7 @@ public final class Preconditions {
      */
     @Nonnull
     public static <T> T checkNotNull(@Nullable T reference, String message) {
-        if (null == reference) {
-            throw new NullPointerException(message);
-        }
-        return reference;
+        return checkNotNull(reference, message, NO_PARAMS);
     }
 
     /**
@@ -193,13 +203,381 @@ public final class Preconditions {
      */
     @Nonnull
     public static <C extends Collection<? extends T>, T> C checkNotContainsNull(C collection) {
+        return checkNotContainsNull(collection, "the collection contains at least one null element");
+    }
+
+    /**
+     * Ensures that a {@code collection} passed as a parameter to the calling method is not {@code null} and does not contains any {@code null} element.
+     *
+     * @param collection a collection
+     * @param message    the exception message to use if the check fails
+     *
+     * @return the non-null collection that was validated
+     *
+     * @throws NullPointerException if {@code collection} is null or contains at least one {@code null} element
+     */
+    @Nonnull
+    public static <C extends Collection<? extends T>, T> C checkNotContainsNull(C collection, String message) {
+        return checkNotContainsNull(collection, message, NO_PARAMS);
+    }
+
+    /**
+     * Ensures that a {@code collection} passed as a parameter to the calling method is not {@code null} and does not contains any {@code null} element.
+     *
+     * @param collection a collection
+     * @param pattern    a template for the exception message should the check fail
+     * @param args       the arguments to be substituted into the message template. Arguments are converted to strings
+     *                   using {@link String#valueOf(Object)}.
+     *
+     * @return the non-null collection that was validated
+     *
+     * @throws NullPointerException if {@code collection} is null or contains at least one {@code null} element
+     */
+    @Nonnull
+    public static <C extends Collection<? extends T>, T> C checkNotContainsNull(C collection, String pattern, Object... args) {
         checkNotNull(collection, "collection");
 
         if (collection.contains(null)) {
-            throw new NullPointerException("the collection contains at least one null element");
+            throw new NullPointerException(format(pattern, args));
         }
         return collection;
     }
+
+    // endregion
+
+    // region Instance
+
+    /**
+     * Ensures that an object {@code reference} passed as a parameter to the calling method is instance of {@code type}.
+     *
+     * @param reference an object reference
+     * @param type      the expected type of {@code reference}
+     *
+     * @return the reference that was validated
+     *
+     * @throws IllegalArgumentException if {@code reference} is not instance of {@code type}
+     */
+    @Nonnull
+    public static <T> T checkInstanceOf(T reference, Class<?> type) {
+        return checkInstanceOf(reference, type, "object must be instance of '%s', but was '%s'", type.getName(), reference.getClass());
+    }
+
+    /**
+     * Ensures that an object {@code reference} passed as a parameter to the calling method is instance of {@code type}.
+     *
+     * @param reference an object reference
+     * @param type      the expected type of {@code reference}
+     * @param message   the exception message to use if the check fails
+     *
+     * @return the reference that was validated
+     *
+     * @throws IllegalArgumentException if {@code reference} is not instance of {@code type}
+     */
+    @Nonnull
+    public static <T> T checkInstanceOf(T reference, Class<?> type, String message) {
+        return checkInstanceOf(reference, type, message, NO_PARAMS);
+    }
+
+    /**
+     * Ensures that an object {@code reference} passed as a parameter to the calling method is instance of {@code type}.
+     *
+     * @param reference an object reference
+     * @param type      the expected type of {@code reference}
+     * @param pattern   a template for the exception message should the check fail
+     * @param args      the arguments to be substituted into the message template. Arguments are converted to strings
+     *                  using {@link String#valueOf(Object)}.
+     *
+     * @return the reference that was validated
+     *
+     * @throws IllegalArgumentException if {@code reference} is not instance of {@code type}
+     */
+    @Nonnull
+    public static <T> T checkInstanceOf(T reference, Class<?> type, String pattern, Object... args) {
+        checkNotNull(reference, "reference");
+        checkNotNull(type, "type");
+
+        if (!type.isInstance(reference)) {
+            throw new IllegalArgumentException(format(pattern, args));
+        }
+        return reference;
+    }
+
+    // endregion
+
+    // region Comparison
+
+    /**
+     * Ensures that a {@code value} passed as a parameter to the calling method is equal to {@code other}.
+     *
+     * @param value an object reference
+     * @param other another object reference
+     *
+     * @return the value that was validated
+     *
+     * @throws IllegalArgumentException if {@code value} is not equal to {@code other}
+     */
+    public static <T> T checkEqualTo(@Nullable T value, @Nullable T other) {
+        return checkEqualTo(value, other, "value (%s) must be equal to %s", value, other);
+    }
+
+    /**
+     * Ensures that a {@code value} passed as a parameter to the calling method is equal to {@code other}.
+     *
+     * @param value   an object reference
+     * @param other   another object reference
+     * @param message the exception message to use if the check fails
+     *
+     * @return the value that was validated
+     *
+     * @throws IllegalArgumentException if {@code value} is not equal to {@code other}
+     */
+    public static <T> T checkEqualTo(@Nullable T value, @Nullable T other, String message) {
+        return checkEqualTo(value, other, message, NO_PARAMS);
+    }
+
+    /**
+     * Ensures that a {@code value} passed as a parameter to the calling method is equal to {@code other}.
+     *
+     * @param value   an object reference
+     * @param other   another object reference
+     * @param pattern a template for the exception message should the check fail
+     * @param args    the arguments to be substituted into the message template. Arguments are converted to strings
+     *                using {@link String#valueOf(Object)}.
+     *
+     * @return the value that was validated
+     *
+     * @throws IllegalArgumentException if {@code value} is not equal to {@code other}
+     */
+    public static <T> T checkEqualTo(@Nullable T value, @Nullable T other, String pattern, Object... args) {
+        if (!Objects.equals(value, other)) {
+            throw new IllegalArgumentException(format(pattern, args));
+        }
+        return value;
+    }
+
+    /**
+     * Ensures that a {@code value} passed as a parameter to the calling method is strictly greater than {@code lowerBoundExclusive}.
+     *
+     * @param value               a comparable
+     * @param lowerBoundExclusive the lower bound (exclusive)
+     *
+     * @return the value that was validated
+     *
+     * @throws IllegalArgumentException if {@code value} is less than or equal to {@code lowerBoundExclusive}
+     */
+    @Nonnull
+    public static <C extends Comparable<C>> C checkGreaterThan(C value, C lowerBoundExclusive) {
+        return checkGreaterThan(value, lowerBoundExclusive, "value (%s) must be greater than %s", value, lowerBoundExclusive);
+    }
+
+    /**
+     * Ensures that a {@code value} passed as a parameter to the calling method is strictly greater than {@code lowerBoundExclusive}.
+     *
+     * @param value               a comparable
+     * @param lowerBoundExclusive the lower bound (exclusive)
+     * @param message             the exception message to use if the check fails
+     *
+     * @return the value that was validated
+     *
+     * @throws IllegalArgumentException if {@code value} is less than or equal to {@code lowerBoundExclusive}
+     */
+    @Nonnull
+    public static <C extends Comparable<C>> C checkGreaterThan(C value, C lowerBoundExclusive, String message) {
+        return checkGreaterThan(value, lowerBoundExclusive, message, NO_PARAMS);
+    }
+
+    /**
+     * Ensures that a {@code value} passed as a parameter to the calling method is strictly greater than {@code lowerBoundExclusive}.
+     *
+     * @param value               a comparable
+     * @param lowerBoundExclusive the lower bound (exclusive)
+     * @param pattern             a template for the exception message should the check fail
+     * @param args                the arguments to be substituted into the message template. Arguments are converted to strings
+     *                            using {@link String#valueOf(Object)}.
+     *
+     * @return the value that was validated
+     *
+     * @throws IllegalArgumentException if {@code value} is less than or equal to {@code lowerBoundExclusive}
+     */
+    @Nonnull
+    public static <C extends Comparable<C>> C checkGreaterThan(C value, C lowerBoundExclusive, String pattern, Object... args) {
+        checkNotNull(value, "value");
+        checkNotNull(lowerBoundExclusive, "lowerBoundExclusive");
+
+        if (value.compareTo(lowerBoundExclusive) <= 0) {
+            throw new IllegalArgumentException(format(pattern, args));
+        }
+        return value;
+    }
+
+    /**
+     * Ensures that a {@code value} passed as a parameter to the calling method is greater than or equal to {@code lowerBoundInclusive}.
+     *
+     * @param value               a comparable
+     * @param lowerBoundInclusive the lower bound (inclusive)
+     *
+     * @return the value that was validated
+     *
+     * @throws IllegalArgumentException if {@code value} is less than {@code lowerBoundInclusive}
+     */
+    @Nonnull
+    public static <C extends Comparable<C>> C checkGreaterThanOrEqualTo(C value, C lowerBoundInclusive) {
+        return checkGreaterThanOrEqualTo(value, lowerBoundInclusive, "value (%s) must not be less than %s", value, lowerBoundInclusive);
+    }
+
+    /**
+     * Ensures that a {@code value} passed as a parameter to the calling method is greater than or equal to {@code lowerBoundInclusive}.
+     *
+     * @param value               a comparable
+     * @param lowerBoundInclusive the lower bound (inclusive)
+     * @param message             the exception message to use if the check fails
+     *
+     * @return the value that was validated
+     *
+     * @throws IllegalArgumentException if {@code value} is less than {@code lowerBoundInclusive}
+     */
+    @Nonnull
+    public static <C extends Comparable<C>> C checkGreaterThanOrEqualTo(C value, C lowerBoundInclusive, String message) {
+        return checkGreaterThanOrEqualTo(value, lowerBoundInclusive, message, NO_PARAMS);
+    }
+
+    /**
+     * Ensures that a {@code value} passed as a parameter to the calling method is greater than or equal to {@code lowerBoundInclusive}.
+     *
+     * @param value               a comparable
+     * @param lowerBoundInclusive the lower bound (inclusive)
+     * @param pattern             a template for the exception message should the check fail
+     * @param args                the arguments to be substituted into the message template. Arguments are converted to strings
+     *                            using {@link String#valueOf(Object)}.
+     *
+     * @return the value that was validated
+     *
+     * @throws IllegalArgumentException if {@code value} is less than {@code lowerBoundInclusive}
+     */
+    @Nonnull
+    public static <C extends Comparable<C>> C checkGreaterThanOrEqualTo(C value, C lowerBoundInclusive, String pattern, Object... args) {
+        checkNotNull(value, "value");
+        checkNotNull(lowerBoundInclusive, "lowerBoundInclusive");
+
+        if (value.compareTo(lowerBoundInclusive) < 0) {
+            throw new IllegalArgumentException(format(pattern, args));
+        }
+        return value;
+    }
+
+    /**
+     * Ensures that a {@code value} passed as a parameter to the calling method is strictly less than {@code upperBoundExclusive}.
+     *
+     * @param value               a comparable
+     * @param upperBoundExclusive the upper bound (exclusive)
+     *
+     * @return the value that was validated
+     *
+     * @throws IllegalArgumentException if {@code value} is greater than or equal to {@code upperBoundExclusive}
+     */
+    @Nonnull
+    public static <C extends Comparable<C>> C checkLessThan(C value, C upperBoundExclusive) {
+        return checkLessThan(value, upperBoundExclusive, "value (%s) must be less than %s", value, upperBoundExclusive);
+    }
+
+    /**
+     * Ensures that a {@code value} passed as a parameter to the calling method is strictly less than {@code upperBoundExclusive}.
+     *
+     * @param value               a comparable
+     * @param upperBoundExclusive the upper bound (exclusive)
+     * @param message             the exception message to use if the check fails
+     *
+     * @return the value that was validated
+     *
+     * @throws IllegalArgumentException if {@code value} is greater than or equal to {@code upperBoundExclusive}
+     */
+    @Nonnull
+    public static <C extends Comparable<C>> C checkLessThan(C value, C upperBoundExclusive, String message) {
+        return checkLessThan(value, upperBoundExclusive, message, NO_PARAMS);
+    }
+
+    /**
+     * Ensures that a {@code value} passed as a parameter to the calling method is strictly less than {@code upperBoundExclusive}.
+     *
+     * @param value               a comparable
+     * @param upperBoundExclusive the upper bound (exclusive)
+     * @param pattern             a template for the exception message should the check fail
+     * @param args                the arguments to be substituted into the message template. Arguments are converted to strings
+     *                            using {@link String#valueOf(Object)}.
+     *
+     * @return the value that was validated
+     *
+     * @throws IllegalArgumentException if {@code value} is greater than or equal to {@code upperBoundExclusive}
+     */
+    @Nonnull
+    public static <C extends Comparable<C>> C checkLessThan(C value, C upperBoundExclusive, String pattern, Object... args) {
+        checkNotNull(value, "value");
+        checkNotNull(upperBoundExclusive, "upperBoundExclusive");
+
+        if (value.compareTo(upperBoundExclusive) >= 0) {
+            throw new IllegalArgumentException(format(pattern, args));
+        }
+        return value;
+    }
+
+    /**
+     * Ensures that a {@code value} passed as a parameter to the calling method is less than or equal to {@code upperBoundInclusive}.
+     *
+     * @param value               a comparable
+     * @param upperBoundInclusive the upper bound (inclusive)
+     *
+     * @return the value that was validated
+     *
+     * @throws IllegalArgumentException if {@code value} is greater than {@code upperBoundInclusive}
+     */
+    @Nonnull
+    public static <C extends Comparable<C>> C checkLessThanOrEqualTo(C value, C upperBoundInclusive) {
+        return checkLessThanOrEqualTo(value, upperBoundInclusive, "value (%s) must not be greater than %s", value, upperBoundInclusive);
+    }
+
+    /**
+     * Ensures that a {@code value} passed as a parameter to the calling method is less than or equal to {@code upperBoundInclusive}.
+     *
+     * @param value               a comparable
+     * @param upperBoundInclusive the upper bound (inclusive)
+     * @param message             the exception message to use if the check fails
+     *
+     * @return the value that was validated
+     *
+     * @throws IllegalArgumentException if {@code value} is greater than {@code upperBoundInclusive}
+     */
+    @Nonnull
+    public static <C extends Comparable<C>> C checkLessThanOrEqualTo(C value, C upperBoundInclusive, String message) {
+        return checkLessThanOrEqualTo(value, upperBoundInclusive, message, NO_PARAMS);
+    }
+
+    /**
+     * Ensures that a {@code value} passed as a parameter to the calling method is less than or equal to {@code upperBoundInclusive}.
+     *
+     * @param value               a comparable
+     * @param upperBoundInclusive the upper bound (inclusive)
+     * @param pattern             a template for the exception message should the check fail
+     * @param args                the arguments to be substituted into the message template. Arguments are converted to strings
+     *                            using {@link String#valueOf(Object)}.
+     *
+     * @return the value that was validated
+     *
+     * @throws IllegalArgumentException if {@code value} is greater than {@code upperBoundInclusive}
+     */
+    @Nonnull
+    public static <C extends Comparable<C>> C checkLessThanOrEqualTo(C value, C upperBoundInclusive, String pattern, Object... args) {
+        checkNotNull(value, "value");
+        checkNotNull(upperBoundInclusive, "upperBoundInclusive");
+
+        if (value.compareTo(upperBoundInclusive) > 0) {
+            throw new IllegalArgumentException(format(pattern, args));
+        }
+        return value;
+    }
+
+    // endregion
+
+    // region Array/Collection
 
     /**
      * Ensures that {@code index} specifies a valid <i>element</i> in an array, list or string of {@code size}. An
@@ -208,12 +586,13 @@ public final class Preconditions {
      * @param index a user-supplied index identifying an element of an array, list or string
      * @param size  the size of that array, list or string
      *
-     * @return the value of {@code index}
+     * @return the index that was validated
      *
      * @throws IndexOutOfBoundsException if {@code index} is negative or is not less than {@code size}
      * @throws IllegalArgumentException  if {@code size} is negative
      */
-    public static boolean checkElementIndex(@Nonnegative int index, @Nonnegative int size) {
+    @Nonnegative
+    public static int checkElementIndex(@Nonnegative int index, @Nonnegative int size) {
         if (index < 0) {
             throw new IndexOutOfBoundsException(format("index (%d) must not be negative", index));
         }
@@ -223,7 +602,7 @@ public final class Preconditions {
         else if (index >= size) {
             throw new IndexOutOfBoundsException(format("index (%d) must be less than size (%d)", index, size));
         }
-        return true;
+        return index;
     }
 
     /**
@@ -233,12 +612,13 @@ public final class Preconditions {
      * @param index a user-supplied index identifying a position in an array, list or string
      * @param size  the size of that array, list or string
      *
-     * @return the value of {@code index}
+     * @return the index that was validated
      *
      * @throws IndexOutOfBoundsException if {@code index} is negative or is greater than {@code size}
      * @throws IllegalArgumentException  if {@code size} is negative
      */
-    public static boolean checkPositionIndex(@Nonnegative int index, @Nonnegative int size) {
+    @Nonnegative
+    public static int checkPositionIndex(@Nonnegative int index, @Nonnegative int size) {
         if (index < 0) {
             throw new IndexOutOfBoundsException(format("index (%d) must not be negative", index));
         }
@@ -248,8 +628,10 @@ public final class Preconditions {
         else if (index > size) {
             throw new IndexOutOfBoundsException(format("index (%d) must not be greater than size (%d)", index, size));
         }
-        return true;
+        return index;
     }
+
+    // endregion
 
     /**
      * Returns a formatted string using the specified format string and arguments.
@@ -259,8 +641,8 @@ public final class Preconditions {
      *
      * @return a formatted string
      */
-    @Nonnull
+    @Nullable
     private static String format(String pattern, Object... args) {
-        return String.format(pattern, args);
+        return null != pattern ? String.format(pattern, args) : null;
     }
 }

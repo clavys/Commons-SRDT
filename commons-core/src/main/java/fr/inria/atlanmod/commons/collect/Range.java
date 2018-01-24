@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.Immutable;
 
-import static fr.inria.atlanmod.commons.Preconditions.checkArgument;
+import static fr.inria.atlanmod.commons.Preconditions.checkLessThanOrEqualTo;
 import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
 
 /**
@@ -42,7 +42,7 @@ public interface Range<C extends Comparable<C>> {
     static <C extends Comparable<C>> Range<C> open(C lower, C upper) {
         checkNotNull(lower, "lower");
         checkNotNull(upper, "upper");
-        checkArgument(lower.compareTo(upper) <= 0, "upper (%d) must not be less than lower (%d)", upper, lower);
+        checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
         return v -> v.compareTo(lower) > 0 && v.compareTo(upper) < 0;
     }
 
@@ -63,7 +63,7 @@ public interface Range<C extends Comparable<C>> {
     static <C extends Comparable<C>> Range<C> closed(C lower, C upper) {
         checkNotNull(lower, "lower");
         checkNotNull(upper, "upper");
-        checkArgument(lower.compareTo(upper) <= 0, "upper (%d) must not be less than lower (%d)", upper, lower);
+        checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
         return v -> v.compareTo(lower) >= 0 && v.compareTo(upper) <= 0;
     }
 
@@ -84,7 +84,7 @@ public interface Range<C extends Comparable<C>> {
     static <C extends Comparable<C>> Range<C> openClosed(C lower, C upper) {
         checkNotNull(lower, "lower");
         checkNotNull(upper, "upper");
-        checkArgument(lower.compareTo(upper) <= 0, "upper (%d) must not be less than lower (%d)", upper, lower);
+        checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
         return v -> v.compareTo(lower) > 0 && v.compareTo(upper) <= 0;
     }
 
@@ -105,7 +105,7 @@ public interface Range<C extends Comparable<C>> {
     static <C extends Comparable<C>> Range<C> closedOpen(C lower, C upper) {
         checkNotNull(lower, "lower");
         checkNotNull(upper, "upper");
-        checkArgument(lower.compareTo(upper) <= 0, "upper (%d) must not be less than lower (%d)", upper, lower);
+        checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
         return v -> v.compareTo(lower) >= 0 && v.compareTo(upper) < 0;
     }
 

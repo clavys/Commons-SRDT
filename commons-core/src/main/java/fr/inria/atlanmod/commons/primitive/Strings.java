@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static fr.inria.atlanmod.commons.Preconditions.checkArgument;
+import static fr.inria.atlanmod.commons.Preconditions.checkEqualTo;
 import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
 import static java.util.Objects.isNull;
 
@@ -108,8 +108,7 @@ public final class Strings {
             return value.getBytes(StandardCharsets.UTF_8);
         }
         catch (UnsupportedCharsetException e) {
-            // Should never happen
-            throw new IllegalArgumentException(e);
+            throw Throwables.wrap(e, IllegalStateException.class); // Should never happen
         }
     }
 
@@ -128,7 +127,7 @@ public final class Strings {
     @Nonnull
     public static byte[] toBytesBinary(final String value) {
         checkNotNull(value, "value");
-        checkArgument(value.length() % 2 == 0, "value.length (%d) must be pair", value.length());
+        checkEqualTo(value.length() % 2, 0, "value.length (%d) must be pair", value.length());
 
         byte[] bytes = new byte[value.length() / 2];
 

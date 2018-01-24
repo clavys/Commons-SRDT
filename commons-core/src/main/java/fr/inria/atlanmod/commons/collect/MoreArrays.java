@@ -20,8 +20,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static fr.inria.atlanmod.commons.Preconditions.checkArgument;
 import static fr.inria.atlanmod.commons.Preconditions.checkElementIndex;
+import static fr.inria.atlanmod.commons.Preconditions.checkGreaterThanOrEqualTo;
 import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
 
 /**
@@ -56,7 +56,7 @@ public final class MoreArrays {
     @SuppressWarnings("unchecked")
     public static <T> T[] newArray(Class<?> type, @Nonnegative int length) {
         checkNotNull(type, "type");
-        checkArgument(length >= 0, "length (%d) must not be negative", length);
+        checkGreaterThanOrEqualTo(length, 0, "length (%d) must not be negative", length);
 
         return (type == Object.class)
                 ? (T[]) new Object[length]
@@ -102,7 +102,7 @@ public final class MoreArrays {
     @Nonnull
     public static <T> T[] resize(T[] array, @Nonnegative int length) {
         checkNotNull(array, "array");
-        checkArgument(length >= array.length, "length (%d) must be not less than array.length (%d)", length, array.length);
+        checkGreaterThanOrEqualTo(length, array.length, "length (%d) must be not less than array.length (%d)", length, array.length);
 
         T[] newArray = newArray(array.getClass().getComponentType(), length);
         System.arraycopy(array, 0, newArray, 0, array.length);

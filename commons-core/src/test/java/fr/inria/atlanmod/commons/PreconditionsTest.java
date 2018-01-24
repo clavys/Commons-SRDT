@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.Collections;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -137,6 +139,23 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
+    public void testCheckNotContainsNull() {
+        assertThat(catchThrowable(() -> Preconditions.checkNotContainsNull(Collections.emptyList())))
+                .isNull();
+
+        assertThat(catchThrowable(() -> Preconditions.checkNotContainsNull(Collections.singletonList(0))))
+                .isNull();
+
+        assertThat(catchThrowable(() -> Preconditions.checkNotContainsNull(Arrays.asList(0, 1, 2, 3))))
+                .isNull();
+
+        assertThat(catchThrowable(() -> Preconditions.checkNotContainsNull(Arrays.asList(0, 1, null, 2))))
+                .isExactlyInstanceOf(NullPointerException.class)
+                .hasNoCause()
+                .hasMessage("the collection contains at least one null element");
+    }
+
+    @Test
     public void testCheckElementIndex() {
         // index < 0
         assertThat(catchThrowable(() -> Preconditions.checkElementIndex(-1, 0)))
@@ -194,5 +213,91 @@ public class PreconditionsTest extends AbstractTest {
                 .isExactlyInstanceOf(IndexOutOfBoundsException.class)
                 .hasNoCause()
                 .hasMessage("index (1) must not be greater than size (0)");
+    }
+
+    @Test
+    public void testCheckEqualTo() {
+        assertThat(catchThrowable(() -> Preconditions.checkEqualTo(null, null)))
+                .isNull();
+
+        assertThat(catchThrowable(() -> Preconditions.checkEqualTo(10, 10)))
+                .isNull();
+
+        assertThat(catchThrowable(() -> Preconditions.checkEqualTo(10, 0)))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasNoCause()
+                .hasMessage("value (10) must be equal to 0");
+    }
+
+    @Test
+    public void testCheckLessThan() {
+        // value > upperBound
+        assertThat(catchThrowable(() -> Preconditions.checkLessThan(10, 9)))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasNoCause()
+                .hasMessage("value (10) must be less than 9");
+
+        // value == upperBound
+        assertThat(catchThrowable(() -> Preconditions.checkLessThan(10, 10)))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasNoCause()
+                .hasMessage("value (10) must be less than 10");
+
+        // value < upperBound
+        assertThat(catchThrowable(() -> Preconditions.checkLessThan(10, 11)))
+                .isNull();
+    }
+
+    @Test
+    public void testCheckLessThanOrEqualTo() {
+        // value > upperBound
+        assertThat(catchThrowable(() -> Preconditions.checkLessThanOrEqualTo(10, 9)))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasNoCause()
+                .hasMessage("value (10) must not be greater than 9");
+
+        // value == upperBound
+        assertThat(catchThrowable(() -> Preconditions.checkLessThanOrEqualTo(10, 10)))
+                .isNull();
+
+        // value < upperBound
+        assertThat(catchThrowable(() -> Preconditions.checkLessThanOrEqualTo(10, 11)))
+                .isNull();
+    }
+
+    @Test
+    public void testCheckGreaterThan() {
+        // value > upperBound
+        assertThat(catchThrowable(() -> Preconditions.checkGreaterThan(10, 9)))
+                .isNull();
+
+        // value == upperBound
+        assertThat(catchThrowable(() -> Preconditions.checkGreaterThan(10, 10)))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasNoCause()
+                .hasMessage("value (10) must be greater than 10");
+
+        // value < upperBound
+        assertThat(catchThrowable(() -> Preconditions.checkGreaterThan(10, 11)))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasNoCause()
+                .hasMessage("value (10) must be greater than 11");
+    }
+
+    @Test
+    public void testCheckGreaterThanOrEqualTo() {
+        // value > upperBound
+        assertThat(catchThrowable(() -> Preconditions.checkGreaterThanOrEqualTo(10, 9)))
+                .isNull();
+
+        // value == upperBound
+        assertThat(catchThrowable(() -> Preconditions.checkGreaterThanOrEqualTo(10, 10)))
+                .isNull();
+
+        // value < upperBound
+        assertThat(catchThrowable(() -> Preconditions.checkGreaterThanOrEqualTo(10, 11)))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasNoCause()
+                .hasMessage("value (10) must not be less than 11");
     }
 }

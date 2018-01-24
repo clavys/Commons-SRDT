@@ -8,6 +8,8 @@
 
 package fr.inria.atlanmod.commons.io.serializer;
 
+import fr.inria.atlanmod.commons.Throwables;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -21,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.WillNotClose;
 
-import static fr.inria.atlanmod.commons.Preconditions.checkArgument;
+import static fr.inria.atlanmod.commons.Preconditions.checkInstanceOf;
 
 /**
  * A {@link Serializer} for any object, using FST serialization.
@@ -36,21 +38,20 @@ final class ObjectSerializer<T> extends AbstractSerializer<T> {
 
     @Nonnull
     @Override
-    public byte[] serialize(T t) throws IOException {
+    public byte[] serialize(T t) {
         return FST.asByteArray(t);
     }
 
     @Nonnull
     @Override
     @SuppressWarnings("unchecked")
-    public T deserialize(byte[] data) throws IOException {
+    public T deserialize(byte[] data) {
         return (T) FST.asObject(data);
     }
 
     @Override
     public void serialize(T t, DataOutput out) throws IOException {
-        checkArgument(Serializable.class.isInstance(t),
-                "Serializer requires a Serializable payload but received an object of type %s", t.getClass().getName());
+        checkInstanceOf(t, Serializable.class, "Requires a Serializable payload but received an object of type %s", t.getClass().getName());
 
         if (ObjectOutput.class.isInstance(out)) {
             serialize(t, ObjectOutput.class.cast(out));
@@ -107,7 +108,7 @@ final class ObjectSerializer<T> extends AbstractSerializer<T> {
             return (T) in.readObject();
         }
         catch (ClassNotFoundException e) {
-            throw new IOException(e);
+            throw Throwables.wrap(e, IOException.class);
         }
     }
 }

@@ -15,7 +15,7 @@ import java.util.function.IntFunction;
 import javax.annotation.Nonnegative;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static fr.inria.atlanmod.commons.Preconditions.checkArgument;
+import static fr.inria.atlanmod.commons.Preconditions.checkGreaterThanOrEqualTo;
 import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
 
 /**
@@ -51,8 +51,8 @@ public class SizedIterator<E> implements Iterator<E> {
      * @param mappingFunction the function used to retrieve the value at a specified index
      */
     public SizedIterator(@Nonnegative int size, IntFunction<E> mappingFunction) {
-        checkNotNull(mappingFunction);
-        checkArgument(size >= 0, "size (%d) must not be negative");
+        checkNotNull(mappingFunction, "mappingFunction");
+        checkGreaterThanOrEqualTo(size, 0, "size (%d) must not be negative");
 
         this.size = size;
         this.mappingFunction = mappingFunction;

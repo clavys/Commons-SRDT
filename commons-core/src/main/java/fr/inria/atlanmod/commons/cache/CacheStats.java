@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.Immutable;
 
-import static fr.inria.atlanmod.commons.Preconditions.checkArgument;
+import static fr.inria.atlanmod.commons.Preconditions.checkGreaterThanOrEqualTo;
 
 /**
  * Statistics about the performance of a {@link Cache}.
@@ -73,12 +73,12 @@ public final class CacheStats {
      * @param evictionCount    the number of entries evicted from the cache
      */
     protected CacheStats(@Nonnegative long hitCount, @Nonnegative long missCount, @Nonnegative long loadSuccessCount, @Nonnegative long loadFailureCount, @Nonnegative long totalLoadTime, @Nonnegative long evictionCount) {
-        checkArgument(hitCount >= 0, "hitCount (%d) must not be negative", hitCount);
-        checkArgument(missCount >= 0, "missCount (%d) must not be negative", missCount);
-        checkArgument(loadSuccessCount >= 0, "loadSuccessCount (%d) must not be negative", loadSuccessCount);
-        checkArgument(loadFailureCount >= 0, "loadFailureCount (%d) must not be negative", loadFailureCount);
-        checkArgument(totalLoadTime >= 0, "totalLoadTime (%d) must not be negative", totalLoadTime);
-        checkArgument(evictionCount >= 0, "evictionCount (%d) must not be negative", evictionCount);
+        checkGreaterThanOrEqualTo(hitCount, 0L, "hitCount (%d) must not be negative", hitCount);
+        checkGreaterThanOrEqualTo(missCount, 0L, "missCount (%d) must not be negative", missCount);
+        checkGreaterThanOrEqualTo(loadSuccessCount, 0L, "loadSuccessCount (%d) must not be negative", loadSuccessCount);
+        checkGreaterThanOrEqualTo(loadFailureCount, 0L, "loadFailureCount (%d) must not be negative", loadFailureCount);
+        checkGreaterThanOrEqualTo(totalLoadTime, 0L, "totalLoadTime (%d) must not be negative", totalLoadTime);
+        checkGreaterThanOrEqualTo(evictionCount, 0L, "evictionCount (%d) must not be negative", evictionCount);
 
         this.hitCount = hitCount;
         this.missCount = missCount;

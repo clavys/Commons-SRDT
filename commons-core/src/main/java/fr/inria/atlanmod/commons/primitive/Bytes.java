@@ -17,7 +17,7 @@ import java.nio.charset.UnsupportedCharsetException;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static fr.inria.atlanmod.commons.Preconditions.checkArgument;
+import static fr.inria.atlanmod.commons.Preconditions.checkEqualTo;
 import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
 
 /**
@@ -60,7 +60,7 @@ public final class Bytes {
      */
     public static boolean toBoolean(final byte[] bytes) {
         checkNotNull(bytes, "bytes");
-        checkArgument(bytes.length == 1, "bytes has wrong size: %d", bytes.length);
+        checkEqualTo(bytes.length, 1, "bytes has wrong size: %d", bytes.length);
 
         return bytes[0] != (byte) 0;
     }
@@ -77,7 +77,7 @@ public final class Bytes {
      */
     public static short toShort(final byte[] bytes) {
         checkNotNull(bytes, "bytes");
-        checkArgument(bytes.length == Short.BYTES, "bytes has wrong size: %d", bytes.length);
+        checkEqualTo(bytes.length, Short.BYTES, "bytes has wrong size: %d", bytes.length);
 
         short value = 0;
 
@@ -117,7 +117,7 @@ public final class Bytes {
      */
     public static int toInt(final byte[] bytes) {
         checkNotNull(bytes, "bytes");
-        checkArgument(bytes.length == Integer.BYTES, "bytes has wrong size: %d", bytes.length);
+        checkEqualTo(bytes.length, Integer.BYTES, "bytes has wrong size: %d", bytes.length);
 
         int value = 0;
 
@@ -141,7 +141,7 @@ public final class Bytes {
      */
     public static long toLong(final byte[] bytes) {
         checkNotNull(bytes, "bytes");
-        checkArgument(bytes.length == Long.BYTES, "bytes has wrong size: %d", bytes.length);
+        checkEqualTo(bytes.length, Long.BYTES, "bytes has wrong size: %d", bytes.length);
 
         long value = 0L;
 
@@ -209,8 +209,7 @@ public final class Bytes {
             return new String(bytes, StandardCharsets.UTF_8);
         }
         catch (UnsupportedCharsetException e) {
-            // Should never happen
-            throw new IllegalArgumentException(e);
+            throw Throwables.wrap(e, IllegalStateException.class); // Should never happen
         }
     }
 

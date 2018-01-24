@@ -8,6 +8,7 @@
 
 package fr.inria.atlanmod.commons.io.serializer;
 
+import fr.inria.atlanmod.commons.Throwables;
 import fr.inria.atlanmod.commons.function.Converter;
 
 import java.io.DataInput;
@@ -41,7 +42,7 @@ public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
             return serialize(t);
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
+            throw Throwables.wrap(e, RuntimeException.class);
         }
     }
 
@@ -57,7 +58,7 @@ public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
             return deserialize(bytes);
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
+            throw Throwables.wrap(e, RuntimeException.class);
         }
     }
 

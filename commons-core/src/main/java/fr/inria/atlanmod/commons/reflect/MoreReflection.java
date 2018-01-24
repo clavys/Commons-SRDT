@@ -20,6 +20,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import static fr.inria.atlanmod.commons.Preconditions.checkArgument;
 import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
 
 /**
@@ -80,11 +81,7 @@ public final class MoreReflection {
      */
     @Nonnull
     private static Optional<String> findConstructionMethod(Class<?> type) {
-        // Not instantiable type
-        if (type.isAnnotationPresent(Static.class)) {
-            throw new IllegalArgumentException(
-                    String.format("%s is annotated with @%s: cannot be instantiated", type.getName(), Static.class.getSimpleName()));
-        }
+        checkArgument(!type.isAnnotationPresent(Static.class), "%s is annotated with @%s: cannot be instantiated", type.getName(), Static.class.getSimpleName());
 
         Optional<String> methodName;
 

@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static fr.inria.atlanmod.commons.Preconditions.checkArgument;
+import static fr.inria.atlanmod.commons.Preconditions.checkGreaterThanOrEqualTo;
 import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
 
 /**
@@ -145,7 +145,7 @@ public final class MoreExecutors {
     public static List<Runnable> shutdown(ExecutorService service, long timeout, TimeUnit unit) {
         checkNotNull(service, "service");
         checkNotNull(unit, "unit");
-        checkArgument(timeout >= 0, "timeout (%d) must not be negative", timeout);
+        checkGreaterThanOrEqualTo(timeout, 0L, "timeout (%d) must not be negative", timeout);
 
         if (!service.isShutdown() && !service.isTerminated()) {
             try {
@@ -183,7 +183,7 @@ public final class MoreExecutors {
     public static ExecutorService shutdownAtExit(ExecutorService service, long timeout, TimeUnit unit, boolean executeUnstarted) {
         checkNotNull(service, "service");
         checkNotNull(unit, "unit");
-        checkArgument(timeout >= 0, "timeout (%d) must not be negative", timeout);
+        checkGreaterThanOrEqualTo(timeout, 0L, "timeout (%d) must not be negative", timeout);
 
         MoreThreads.executeAtExit(() -> shutdown(service, timeout, unit, executeUnstarted));
 
