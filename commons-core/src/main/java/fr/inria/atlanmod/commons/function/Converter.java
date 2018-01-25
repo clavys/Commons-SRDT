@@ -37,13 +37,11 @@ public interface Converter<T, R> extends Function<T, R> {
     @Nonnull
     static <T> Converter<T, T> identity() {
         return new Converter<T, T>() {
-            @Nonnull
             @Override
             public T convert(T t) {
                 return t;
             }
 
-            @Nonnull
             @Override
             public T revert(T t) {
                 return t;
@@ -64,13 +62,11 @@ public interface Converter<T, R> extends Function<T, R> {
     @Nonnull
     static <T, R> Converter<T, R> from(Function<? super T, ? extends R> convertFunc, Function<? super R, ? extends T> revertFunc) {
         return new Converter<T, R>() {
-            @Nonnull
             @Override
             public R convert(T t) {
                 return convertFunc.apply(t);
             }
 
-            @Nonnull
             @Override
             public T revert(R r) {
                 return revertFunc.apply(r);
@@ -90,7 +86,6 @@ public interface Converter<T, R> extends Function<T, R> {
      *
      * @return the converted instance
      */
-    @Nonnull
     R convert(T t);
 
     /**
@@ -100,7 +95,6 @@ public interface Converter<T, R> extends Function<T, R> {
      *
      * @return the converted instance
      */
-    @Nonnull
     T revert(R r);
 
     /**
