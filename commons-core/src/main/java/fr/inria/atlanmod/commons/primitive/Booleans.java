@@ -11,6 +11,7 @@ package fr.inria.atlanmod.commons.primitive;
 import fr.inria.atlanmod.commons.Throwables;
 import fr.inria.atlanmod.commons.annotation.Static;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -53,5 +54,18 @@ public final class Booleans {
         checkNotNull(value, "value");
 
         return toBytes(value.booleanValue());
+    }
+
+    /**
+     * Returns the integer value of a boolean {@code value}.
+     * In other words, returns {@code 1} when {@code value == true}, {@code 0} otherwise.
+     *
+     * @param value the boolean value
+     *
+     * @return an {@code int}
+     */
+    @Nonnegative
+    public static int toInt(final boolean value) {
+        return value ? 1 : 0;
     }
 }
