@@ -8,8 +8,13 @@
 
 package fr.inria.atlanmod.commons.cache;
 
+import fr.inria.atlanmod.commons.Throwables;
+import fr.inria.atlanmod.commons.concurrent.MoreExecutors;
+
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutorService;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -17,6 +22,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
+import static java.util.Objects.nonNull;
 
 /**
  * A Caffeine {@link Cache} implementation which does not automatically load values when keys are requested.
@@ -30,15 +36,43 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
     /**
      * The internal cache implementation.
      */
+    @Nonnull
     protected final C cache;
+
+    /**
+     * {@code true} if read operations should be performed asynchronously.
+     */
+    private final boolean asyncRead;
+
+    /**
+     * {@code true} if write operations should be performed asynchronously.
+     */
+    private final boolean asyncWrite;
+
+    /**
+     * The asynchronous pool used to perform read and write operations.
+     * {@code null} if {@code asyncRead == false && asyncWrite == false}.
+     */
+    private final ExecutorService pool;
 
     /**
      * Constructs a new {@code CaffeineManualCache}.
      *
-     * @param cache the internal cache implementation
+     * @param cache      the internal cache implementation
+     * @param asyncRead  {@code true} if read operations should be performed asynchronously
+     * @param asyncWrite {@code true} if write operations should be performed asynchronously
      */
-    protected CaffeineManualCache(C cache) {
+    protected CaffeineManualCache(C cache, boolean asyncRead, boolean asyncWrite) {
         this.cache = cache;
+        this.asyncRead = asyncRead;
+        this.asyncWrite = asyncWrite;
+
+        if (asyncRead || asyncWrite) {
+            this.pool = MoreExecutors.newFixedThreadPool();
+        }
+        else {
+            this.pool = null;
+        }
     }
 
     @Nullable
@@ -46,7 +80,7 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
     public V get(K key) {
         checkNotNull(key, "key");
 
-        return cache.getIfPresent(key);
+        return performRead(() -> cache.getIfPresent(key));
     }
 
     @Override
@@ -54,7 +88,7 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
         checkNotNull(key, "key");
         checkNotNull(mappingFunction, "mappingFunction");
 
-        return cache.get(key, mappingFunction);
+        return performRead(() -> cache.get(key, mappingFunction));
     }
 
     @Nonnull
@@ -62,7 +96,7 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
     public Map<K, V> getAll(Iterable<? extends K> keys) {
         checkNotNull(keys, "keys");
 
-        return cache.getAllPresent(keys);
+        return performRead(() -> cache.getAllPresent(keys));
     }
 
     @Override
@@ -70,38 +104,51 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
         checkNotNull(key, "key");
         checkNotNull(value, "value");
 
-        cache.put(key, value);
+        performWrite(() -> cache.put(key, value));
+    }
+
+    @Override
+    public void putIfAbsent(K key, V value) {
+        checkNotNull(key, "key");
+        checkNotNull(value, "value");
+
+        performWrite(() -> cache.get(key, k -> value));
     }
 
     @Override
     public void putAll(Map<? extends K, ? extends V> map) {
         checkNotNull(map, "map");
 
-        cache.putAll(map);
+        performWrite(() -> cache.putAll(map));
     }
 
     @Override
     public void invalidate(K key) {
         checkNotNull(key, "key");
 
-        cache.invalidate(key);
+        performWrite(() -> cache.invalidate(key));
     }
 
     @Override
     public void invalidateAll(Iterable<? extends K> keys) {
         checkNotNull(keys, "keys");
 
-        cache.invalidateAll(keys);
+        performWrite(() -> cache.invalidateAll(keys));
     }
 
     @Override
     public void invalidateAll() {
-        cache.invalidateAll();
+        performWrite(cache::invalidateAll);
+    }
+
+    @Override
+    public boolean contains(K key) {
+        return nonNull(get(key));
     }
 
     @Override
     public long size() {
-        return cache.estimatedSize();
+        return performRead(cache::estimatedSize);
     }
 
     @Override
@@ -111,19 +158,19 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
 
     @Override
     public void cleanUp() {
-        cache.cleanUp();
+        performWrite(cache::cleanUp);
     }
 
     @Nonnull
     @Override
     public ConcurrentMap<K, V> asMap() {
-        return cache.asMap();
+        return performRead(cache::asMap);
     }
 
     @Nonnull
     @Override
     public CacheStats stats() {
-        com.github.benmanes.caffeine.cache.stats.CacheStats stats = cache.stats();
+        com.github.benmanes.caffeine.cache.stats.CacheStats stats = performRead(cache::stats);
 
         return new CacheStats(
                 stats.hitCount(),
@@ -132,5 +179,44 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
                 stats.loadFailureCount(),
                 stats.totalLoadTime(),
                 stats.evictionCount());
+    }
+
+    /**
+     * Performs a read operation.
+     *
+     * @param task the read operation
+     * @param <T>  the type of the read value
+     *
+     * @return the read value
+     */
+    protected <T> T performRead(Callable<T> task) {
+        try {
+            if (asyncRead) {
+                return pool.submit(task).get();
+            }
+            else {
+                return task.call();
+            }
+        }
+        catch (InterruptedException e) {
+            throw Throwables.wrap(e, IllegalStateException.class);
+        }
+        catch (Exception e) {
+            throw Throwables.wrap(e, RuntimeException.class);
+        }
+    }
+
+    /**
+     * Performs a write operation.
+     *
+     * @param task the write operation
+     */
+    protected void performWrite(Runnable task) {
+        if (asyncWrite) {
+            pool.submit(task);
+        }
+        else {
+            task.run();
+        }
     }
 }
