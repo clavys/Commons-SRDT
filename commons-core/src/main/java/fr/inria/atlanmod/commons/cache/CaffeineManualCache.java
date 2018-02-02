@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
+import static java.util.Objects.nonNull;
 
 /**
  * A Caffeine {@link Cache} implementation which does not automatically load values when keys are requested.
@@ -30,6 +31,7 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
     /**
      * The internal cache implementation.
      */
+    @Nonnull
     protected final C cache;
 
     /**
@@ -74,6 +76,11 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
     }
 
     @Override
+    public void putIfAbsent(K key, V value) {
+        get(key, k -> value);
+    }
+
+    @Override
     public void putAll(Map<? extends K, ? extends V> map) {
         checkNotNull(map, "map");
 
@@ -97,6 +104,11 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
     @Override
     public void invalidateAll() {
         cache.invalidateAll();
+    }
+
+    @Override
+    public boolean contains(K key) {
+        return nonNull(get(key));
     }
 
     @Override
