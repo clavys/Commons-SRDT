@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -40,20 +41,16 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
     protected final C cache;
 
     /**
-     * {@code true} if read operations should be performed asynchronously.
+     * The pool used to perform read operations.
      */
-    private final boolean asyncRead;
+    @Nonnull
+    private final ExecutorService readPool;
 
     /**
-     * {@code true} if write operations should be performed asynchronously.
+     * The pool used to perform write operations.
      */
-    private final boolean asyncWrite;
-
-    /**
-     * The asynchronous pool used to perform read and write operations.
-     * {@code null} if {@code asyncRead == false && asyncWrite == false}.
-     */
-    private final ExecutorService pool;
+    @Nonnull
+    private final ExecutorService writePool;
 
     /**
      * Constructs a new {@code CaffeineManualCache}.
@@ -64,15 +61,9 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
      */
     protected CaffeineManualCache(C cache, boolean asyncRead, boolean asyncWrite) {
         this.cache = cache;
-        this.asyncRead = asyncRead;
-        this.asyncWrite = asyncWrite;
 
-        if (asyncRead || asyncWrite) {
-            this.pool = MoreExecutors.newFixedThreadPool();
-        }
-        else {
-            this.pool = null;
-        }
+        this.readPool = asyncRead ? MoreExecutors.newFixedThreadPool() : MoreExecutors.newDirectPool();
+        this.writePool = asyncWrite ? MoreExecutors.newFixedThreadPool() : MoreExecutors.newDirectPool();
     }
 
     @Nullable
@@ -187,23 +178,11 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
      * @param task the read operation
      * @param <T>  the type of the read value
      *
-     * @return the read value
+     * @return the result value
      */
     protected <T> T performRead(Callable<T> task) {
-        try {
-            if (asyncRead) {
-                return pool.submit(task).get();
-            }
-            else {
-                return task.call();
-            }
-        }
-        catch (InterruptedException e) {
-            throw Throwables.wrap(e, IllegalStateException.class);
-        }
-        catch (Exception e) {
-            throw Throwables.wrap(e, RuntimeException.class);
-        }
+        Future<T> future = readPool.submit(task);
+        return getResult(future);
     }
 
     /**
@@ -212,11 +191,26 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
      * @param task the write operation
      */
     protected void performWrite(Runnable task) {
-        if (asyncWrite) {
-            pool.submit(task);
+        writePool.submit(task);
+    }
+
+    /**
+     * Waits and returns the result of the specified {@code future}.
+     *
+     * @param future the future
+     * @param <T>    the type of the read value
+     *
+     * @return the result value
+     */
+    private <T> T getResult(Future<T> future) {
+        try {
+            return future.get();
         }
-        else {
-            task.run();
+        catch (InterruptedException e) {
+            throw Throwables.wrap(e, IllegalStateException.class);
+        }
+        catch (Exception e) {
+            throw Throwables.wrap(e, RuntimeException.class);
         }
     }
 }
