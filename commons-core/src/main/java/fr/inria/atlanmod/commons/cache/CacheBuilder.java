@@ -52,6 +52,22 @@ public interface CacheBuilder<K, V> {
     }
 
     /**
+     * Enables the asynchronous execution of read operations.
+     *
+     * @return this builder (for chaining)
+     */
+    @Nonnull
+    CacheBuilder<K, V> asyncRead();
+
+    /**
+     * Enables the asynchronous execution of write operations.
+     *
+     * @return this builder (for chaining)
+     */
+    @Nonnull
+    CacheBuilder<K, V> asyncWrite();
+
+    /**
      * Enables the accumulation of {@link CacheStats} during the operation of the cache.
      * <p>
      * Without this {@link Cache#stats} will return zero for all statistics. Note that recording statistics requires
