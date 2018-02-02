@@ -24,14 +24,14 @@ import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
  * @param <V> the type of mapped values
  */
 @ParametersAreNonnullByDefault
-class CaffeineLoadingCache<K, V> extends CaffeineManualCache<K, V> {
+class CaffeineLoadingCache<C extends com.github.benmanes.caffeine.cache.LoadingCache<K, V>, K, V> extends CaffeineManualCache<C, K, V> {
 
     /**
      * Constructs a new {@code CaffeineLoadingCache}.
      *
      * @param cache the internal cache implementation
      */
-    protected CaffeineLoadingCache(com.github.benmanes.caffeine.cache.LoadingCache<K, V> cache) {
+    protected CaffeineLoadingCache(C cache) {
         super(cache);
     }
 
@@ -40,7 +40,7 @@ class CaffeineLoadingCache<K, V> extends CaffeineManualCache<K, V> {
     public V get(K key) {
         checkNotNull(key, "key");
 
-        return ((com.github.benmanes.caffeine.cache.LoadingCache<K, V>) cache).get(key);
+        return cache.get(key);
     }
 
     @Nonnull
@@ -48,13 +48,13 @@ class CaffeineLoadingCache<K, V> extends CaffeineManualCache<K, V> {
     public Map<K, V> getAll(Iterable<? extends K> keys) {
         checkNotNull(keys, "keys");
 
-        return ((com.github.benmanes.caffeine.cache.LoadingCache<K, V>) cache).getAll(keys);
+        return cache.getAll(keys);
     }
 
     @Override
     public void refresh(K key) {
         checkNotNull(key, "key");
 
-        ((com.github.benmanes.caffeine.cache.LoadingCache<K, V>) cache).refresh(key);
+        cache.refresh(key);
     }
 }

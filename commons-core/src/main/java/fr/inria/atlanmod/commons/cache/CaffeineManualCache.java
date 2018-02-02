@@ -25,19 +25,19 @@ import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
  * @param <V> the type of mapped values
  */
 @ParametersAreNonnullByDefault
-class CaffeineManualCache<K, V> implements Cache<K, V> {
+class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, V>, K, V> implements Cache<K, V> {
 
     /**
      * The internal cache implementation.
      */
-    protected final com.github.benmanes.caffeine.cache.Cache<K, V> cache;
+    protected final C cache;
 
     /**
      * Constructs a new {@code CaffeineManualCache}.
      *
      * @param cache the internal cache implementation
      */
-    protected CaffeineManualCache(com.github.benmanes.caffeine.cache.Cache<K, V> cache) {
+    protected CaffeineManualCache(C cache) {
         this.cache = cache;
     }
 
