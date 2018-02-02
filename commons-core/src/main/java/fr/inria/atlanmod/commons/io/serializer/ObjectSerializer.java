@@ -50,7 +50,7 @@ final class ObjectSerializer<T> extends AbstractSerializer<T> {
     }
 
     @Override
-    public void serialize(T t, DataOutput out) throws IOException {
+    public void serialize(T t, @WillNotClose DataOutput out) throws IOException {
         checkInstanceOf(t, Serializable.class, "Requires a Serializable payload but received an object of type %s", t.getClass().getName());
 
         if (ObjectOutput.class.isInstance(out)) {
@@ -60,13 +60,13 @@ final class ObjectSerializer<T> extends AbstractSerializer<T> {
             serialize(t, OutputStream.class.cast(out));
         }
         else {
-            throw new IllegalStateException(String.format("Unknown stream of type %s", out.getClass().getName()));
+            throw new IllegalArgumentException(String.format("Unknown stream of type %s", out.getClass().getName()));
         }
     }
 
     @Nonnull
     @Override
-    public T deserialize(DataInput in) throws IOException {
+    public T deserialize(@WillNotClose DataInput in) throws IOException {
         if (ObjectInput.class.isInstance(in)) {
             return deserialize(ObjectInput.class.cast(in));
         }
@@ -74,7 +74,7 @@ final class ObjectSerializer<T> extends AbstractSerializer<T> {
             return deserialize(InputStream.class.cast(in));
         }
         else {
-            throw new IllegalStateException(String.format("Unknown stream of type %s", in.getClass().getName()));
+            throw new IllegalArgumentException(String.format("Unknown stream of type %s", in.getClass().getName()));
         }
     }
 

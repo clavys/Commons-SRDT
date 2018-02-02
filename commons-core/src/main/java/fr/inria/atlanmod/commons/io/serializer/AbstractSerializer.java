@@ -18,6 +18,7 @@ import java.io.OutputStream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.WillNotClose;
 
 /**
  * An abstract {@link Serializer} for objects of type {@code T}.
@@ -42,7 +43,7 @@ public abstract class AbstractSerializer<T> implements Serializer<T> {
     }
 
     @Override
-    public void serialize(T t, OutputStream os) throws IOException {
+    public void serialize(T t, @WillNotClose OutputStream os) throws IOException {
         FSTObjectOutput out = FST.getObjectOutput(os);
         serialize(t, out);
         out.flush();
@@ -57,7 +58,7 @@ public abstract class AbstractSerializer<T> implements Serializer<T> {
 
     @Nonnull
     @Override
-    public T deserialize(InputStream is) throws IOException {
+    public T deserialize(@WillNotClose InputStream is) throws IOException {
         FSTObjectInput in = FST.getObjectInput(is);
         return deserialize(in);
     }

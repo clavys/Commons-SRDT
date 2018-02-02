@@ -8,9 +8,12 @@
 
 package fr.inria.atlanmod.commons.reflect;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 /**
  * Exception thrown when an error occurred when using reflection.
  */
+@ParametersAreNonnullByDefault
 public class ReflectionException extends RuntimeException {
 
     @SuppressWarnings("JavaDoc")
