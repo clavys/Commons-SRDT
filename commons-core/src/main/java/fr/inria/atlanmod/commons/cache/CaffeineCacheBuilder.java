@@ -34,34 +34,10 @@ final class CaffeineCacheBuilder<K, V> implements CacheBuilder<K, V> {
     private final com.github.benmanes.caffeine.cache.Caffeine<Object, Object> builder;
 
     /**
-     * {@code true} if read operations should be performed asynchronously.
-     */
-    private boolean asyncRead;
-
-    /**
-     * {@code true} if write operations should be performed asynchronously.
-     */
-    private boolean asyncWrite;
-
-    /**
      * Constructs a new {@code CacheBuilder}.
      */
     protected CaffeineCacheBuilder() {
         builder = com.github.benmanes.caffeine.cache.Caffeine.newBuilder();
-    }
-
-    @Nonnull
-    @Override
-    public CacheBuilder<K, V> asyncRead() {
-        this.asyncRead = true;
-        return this;
-    }
-
-    @Nonnull
-    @Override
-    public CacheBuilder<K, V> asyncWrite() {
-        this.asyncWrite = true;
-        return this;
     }
 
     @Nonnull
@@ -120,15 +96,14 @@ final class CaffeineCacheBuilder<K, V> implements CacheBuilder<K, V> {
     @Nonnull
     @Override
     public <K1 extends K, V1 extends V> Cache<K1, V1> build() {
-        com.github.benmanes.caffeine.cache.Cache<K1, V1> cache = builder.build();
-        return new CaffeineManualCache<>(cache, asyncRead, asyncWrite);
+        return new CaffeineManualCache<>(builder.build());
     }
 
     @Nonnull
     @Override
     public <K1 extends K, V1 extends V> Cache<K1, V1> build(Function<? super K1, ? extends V1> mappingFunction) {
         checkNotNull(mappingFunction, "mappingFunction");
-        com.github.benmanes.caffeine.cache.LoadingCache<K1, V1> loadingCache = builder.build(mappingFunction::apply);
-        return new CaffeineLoadingCache<>(loadingCache, asyncRead, asyncWrite);
+
+        return new CaffeineLoadingCache<>(builder.build(mappingFunction::apply));
     }
 }

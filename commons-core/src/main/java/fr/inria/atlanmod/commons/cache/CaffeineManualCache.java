@@ -8,14 +8,8 @@
 
 package fr.inria.atlanmod.commons.cache;
 
-import fr.inria.atlanmod.commons.Throwables;
-import fr.inria.atlanmod.commons.concurrent.MoreExecutors;
-
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -41,29 +35,12 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
     protected final C cache;
 
     /**
-     * The pool used to perform read operations.
-     */
-    @Nonnull
-    private final ExecutorService readPool;
-
-    /**
-     * The pool used to perform write operations.
-     */
-    @Nonnull
-    private final ExecutorService writePool;
-
-    /**
      * Constructs a new {@code CaffeineManualCache}.
      *
-     * @param cache      the internal cache implementation
-     * @param asyncRead  {@code true} if read operations should be performed asynchronously
-     * @param asyncWrite {@code true} if write operations should be performed asynchronously
+     * @param cache the internal cache implementation
      */
-    protected CaffeineManualCache(C cache, boolean asyncRead, boolean asyncWrite) {
+    protected CaffeineManualCache(C cache) {
         this.cache = cache;
-
-        this.readPool = asyncRead ? MoreExecutors.newFixedThreadPool() : MoreExecutors.newDirectPool();
-        this.writePool = asyncWrite ? MoreExecutors.newFixedThreadPool() : MoreExecutors.newDirectPool();
     }
 
     @Nullable
@@ -71,7 +48,7 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
     public V get(K key) {
         checkNotNull(key, "key");
 
-        return performRead(() -> cache.getIfPresent(key));
+        return cache.getIfPresent(key);
     }
 
     @Override
@@ -79,7 +56,7 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
         checkNotNull(key, "key");
         checkNotNull(mappingFunction, "mappingFunction");
 
-        return performRead(() -> cache.get(key, mappingFunction));
+        return cache.get(key, mappingFunction);
     }
 
     @Nonnull
@@ -87,7 +64,7 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
     public Map<K, V> getAll(Iterable<? extends K> keys) {
         checkNotNull(keys, "keys");
 
-        return performRead(() -> cache.getAllPresent(keys));
+        return cache.getAllPresent(keys);
     }
 
     @Override
@@ -95,15 +72,7 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
         checkNotNull(key, "key");
         checkNotNull(value, "value");
 
-        performWrite(() -> cache.put(key, value));
-    }
-
-    @Override
-    public void putIfAbsent(K key, V value) {
-        checkNotNull(key, "key");
-        checkNotNull(value, "value");
-
-        performWrite(() -> cache.get(key, k -> value));
+        cache.put(key, value);
     }
 
     @Override
@@ -115,31 +84,26 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
     public void putAll(Map<? extends K, ? extends V> map) {
         checkNotNull(map, "map");
 
-        performWrite(() -> cache.putAll(map));
+        cache.putAll(map);
     }
 
     @Override
     public void invalidate(K key) {
         checkNotNull(key, "key");
 
-        performWrite(() -> cache.invalidate(key));
+        cache.invalidate(key);
     }
 
     @Override
     public void invalidateAll(Iterable<? extends K> keys) {
         checkNotNull(keys, "keys");
 
-        performWrite(() -> cache.invalidateAll(keys));
+        cache.invalidateAll(keys);
     }
 
     @Override
     public void invalidateAll() {
-        performWrite(cache::invalidateAll);
-    }
-
-    @Override
-    public boolean contains(K key) {
-        return nonNull(get(key));
+        cache.invalidateAll();
     }
 
     @Override
@@ -149,7 +113,7 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
 
     @Override
     public long size() {
-        return performRead(cache::estimatedSize);
+        return cache.estimatedSize();
     }
 
     @Override
@@ -159,19 +123,19 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
 
     @Override
     public void cleanUp() {
-        performWrite(cache::cleanUp);
+        cache.cleanUp();
     }
 
     @Nonnull
     @Override
     public ConcurrentMap<K, V> asMap() {
-        return performRead(cache::asMap);
+        return cache.asMap();
     }
 
     @Nonnull
     @Override
     public CacheStats stats() {
-        com.github.benmanes.caffeine.cache.stats.CacheStats stats = performRead(cache::stats);
+        com.github.benmanes.caffeine.cache.stats.CacheStats stats = cache.stats();
 
         return new CacheStats(
                 stats.hitCount(),
@@ -180,47 +144,5 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
                 stats.loadFailureCount(),
                 stats.totalLoadTime(),
                 stats.evictionCount());
-    }
-
-    /**
-     * Performs a read operation.
-     *
-     * @param task the read operation
-     * @param <T>  the type of the read value
-     *
-     * @return the result value
-     */
-    protected <T> T performRead(Callable<T> task) {
-        Future<T> future = readPool.submit(task);
-        return getResult(future);
-    }
-
-    /**
-     * Performs a write operation.
-     *
-     * @param task the write operation
-     */
-    protected void performWrite(Runnable task) {
-        writePool.submit(task);
-    }
-
-    /**
-     * Waits and returns the result of the specified {@code future}.
-     *
-     * @param future the future
-     * @param <T>    the type of the read value
-     *
-     * @return the result value
-     */
-    private <T> T getResult(Future<T> future) {
-        try {
-            return future.get();
-        }
-        catch (InterruptedException e) {
-            throw Throwables.wrap(e, IllegalStateException.class);
-        }
-        catch (Exception e) {
-            throw Throwables.wrap(e, RuntimeException.class);
-        }
     }
 }

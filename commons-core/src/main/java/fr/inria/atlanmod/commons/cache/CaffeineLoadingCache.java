@@ -29,12 +29,10 @@ class CaffeineLoadingCache<C extends com.github.benmanes.caffeine.cache.LoadingC
     /**
      * Constructs a new {@code CaffeineLoadingCache}.
      *
-     * @param cache      the internal cache implementation
-     * @param asyncRead  {@code true} if read operations should be performed asynchronously
-     * @param asyncWrite {@code true} if write operations should be performed asynchronously
+     * @param cache the internal cache implementation
      */
-    protected CaffeineLoadingCache(C cache, boolean asyncRead, boolean asyncWrite) {
-        super(cache, asyncRead, asyncWrite);
+    protected CaffeineLoadingCache(C cache) {
+        super(cache);
     }
 
     @Nullable
@@ -42,7 +40,7 @@ class CaffeineLoadingCache<C extends com.github.benmanes.caffeine.cache.LoadingC
     public V get(K key) {
         checkNotNull(key, "key");
 
-        return performRead(() -> cache.get(key));
+        return cache.get(key);
     }
 
     @Nonnull
@@ -50,13 +48,13 @@ class CaffeineLoadingCache<C extends com.github.benmanes.caffeine.cache.LoadingC
     public Map<K, V> getAll(Iterable<? extends K> keys) {
         checkNotNull(keys, "keys");
 
-        return performRead(() -> cache.getAll(keys));
+        return cache.getAll(keys);
     }
 
     @Override
     public void refresh(K key) {
         checkNotNull(key, "key");
 
-        performWrite(() -> cache.refresh(key));
+        cache.refresh(key);
     }
 }
