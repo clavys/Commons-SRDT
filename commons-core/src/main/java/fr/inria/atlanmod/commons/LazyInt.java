@@ -9,6 +9,7 @@
 package fr.inria.atlanmod.commons;
 
 import java.util.function.IntSupplier;
+import java.util.function.IntUnaryOperator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -88,6 +89,16 @@ public final class LazyInt {
      */
     public void update(int newValue) {
         value = newValue;
+        isLoaded = true;
+    }
+
+    /**
+     * Updates the wrapped value with a {@link IntUnaryOperator}.
+     *
+     * @param updateOperator the operator to update the wrapped value
+     */
+    public void update(IntUnaryOperator updateOperator) {
+        value = updateOperator.applyAsInt(getAsInt());
         isLoaded = true;
     }
 

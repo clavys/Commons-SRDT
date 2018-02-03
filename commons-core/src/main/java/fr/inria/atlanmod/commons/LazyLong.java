@@ -9,6 +9,7 @@
 package fr.inria.atlanmod.commons;
 
 import java.util.function.LongSupplier;
+import java.util.function.LongUnaryOperator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -88,6 +89,16 @@ public final class LazyLong {
      */
     public void update(long newValue) {
         value = newValue;
+        isLoaded = true;
+    }
+
+    /**
+     * Updates the wrapped value with a {@link LongUnaryOperator}.
+     *
+     * @param updateOperator the operator to update the wrapped value
+     */
+    public void update(LongUnaryOperator updateOperator) {
+        value = updateOperator.applyAsLong(getAsLong());
         isLoaded = true;
     }
 

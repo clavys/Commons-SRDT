@@ -9,6 +9,7 @@
 package fr.inria.atlanmod.commons;
 
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -94,6 +95,16 @@ public final class Lazy<T> {
      */
     public void update(@Nullable T newValue) {
         value = newValue;
+        isLoaded = true;
+    }
+
+    /**
+     * Updates the wrapped value with a {@link UnaryOperator}.
+     *
+     * @param updateOperator the operator to update the wrapped value
+     */
+    public void update(UnaryOperator<T> updateOperator) {
+        value = updateOperator.apply(get());
         isLoaded = true;
     }
 

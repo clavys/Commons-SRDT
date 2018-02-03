@@ -9,6 +9,7 @@
 package fr.inria.atlanmod.commons;
 
 import java.util.function.DoubleSupplier;
+import java.util.function.DoubleUnaryOperator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -88,6 +89,16 @@ public final class LazyDouble {
      */
     public void update(double newValue) {
         value = newValue;
+        isLoaded = true;
+    }
+
+    /**
+     * Updates the wrapped value with a {@link DoubleUnaryOperator}.
+     *
+     * @param updateOperator the operator to update the wrapped value
+     */
+    public void update(DoubleUnaryOperator updateOperator) {
+        value = updateOperator.applyAsDouble(getAsDouble());
         isLoaded = true;
     }
 
