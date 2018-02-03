@@ -8,6 +8,7 @@
 
 package fr.inria.atlanmod.commons.log;
 
+import fr.inria.atlanmod.commons.Lazy;
 import fr.inria.atlanmod.commons.Throwables;
 import fr.inria.atlanmod.commons.annotation.Static;
 import fr.inria.atlanmod.commons.cache.Cache;
@@ -25,8 +26,8 @@ import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
 /**
  * The factory that creates {@link Logger} instances.
  * <p>
- * It also provides static methods for logging without declaring a specific instance. In this case, the {@link #root()}
- * is used by default.
+ * It also provides static methods for logging without declaring a specific instance. In this case, the
+ * {@link #root() root logger} is used by default.
  */
 @Static
 @ThreadSafe
@@ -41,6 +42,12 @@ public final class Log {
             .softValues()
             .build(AsyncLogger::new);
 
+    /**
+     * The cached root {@link Logger}.
+     */
+    @Nonnull
+    private static final Lazy<Logger> ROOT = Lazy.with(() -> forName(Strings.EMPTY));
+
     private Log() {
         throw Throwables.notInstantiableClass(getClass());
     }
@@ -54,7 +61,7 @@ public final class Log {
      */
     @Nonnull
     public static Logger root() {
-        return forName(Strings.EMPTY);
+        return ROOT.get();
     }
 
     /**
@@ -67,6 +74,18 @@ public final class Log {
     @Nonnull
     public static Logger forName(@Nonnull String name) {
         return LOGGERS.get(checkNotNull(name, "name"));
+    }
+
+    /**
+     * Logs an object at the {@link Level#TRACE TRACE} level, using the root logger.
+     *
+     * @param obj the object to log
+     *
+     * @see #root()
+     * @see Logger#trace(Object)
+     */
+    public static void trace(Object obj) {
+        root().trace(obj);
     }
 
     /**
@@ -137,6 +156,18 @@ public final class Log {
     }
 
     /**
+     * Logs an object at the {@link Level#DEBUG DEBUG} level, using the root logger.
+     *
+     * @param obj the object to log
+     *
+     * @see #root()
+     * @see Logger#debug(Object)
+     */
+    public static void debug(Object obj) {
+        root().debug(obj);
+    }
+
+    /**
      * Logs a message at the {@link Level#DEBUG DEBUG} level, using the root logger.
      *
      * @param message the message to log
@@ -201,6 +232,18 @@ public final class Log {
      */
     public static void debug(Throwable e, CharSequence message, Object... params) {
         root().debug(e, message, params);
+    }
+
+    /**
+     * Logs an object at the {@link Level#INFO INFO} level, using the root logger.
+     *
+     * @param obj the object to log
+     *
+     * @see #root()
+     * @see Logger#info(Object)
+     */
+    public static void info(Object obj) {
+        root().info(obj);
     }
 
     /**
@@ -270,6 +313,18 @@ public final class Log {
     }
 
     /**
+     * Logs an object at the {@link Level#WARN WARN} level, using the root logger.
+     *
+     * @param obj the object to log
+     *
+     * @see #root()
+     * @see Logger#warn(Object)
+     */
+    public static void warn(Object obj) {
+        root().warn(obj);
+    }
+
+    /**
      * Logs a message at the {@link Level#WARN WARN} level, using the root logger.
      *
      * @param message the message to log
@@ -333,6 +388,18 @@ public final class Log {
      */
     public static void warn(Throwable e, CharSequence message, Object... params) {
         root().warn(e, message, params);
+    }
+
+    /**
+     * Logs an object at the {@link Level#ERROR ERROR} level, using the root logger.
+     *
+     * @param obj the object to log
+     *
+     * @see #root()
+     * @see Logger#error(Object)
+     */
+    public static void error(Object obj) {
+        root().error(obj);
     }
 
     /**
@@ -400,6 +467,19 @@ public final class Log {
      */
     public static void error(Throwable e, CharSequence message, Object... params) {
         root().error(e, message, params);
+    }
+
+    /**
+     * Logs an object at the given {@code level}, using the root logger.
+     *
+     * @param level the logging level
+     * @param obj   the object to log
+     *
+     * @see #root()
+     * @see Logger#log(Level, Object)
+     */
+    public static void log(@Nonnull Level level, Object obj) {
+        root().log(level, obj);
     }
 
     /**

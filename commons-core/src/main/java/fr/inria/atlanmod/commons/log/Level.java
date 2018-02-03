@@ -13,6 +13,7 @@ import fr.inria.atlanmod.commons.function.TriConsumer;
 import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
@@ -74,22 +75,23 @@ public enum Level {
     }
 
     /**
-     * Returns the logging function.
+     * Logs a {@code message} at this level using the {@code logger}, including the stack trace of the given
+     * {@link Throwable} if present.
      *
-     * @return the logging function
+     * @param logger  the logger where to send message
+     * @param message the message to log
+     * @param e       the exception to log, including its stack trace
      */
-    @Nonnull
-    TriConsumer<org.slf4j.Logger, String, Throwable> logFunction() {
-        return loggingFunction;
+    void logWith(org.slf4j.Logger logger, @Nullable String message, @Nullable Throwable e) {
+        loggingFunction.accept(logger, message, e);
     }
 
     /**
-     * Returns the predicate used to determine if this level is enabled for a {@link org.slf4j.Logger}.
+     * Returns {@code true} if this level is enabled for the {@code logger}.
      *
-     * @return the predicate
+     * @return {@code true} if this level is enabled for the {@code logger}
      */
-    @Nonnull
-    Predicate<org.slf4j.Logger> isEnablePredicate() {
-        return isEnabledPredicate;
+    boolean isEnabledFor(org.slf4j.Logger logger) {
+        return isEnabledPredicate.test(logger);
     }
 }

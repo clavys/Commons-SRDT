@@ -56,6 +56,15 @@ public interface Logger {
     Object[] NO_PARAMS = new Object[0];
 
     /**
+     * Logs an object at the {@link Level#TRACE TRACE} level.
+     *
+     * @param obj the object to log
+     */
+    default void trace(Object obj) {
+        trace(String.valueOf(obj));
+    }
+
+    /**
      * Logs a message at the {@link Level#TRACE TRACE} level.
      *
      * @param message the message to log
@@ -103,6 +112,15 @@ public interface Logger {
      */
     default void trace(Throwable e, CharSequence message, Object... params) {
         log(Level.TRACE, e, message, params);
+    }
+
+    /**
+     * Logs an object at the {@link Level#DEBUG DEBUG} level.
+     *
+     * @param obj the object to log
+     */
+    default void debug(Object obj) {
+        debug(String.valueOf(obj));
     }
 
     /**
@@ -156,6 +174,15 @@ public interface Logger {
     }
 
     /**
+     * Logs an object at the {@link Level#INFO INFO} level.
+     *
+     * @param obj the object to log
+     */
+    default void info(Object obj) {
+        info(String.valueOf(obj));
+    }
+
+    /**
      * Logs a message at the {@link Level#INFO INFO} level.
      *
      * @param message the message to log
@@ -203,6 +230,15 @@ public interface Logger {
      */
     default void info(Throwable e, CharSequence message, Object... params) {
         log(Level.INFO, e, message, params);
+    }
+
+    /**
+     * Logs an object at the {@link Level#WARN WARN} level.
+     *
+     * @param obj the object to log
+     */
+    default void warn(Object obj) {
+        warn(String.valueOf(obj));
     }
 
     /**
@@ -256,6 +292,15 @@ public interface Logger {
     }
 
     /**
+     * Logs an object at the {@link Level#ERROR ERROR} level.
+     *
+     * @param obj the object to log
+     */
+    default void error(Object obj) {
+        error(String.valueOf(obj));
+    }
+
+    /**
      * Logs a message at the {@link Level#ERROR ERROR} level.
      *
      * @param message the message to log
@@ -303,6 +348,16 @@ public interface Logger {
      */
     default void error(Throwable e, CharSequence message, Object... params) {
         log(Level.ERROR, e, message, params);
+    }
+
+    /**
+     * Logs an object at the given {@code level}.
+     *
+     * @param level the logging level
+     * @param obj   the object to log
+     */
+    default void log(@Nonnull Level level, Object obj) {
+        log(level, String.valueOf(obj));
     }
 
     /**

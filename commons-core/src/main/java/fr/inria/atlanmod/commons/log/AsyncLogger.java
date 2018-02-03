@@ -66,15 +66,14 @@ class AsyncLogger implements Logger {
 
     @Override
     public void log(Level level, @Nullable Throwable e, @Nullable CharSequence message, @Nullable Object... params) {
-        if (!level.isEnablePredicate().test(logger)) {
+        if (!level.isEnabledFor(logger)) {
             // Don't send the request if the associated level is not enabled
             return;
         }
 
-        final Function<String, String> formatFunc = m ->
-                nonNull(params) && params.length > 0
-                        ? MessageFormat.format(m, params)
-                        : m;
+        final Function<String, String> formatFunc = m -> nonNull(params) && params.length > 0
+                ? MessageFormat.format(m, params)
+                : m;
 
         execute(() -> {
             try {
@@ -83,7 +82,7 @@ class AsyncLogger implements Logger {
                         .map(formatFunc)
                         .orElse(null);
 
-                level.logFunction().accept(logger, formattedMessage, e);
+                level.logWith(logger, formattedMessage, e);
             }
             catch (Exception fe) {
                 Log.error(fe);

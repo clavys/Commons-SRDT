@@ -21,7 +21,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * @param <T> the type of the embed value
  */
 @ParametersAreNonnullByDefault
-public final class LazyObject<T> {
+public final class Lazy<T> {
 
     /**
      * The function used to load the value.
@@ -41,11 +41,11 @@ public final class LazyObject<T> {
     private boolean isLoaded;
 
     /**
-     * Constructs a new {@code LazyObject}.
+     * Constructs a new {@code Lazy}.
      *
      * @param loadFunction the function used to load the value
      */
-    private LazyObject(Supplier<T> loadFunction) {
+    private Lazy(Supplier<T> loadFunction) {
         this.loadFunction = loadFunction;
     }
 
@@ -58,8 +58,8 @@ public final class LazyObject<T> {
      * @return a new lazy object
      */
     @Nonnull
-    public static <T> LazyObject<T> of(T value) {
-        return new LazyObject<>(() -> value);
+    public static <T> Lazy<T> of(T value) {
+        return new Lazy<>(() -> value);
     }
 
     /**
@@ -71,8 +71,8 @@ public final class LazyObject<T> {
      * @return a new lazy object
      */
     @Nonnull
-    public static <T> LazyObject<T> with(Supplier<T> loadFunction) {
-        return new LazyObject<>(loadFunction);
+    public static <T> Lazy<T> with(Supplier<T> loadFunction) {
+        return new Lazy<>(loadFunction);
     }
 
     /**
