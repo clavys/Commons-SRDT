@@ -8,6 +8,7 @@
 
 package fr.inria.atlanmod.commons;
 
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
@@ -115,5 +116,16 @@ public final class Lazy<T> {
      */
     public boolean isLoaded() {
         return isLoaded;
+    }
+
+    /**
+     * If a value is loaded, invoke the specified {@code consumer} with the value, otherwise do nothing.
+     *
+     * @param consumer action to be executed if a value is present
+     */
+    public void ifLoaded(Consumer<T> consumer) {
+        if (isLoaded) {
+            consumer.accept(value);
+        }
     }
 }

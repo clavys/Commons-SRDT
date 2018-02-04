@@ -8,6 +8,7 @@
 
 package fr.inria.atlanmod.commons;
 
+import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
 import java.util.function.DoubleUnaryOperator;
 
@@ -109,5 +110,16 @@ public final class LazyDouble {
      */
     public boolean isLoaded() {
         return isLoaded;
+    }
+
+    /**
+     * If a value is loaded, invoke the specified {@code consumer} with the value, otherwise do nothing.
+     *
+     * @param consumer action to be executed if a value is present
+     */
+    public void ifLoaded(DoubleConsumer consumer) {
+        if (isLoaded) {
+            consumer.accept(value);
+        }
     }
 }

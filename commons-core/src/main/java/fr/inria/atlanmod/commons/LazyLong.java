@@ -8,6 +8,7 @@
 
 package fr.inria.atlanmod.commons;
 
+import java.util.function.LongConsumer;
 import java.util.function.LongSupplier;
 import java.util.function.LongUnaryOperator;
 
@@ -109,5 +110,16 @@ public final class LazyLong {
      */
     public boolean isLoaded() {
         return isLoaded;
+    }
+
+    /**
+     * If a value is loaded, invoke the specified {@code consumer} with the value, otherwise do nothing.
+     *
+     * @param consumer action to be executed if a value is present
+     */
+    public void ifLoaded(LongConsumer consumer) {
+        if (isLoaded) {
+            consumer.accept(value);
+        }
     }
 }

@@ -8,6 +8,7 @@
 
 package fr.inria.atlanmod.commons;
 
+import java.util.function.IntConsumer;
 import java.util.function.IntSupplier;
 import java.util.function.IntUnaryOperator;
 
@@ -109,5 +110,16 @@ public final class LazyInt {
      */
     public boolean isLoaded() {
         return isLoaded;
+    }
+
+    /**
+     * If a value is loaded, invoke the specified {@code consumer} with the value, otherwise do nothing.
+     *
+     * @param consumer action to be executed if a value is present
+     */
+    public void ifLoaded(IntConsumer consumer) {
+        if (isLoaded) {
+            consumer.accept(value);
+        }
     }
 }

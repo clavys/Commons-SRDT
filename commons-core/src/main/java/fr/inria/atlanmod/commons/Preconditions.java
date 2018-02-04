@@ -196,7 +196,7 @@ public final class Preconditions {
      * Ensures that a {@code collection} passed as a parameter to the calling method is not {@code null} and does not contains any {@code null} element.
      *
      * @param collection a collection
-
+     *
      * @return the non-null collection that was validated
      *
      * @throws NullPointerException if {@code collection} is null or contains at least one {@code null} element
