@@ -298,14 +298,14 @@ public final class CacheStats {
     @Override
     public String toString() {
         return String.format("CacheStats {"
-                        + "Hit = %d (%.2f%%), "
-                        + "Miss = %d (%.2f%%), "
+                        + "Hit = %d (%.0f%%), "
+                        + "Miss = %d (%.0f%%), "
                         + "Eviction Count = %d"
                         + '}',
                 hitCount(),
-                hitRate(),
+                hitRate() * 100,
                 missCount(),
-                missRate(),
+                missRate() * 100,
                 evictionCount());
     }
 }
