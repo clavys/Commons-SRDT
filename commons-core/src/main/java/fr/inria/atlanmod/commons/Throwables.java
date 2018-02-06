@@ -10,6 +10,8 @@ package fr.inria.atlanmod.commons;
 
 import fr.inria.atlanmod.commons.annotation.Static;
 
+import java.lang.reflect.InvocationTargetException;
+
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -38,18 +40,22 @@ public final class Throwables {
      * @return a throwable of the given {@code type}
      */
     @Nonnull
-    public static <E extends Throwable> E wrap(Throwable throwable, Class<E> type) {
+    public static <T extends Throwable, U extends Throwable> U wrap(T throwable, Class<U> type) {
         checkNotNull(throwable, "throwable");
         checkNotNull(type, "type");
 
         try {
-            Throwable e = type.isInstance(throwable)
-                    ? throwable
-                    : type.newInstance().initCause(throwable);
-
+            Throwable e;
+            if (type.isInstance(throwable)) {
+                e = throwable;
+            }
+            else {
+                // Use the constructor `Exception(Throwable)`
+                e = type.getConstructor(Throwable.class).newInstance(throwable);
+            }
             return type.cast(e);
         }
-        catch (IllegalAccessException | InstantiationException re) {
+        catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException re) {
             throw new IllegalStateException(re); // Should never happen
         }
     }
