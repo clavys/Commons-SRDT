@@ -128,4 +128,13 @@ public final class Lazy<T> {
             consumer.accept(value);
         }
     }
+
+    /**
+     * Unloads the wrapped value.
+     * If the value is not loaded, then this method does nothing.
+     */
+    public void unload() {
+        value = null;
+        isLoaded = false;
+    }
 }

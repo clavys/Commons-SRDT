@@ -99,4 +99,13 @@ public final class LazyBoolean {
     public boolean isLoaded() {
         return isLoaded;
     }
+
+    /**
+     * Unloads the wrapped value.
+     * If the value is not loaded, then this method does nothing.
+     */
+    public void unload() {
+        value = false;
+        isLoaded = false;
+    }
 }

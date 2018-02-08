@@ -122,4 +122,13 @@ public final class LazyInt {
             consumer.accept(value);
         }
     }
+
+    /**
+     * Unloads the wrapped value.
+     * If the value is not loaded, then this method does nothing.
+     */
+    public void unload() {
+        value = 0;
+        isLoaded = false;
+    }
 }
