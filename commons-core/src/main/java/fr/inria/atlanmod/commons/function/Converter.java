@@ -13,6 +13,8 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
+
 /**
  * A specialized {@link Function} that converts an object of type {@code T} to another of type {@code R}.
  * <p>
@@ -61,6 +63,9 @@ public interface Converter<T, R> extends Function<T, R> {
      */
     @Nonnull
     static <T, R> Converter<T, R> from(Function<? super T, ? extends R> convertFunc, Function<? super R, ? extends T> revertFunc) {
+        checkNotNull(convertFunc, "convertFunc");
+        checkNotNull(revertFunc, "revertFunc");
+
         return new Converter<T, R>() {
             @Override
             public R convert(T t) {
@@ -88,6 +93,9 @@ public interface Converter<T, R> extends Function<T, R> {
      */
     @Nonnull
     static <T, U, R> Converter<T, R> compose(Converter<T, U> before, Converter<U, R> after) {
+        checkNotNull(before, "before");
+        checkNotNull(after, "after");
+
         return new Converter<T, R>() {
             @Override
             public R convert(T t) {
