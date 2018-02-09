@@ -41,9 +41,7 @@ public final class MoreIterators {
     public static boolean isEmpty(Iterator<?> iterator) {
         checkNotNull(iterator, "iterator");
 
-        return Collection.class.isInstance(iterator)
-                ? Collection.class.cast(iterator).isEmpty()
-                : !iterator.hasNext();
+        return !iterator.hasNext();
     }
 
     /**
