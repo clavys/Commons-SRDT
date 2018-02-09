@@ -13,6 +13,8 @@ import java.util.function.BiFunction;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
+
 /**
  * A specialized {@link BiFunction} that converts an object of type {@code T} to another of type {@code R}, by using an
  * object of type {@code U}.
@@ -66,6 +68,9 @@ public interface BiConverter<T, U, R> extends BiFunction<T, U, R> {
      */
     @Nonnull
     static <T, U, R> BiConverter<T, U, R> from(BiFunction<? super T, ? super U, ? extends R> convertFunc, BiFunction<? super R, ? super U, ? extends T> revertFunc) {
+        checkNotNull(convertFunc, "convertFunc");
+        checkNotNull(revertFunc, "revertFunc");
+
         return new BiConverter<T, U, R>() {
             @Nonnull
             @Override
