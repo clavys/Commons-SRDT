@@ -74,6 +74,33 @@ public interface Converter<T, R> extends Function<T, R> {
         };
     }
 
+    /**
+     * Returns a composed converter that first applies the {@code before} function to its input, and then applies the
+     * {@code after} function to the result. This behavior is inverted when calling {@link #revert(Object)}.
+     *
+     * @param before the first converter
+     * @param after  the second converter
+     * @param <T>    the type of input to the {@code before} converter, and to the composed function
+     * @param <U>    the intermediate type
+     * @param <R>    the type of output of the {@code after} converter, and of the composed function
+     *
+     * @return a composed converter
+     */
+    @Nonnull
+    static <T, U, R> Converter<T, R> compose(Converter<T, U> before, Converter<U, R> after) {
+        return new Converter<T, R>() {
+            @Override
+            public R convert(T t) {
+                return after.convert(before.convert(t));
+            }
+
+            @Override
+            public T revert(R r) {
+                return before.revert(after.revert(r));
+            }
+        };
+    }
+
     @Override
     default R apply(T t) {
         return convert(t);
