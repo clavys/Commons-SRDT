@@ -60,4 +60,9 @@ public class DelegatedIterator<T, R> implements Iterator<R> {
     public R next() {
         return mappingFunction.apply(delegate.next());
     }
+
+    @Override
+    public void remove() {
+        delegate.remove();
+    }
 }

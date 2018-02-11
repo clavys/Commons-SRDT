@@ -8,8 +8,9 @@
 
 package fr.inria.atlanmod.commons.collect;
 
+import fr.inria.atlanmod.commons.function.Converter;
+
 import java.util.ListIterator;
-import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -35,20 +36,20 @@ public class DelegatedListIterator<T, R> implements ListIterator<R> {
      * The function used to map elements from the delegated iterator.
      */
     @Nonnull
-    private final Function<T, R> mappingFunction;
+    private final Converter<T, R> converter;
 
     /**
      * Constructs a new {@code DelegatedIterator}.
      *
-     * @param delegate        the delegated list iterator
-     * @param mappingFunction the function used to map elements from the {@code delegate}
+     * @param delegate  the delegated list iterator
+     * @param converter the function used to map elements from the {@code delegate}
      */
-    public DelegatedListIterator(ListIterator<T> delegate, Function<T, R> mappingFunction) {
+    public DelegatedListIterator(ListIterator<T> delegate, Converter<T, R> converter) {
         checkNotNull(delegate, "delegate");
-        checkNotNull(mappingFunction, "mappingFunction");
+        checkNotNull(converter, "converter");
 
         this.delegate = delegate;
-        this.mappingFunction = mappingFunction;
+        this.converter = converter;
     }
 
     @Override
@@ -58,7 +59,7 @@ public class DelegatedListIterator<T, R> implements ListIterator<R> {
 
     @Override
     public R next() {
-        return mappingFunction.apply(delegate.next());
+        return converter.convert(delegate.next());
     }
 
     @Override
@@ -68,7 +69,7 @@ public class DelegatedListIterator<T, R> implements ListIterator<R> {
 
     @Override
     public R previous() {
-        return mappingFunction.apply(delegate.previous());
+        return converter.convert(delegate.previous());
     }
 
     @Override
@@ -83,16 +84,16 @@ public class DelegatedListIterator<T, R> implements ListIterator<R> {
 
     @Override
     public void remove() {
-        throw new UnsupportedOperationException("remove");
+        delegate.remove();
     }
 
     @Override
     public void set(R r) {
-        throw new UnsupportedOperationException("set");
+        delegate.set(converter.revert(r));
     }
 
     @Override
     public void add(R r) {
-        throw new UnsupportedOperationException("add");
+        delegate.add(converter.revert(r));
     }
 }

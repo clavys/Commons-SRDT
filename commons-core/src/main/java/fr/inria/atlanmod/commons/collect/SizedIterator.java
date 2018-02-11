@@ -83,4 +83,9 @@ public class SizedIterator<E> implements Iterator<E> {
 
         return mappingFunction.apply(index++);
     }
+
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException("remove");
+    }
 }

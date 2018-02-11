@@ -21,4 +21,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  */
 @ParametersAreNonnullByDefault
 public interface CloseableIterator<E> extends Iterator<E>, Closeable {
+
+    @Override
+    void close();
 }
