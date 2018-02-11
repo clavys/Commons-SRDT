@@ -11,7 +11,6 @@ package fr.inria.atlanmod.commons.collect;
 import fr.inria.atlanmod.commons.Throwables;
 import fr.inria.atlanmod.commons.annotation.Static;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Optional;
 
@@ -78,5 +77,19 @@ public final class MoreIterators {
         }
 
         return Optional.ofNullable(first);
+    }
+
+    /**
+     * Returns the first element contained in {@code iterator}.
+     *
+     * @param iterator the iterator
+     *
+     * @return an {@link Optional} containing the first element of the {@code iterator}, or {@link Optional#empty()} if
+     * the {@code iterator} is empty.
+     */
+    @Nonnull
+    public static <E> Optional<E> firstElement(Iterator<E> iterator) {
+        return iterator.hasNext() ? Optional.of(iterator.next()) : Optional.empty();
+
     }
 }

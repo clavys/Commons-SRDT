@@ -108,4 +108,19 @@ public final class MoreIterables {
     public static <E> Optional<E> onlyElement(Iterable<E> iterable) {
         return MoreIterators.onlyElement(iterable.iterator());
     }
+
+    /**
+     * Returns the first element contained in {@code iterable}.
+     *
+     * @param iterable the iterable
+     *
+     * @return an {@link Optional} containing the first element of the {@code iterable}, or {@link Optional#empty()} if
+     * the {@code iterable} is empty.
+     *
+     * @throws IllegalArgumentException if the {@code iterable} contains more than one element
+     */
+    @Nonnull
+    public static <E> Optional<E> firstElement(Iterable<E> iterable) {
+        return MoreIterators.firstElement(iterable.iterator());
+    }
 }
