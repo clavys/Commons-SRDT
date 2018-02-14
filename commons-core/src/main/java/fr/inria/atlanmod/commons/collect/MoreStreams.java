@@ -14,6 +14,8 @@ import fr.inria.atlanmod.commons.annotation.Static;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntUnaryOperator;
+import java.util.function.LongUnaryOperator;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -86,5 +88,35 @@ public final class MoreStreams {
         return Optional.of(stream.count())
                 .map(Long::intValue)
                 .filter(s -> s > 0);
+    }
+
+    /**
+     * Returns an unary operator to iterates over an {@link java.util.stream.IntStream} in the reverse direction.
+     *
+     * @param startInclusive the (inclusive) initial value
+     * @param endExclusive   the exclusive upper bound
+     *
+     * @return an unary operator
+     *
+     * @see java.util.stream.IntStream#range(int, int)
+     */
+    @Nonnull
+    public static IntUnaryOperator reverseOrder(int startInclusive, int endExclusive) {
+        return i -> endExclusive - i + startInclusive - 1;
+    }
+
+    /**
+     * Returns an unary operator to iterates over an {@link java.util.stream.LongStream} in the reverse direction.
+     *
+     * @param startInclusive the (inclusive) initial value
+     * @param endExclusive   the exclusive upper bound
+     *
+     * @return an unary operator
+     *
+     * @see java.util.stream.LongStream#range(long, long)
+     */
+    @Nonnull
+    public static LongUnaryOperator reverseOrder(long startInclusive, long endExclusive) {
+        return i -> endExclusive - i + startInclusive - 1;
     }
 }
