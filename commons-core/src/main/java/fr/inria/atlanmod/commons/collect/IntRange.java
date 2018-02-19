@@ -23,8 +23,8 @@ import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
 public interface IntRange {
 
     /**
-     * Creates a range that contains all values strictly greater than {@code lower} and strictly less than
-     * {@code upper}.
+     * Creates a range that contains all values strictly greater than {@code lower} and strictly less than {@code
+     * upper}.
      *
      * @param lower the lower bound of the range (exclusive)
      * @param upper the upper bound of the range (exclusive)
@@ -40,8 +40,8 @@ public interface IntRange {
     }
 
     /**
-     * Creates a range that contains all values greater than or equal to {@code lower} and less than or equal to
-     * {@code upper}.
+     * Creates a range that contains all values greater than or equal to {@code lower} and less than or equal to {@code
+     * upper}.
      *
      * @param lower the lower bound of the range (inclusive)
      * @param upper the upper bound of the range (inclusive)
@@ -57,8 +57,8 @@ public interface IntRange {
     }
 
     /**
-     * Creates a range that contains all values strictly greater than {@code lower} and less than or equal to
-     * {@code upper}.
+     * Creates a range that contains all values strictly greater than {@code lower} and less than or equal to {@code
+     * upper}.
      *
      * @param lower the lower bound of the range (exclusive)
      * @param upper the upper bound of the range (inclusive)
@@ -74,8 +74,8 @@ public interface IntRange {
     }
 
     /**
-     * Creates a range that contains all values greater than or equal to {@code lower} and strictly less than
-     * {@code upper}.
+     * Creates a range that contains all values greater than or equal to {@code lower} and strictly less than {@code
+     * upper}.
      *
      * @param lower the lower bound of the range (inclusive)
      * @param upper the upper bound of the range (exclusive)

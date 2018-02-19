@@ -57,8 +57,8 @@ public final class Booleans {
     }
 
     /**
-     * Returns the integer value of a boolean {@code value}.
-     * In other words, returns {@code 1} when {@code value == true}, {@code 0} otherwise.
+     * Returns the integer value of a boolean {@code value}. In other words, returns {@code 1} when {@code value ==
+     * true}, {@code 0} otherwise.
      *
      * @param value the boolean value
      *

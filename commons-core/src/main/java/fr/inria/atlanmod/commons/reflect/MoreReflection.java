@@ -65,7 +65,7 @@ public final class MoreReflection {
             }
         }
         catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            throw Throwables.wrap(e, ReflectionException.class);
+            throw new ReflectionException(e);
         }
 
         return instance;

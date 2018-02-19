@@ -8,8 +8,6 @@
 
 package fr.inria.atlanmod.commons.io.serializer;
 
-import fr.inria.atlanmod.commons.Throwables;
-
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -108,7 +106,7 @@ final class ObjectSerializer<T> extends AbstractSerializer<T> {
             return (T) in.readObject();
         }
         catch (ClassNotFoundException e) {
-            throw Throwables.wrap(e, IOException.class);
+            throw new IOException(e);
         }
     }
 }

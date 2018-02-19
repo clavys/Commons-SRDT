@@ -209,7 +209,7 @@ public final class Bytes {
             return new String(bytes, StandardCharsets.UTF_8);
         }
         catch (UnsupportedCharsetException e) {
-            throw Throwables.wrap(e, IllegalStateException.class); // Should never happen
+            throw Throwables.shouldNeverHappen(e);
         }
     }
 

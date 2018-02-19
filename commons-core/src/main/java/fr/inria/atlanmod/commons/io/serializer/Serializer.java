@@ -42,7 +42,7 @@ public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
             return serialize(t);
         }
         catch (IOException e) {
-            throw Throwables.wrap(e, RuntimeException.class);
+            throw Throwables.shouldNeverHappen(e);
         }
     }
 
@@ -58,7 +58,7 @@ public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
             return deserialize(bytes);
         }
         catch (IOException e) {
-            throw Throwables.wrap(e, RuntimeException.class);
+            throw Throwables.shouldNeverHappen(e);
         }
     }
 

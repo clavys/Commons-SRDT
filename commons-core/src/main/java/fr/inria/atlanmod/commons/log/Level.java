@@ -75,8 +75,8 @@ public enum Level {
     }
 
     /**
-     * Logs a {@code message} at this level using the {@code logger}, including the stack trace of the given
-     * {@link Throwable} if present.
+     * Logs a {@code message} at this level using the {@code logger}, including the stack trace of the given {@link
+     * Throwable} if present.
      *
      * @param logger  the logger where to send message
      * @param message the message to log

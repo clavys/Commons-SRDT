@@ -16,8 +16,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * An object that automatically loads a {@code long} by using a {@link LongSupplier} during the first call to
- * {@link #getAsLong()}.
+ * An object that automatically loads a {@code long} by using a {@link LongSupplier} during the first call to {@link
+ * #getAsLong()}.
  */
 @ParametersAreNonnullByDefault
 public final class LazyLong {
@@ -124,8 +124,7 @@ public final class LazyLong {
     }
 
     /**
-     * Unloads the wrapped value.
-     * If the value is not loaded, then this method does nothing.
+     * Unloads the wrapped value. If the value is not loaded, then this method does nothing.
      */
     public void unload() {
         value = 0L;

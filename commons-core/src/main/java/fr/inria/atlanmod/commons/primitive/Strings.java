@@ -108,7 +108,7 @@ public final class Strings {
             return value.getBytes(StandardCharsets.UTF_8);
         }
         catch (UnsupportedCharsetException e) {
-            throw Throwables.wrap(e, IllegalStateException.class); // Should never happen
+            throw Throwables.shouldNeverHappen(e);
         }
     }
 

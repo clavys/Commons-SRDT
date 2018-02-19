@@ -54,7 +54,7 @@ final class NativeHasher implements Hasher {
             return MessageDigest.getInstance(algorithm);
         }
         catch (NoSuchAlgorithmException e) {
-            throw Throwables.wrap(e, IllegalStateException.class);
+            throw Throwables.shouldNeverHappen(e);
         }
     }
 

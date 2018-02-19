@@ -16,8 +16,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * An object that automatically loads a {@code double} by using a {@link DoubleSupplier} during the first call to
- * {@link #getAsDouble()}.
+ * An object that automatically loads a {@code double} by using a {@link DoubleSupplier} during the first call to {@link
+ * #getAsDouble()}.
  */
 @ParametersAreNonnullByDefault
 public final class LazyDouble {
@@ -124,8 +124,7 @@ public final class LazyDouble {
     }
 
     /**
-     * Unloads the wrapped value.
-     * If the value is not loaded, then this method does nothing.
+     * Unloads the wrapped value. If the value is not loaded, then this method does nothing.
      */
     public void unload() {
         value = 0D;

@@ -16,8 +16,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * An object that automatically loads an {@code integer} by using a {@link IntSupplier} during the first call to
- * {@link #getAsInt()}.
+ * An object that automatically loads an {@code integer} by using a {@link IntSupplier} during the first call to {@link
+ * #getAsInt()}.
  */
 @ParametersAreNonnullByDefault
 public final class LazyInt {
@@ -124,8 +124,7 @@ public final class LazyInt {
     }
 
     /**
-     * Unloads the wrapped value.
-     * If the value is not loaded, then this method does nothing.
+     * Unloads the wrapped value. If the value is not loaded, then this method does nothing.
      */
     public void unload() {
         value = 0;

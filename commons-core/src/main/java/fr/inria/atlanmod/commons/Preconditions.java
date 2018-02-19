@@ -193,7 +193,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that a {@code collection} passed as a parameter to the calling method is not {@code null} and does not contains any {@code null} element.
+     * Ensures that a {@code collection} passed as a parameter to the calling method is not {@code null} and does not
+     * contains any {@code null} element.
      *
      * @param collection a collection
      *
@@ -207,7 +208,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that a {@code collection} passed as a parameter to the calling method is not {@code null} and does not contains any {@code null} element.
+     * Ensures that a {@code collection} passed as a parameter to the calling method is not {@code null} and does not
+     * contains any {@code null} element.
      *
      * @param collection a collection
      * @param message    the exception message to use if the check fails
@@ -222,7 +224,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that a {@code collection} passed as a parameter to the calling method is not {@code null} and does not contains any {@code null} element.
+     * Ensures that a {@code collection} passed as a parameter to the calling method is not {@code null} and does not
+     * contains any {@code null} element.
      *
      * @param collection a collection
      * @param pattern    a template for the exception message should the check fail
@@ -248,7 +251,8 @@ public final class Preconditions {
     // region Instance
 
     /**
-     * Ensures that an object {@code reference} passed as a parameter to the calling method is instance of {@code type}.
+     * Ensures that an object {@code reference} passed as a parameter to the calling method is instance of {@code
+     * type}.
      *
      * @param reference an object reference
      * @param type      the expected type of {@code reference}
@@ -263,7 +267,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that an object {@code reference} passed as a parameter to the calling method is instance of {@code type}.
+     * Ensures that an object {@code reference} passed as a parameter to the calling method is instance of {@code
+     * type}.
      *
      * @param reference an object reference
      * @param type      the expected type of {@code reference}
@@ -279,7 +284,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that an object {@code reference} passed as a parameter to the calling method is instance of {@code type}.
+     * Ensures that an object {@code reference} passed as a parameter to the calling method is instance of {@code
+     * type}.
      *
      * @param reference an object reference
      * @param type      the expected type of {@code reference}
@@ -356,7 +362,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is strictly greater than {@code lowerBoundExclusive}.
+     * Ensures that a {@code value} passed as a parameter to the calling method is strictly greater than {@code
+     * lowerBoundExclusive}.
      *
      * @param value               a comparable
      * @param lowerBoundExclusive the lower bound (exclusive)
@@ -371,7 +378,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is strictly greater than {@code lowerBoundExclusive}.
+     * Ensures that a {@code value} passed as a parameter to the calling method is strictly greater than {@code
+     * lowerBoundExclusive}.
      *
      * @param value               a comparable
      * @param lowerBoundExclusive the lower bound (exclusive)
@@ -387,13 +395,14 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is strictly greater than {@code lowerBoundExclusive}.
+     * Ensures that a {@code value} passed as a parameter to the calling method is strictly greater than {@code
+     * lowerBoundExclusive}.
      *
      * @param value               a comparable
      * @param lowerBoundExclusive the lower bound (exclusive)
      * @param pattern             a template for the exception message should the check fail
-     * @param args                the arguments to be substituted into the message template. Arguments are converted to strings
-     *                            using {@link String#valueOf(Object)}.
+     * @param args                the arguments to be substituted into the message template. Arguments are converted to
+     *                            strings using {@link String#valueOf(Object)}.
      *
      * @return the value that was validated
      *
@@ -411,7 +420,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is greater than or equal to {@code lowerBoundInclusive}.
+     * Ensures that a {@code value} passed as a parameter to the calling method is greater than or equal to {@code
+     * lowerBoundInclusive}.
      *
      * @param value               a comparable
      * @param lowerBoundInclusive the lower bound (inclusive)
@@ -426,7 +436,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is greater than or equal to {@code lowerBoundInclusive}.
+     * Ensures that a {@code value} passed as a parameter to the calling method is greater than or equal to {@code
+     * lowerBoundInclusive}.
      *
      * @param value               a comparable
      * @param lowerBoundInclusive the lower bound (inclusive)
@@ -442,13 +453,14 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is greater than or equal to {@code lowerBoundInclusive}.
+     * Ensures that a {@code value} passed as a parameter to the calling method is greater than or equal to {@code
+     * lowerBoundInclusive}.
      *
      * @param value               a comparable
      * @param lowerBoundInclusive the lower bound (inclusive)
      * @param pattern             a template for the exception message should the check fail
-     * @param args                the arguments to be substituted into the message template. Arguments are converted to strings
-     *                            using {@link String#valueOf(Object)}.
+     * @param args                the arguments to be substituted into the message template. Arguments are converted to
+     *                            strings using {@link String#valueOf(Object)}.
      *
      * @return the value that was validated
      *
@@ -466,7 +478,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is strictly less than {@code upperBoundExclusive}.
+     * Ensures that a {@code value} passed as a parameter to the calling method is strictly less than {@code
+     * upperBoundExclusive}.
      *
      * @param value               a comparable
      * @param upperBoundExclusive the upper bound (exclusive)
@@ -481,7 +494,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is strictly less than {@code upperBoundExclusive}.
+     * Ensures that a {@code value} passed as a parameter to the calling method is strictly less than {@code
+     * upperBoundExclusive}.
      *
      * @param value               a comparable
      * @param upperBoundExclusive the upper bound (exclusive)
@@ -497,13 +511,14 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is strictly less than {@code upperBoundExclusive}.
+     * Ensures that a {@code value} passed as a parameter to the calling method is strictly less than {@code
+     * upperBoundExclusive}.
      *
      * @param value               a comparable
      * @param upperBoundExclusive the upper bound (exclusive)
      * @param pattern             a template for the exception message should the check fail
-     * @param args                the arguments to be substituted into the message template. Arguments are converted to strings
-     *                            using {@link String#valueOf(Object)}.
+     * @param args                the arguments to be substituted into the message template. Arguments are converted to
+     *                            strings using {@link String#valueOf(Object)}.
      *
      * @return the value that was validated
      *
@@ -521,7 +536,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is less than or equal to {@code upperBoundInclusive}.
+     * Ensures that a {@code value} passed as a parameter to the calling method is less than or equal to {@code
+     * upperBoundInclusive}.
      *
      * @param value               a comparable
      * @param upperBoundInclusive the upper bound (inclusive)
@@ -536,7 +552,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is less than or equal to {@code upperBoundInclusive}.
+     * Ensures that a {@code value} passed as a parameter to the calling method is less than or equal to {@code
+     * upperBoundInclusive}.
      *
      * @param value               a comparable
      * @param upperBoundInclusive the upper bound (inclusive)
@@ -552,13 +569,14 @@ public final class Preconditions {
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is less than or equal to {@code upperBoundInclusive}.
+     * Ensures that a {@code value} passed as a parameter to the calling method is less than or equal to {@code
+     * upperBoundInclusive}.
      *
      * @param value               a comparable
      * @param upperBoundInclusive the upper bound (inclusive)
      * @param pattern             a template for the exception message should the check fail
-     * @param args                the arguments to be substituted into the message template. Arguments are converted to strings
-     *                            using {@link String#valueOf(Object)}.
+     * @param args                the arguments to be substituted into the message template. Arguments are converted to
+     *                            strings using {@link String#valueOf(Object)}.
      *
      * @return the value that was validated
      *

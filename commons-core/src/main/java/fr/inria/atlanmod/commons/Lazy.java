@@ -130,8 +130,7 @@ public final class Lazy<T> {
     }
 
     /**
-     * Unloads the wrapped value.
-     * If the value is not loaded, then this method does nothing.
+     * Unloads the wrapped value. If the value is not loaded, then this method does nothing.
      */
     public void unload() {
         value = null;

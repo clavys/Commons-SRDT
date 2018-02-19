@@ -20,11 +20,10 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.GuardedBy;
 
 /**
- * A {@link ExecutorService} that runs each task in the thread that invokes {@code execute/submit}.
- * This applies both to individually submitted tasks and to collections of tasks submitted via {@code invokeAll} or
- * {@code invokeAny}.
- * In the latter case, tasks will run serially on the calling thread.
- * Tasks are run to completion before a {@code Future} is returned to the caller (unless the executor has been shutdown).
+ * A {@link ExecutorService} that runs each task in the thread that invokes {@code execute/submit}. This applies both to
+ * individually submitted tasks and to collections of tasks submitted via {@code invokeAll} or {@code invokeAny}. In the
+ * latter case, tasks will run serially on the calling thread. Tasks are run to completion before a {@code Future} is
+ * returned to the caller (unless the executor has been shutdown).
  * <p>
  * Although all tasks are immediately executed in the thread that submitted the task, this {@code ExecutorService}
  * imposes a small locking overhead on each task submission in order to implement shutdown and termination behavior.

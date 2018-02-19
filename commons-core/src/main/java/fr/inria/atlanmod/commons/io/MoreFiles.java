@@ -36,8 +36,8 @@ public final class MoreFiles {
     }
 
     /**
-     * Returns the file extension for the given {@code file}, or the empty string if the file has no extension.
-     * The result does not include the '{@code .}'.
+     * Returns the file extension for the given {@code file}, or the empty string if the file has no extension. The
+     * result does not include the '{@code .}'.
      *
      * @param file the file
      *
@@ -53,8 +53,8 @@ public final class MoreFiles {
     }
 
     /**
-     * Returns the file extension for the given file name, or the empty string if the fullName has no extension.
-     * The result does not include the '{@code .}'.
+     * Returns the file extension for the given file name, or the empty string if the fullName has no extension. The
+     * result does not include the '{@code .}'.
      *
      * @param fullName the file name
      *
@@ -68,9 +68,8 @@ public final class MoreFiles {
     }
 
     /**
-     * Returns the {@code file} name without its file extension or path.
-     * This is similar to the {@code basename} unix command.
-     * The result does not include the '{@code .}'.
+     * Returns the {@code file} name without its file extension or path. This is similar to the {@code basename} unix
+     * command. The result does not include the '{@code .}'.
      *
      * @param file the file
      *
@@ -86,9 +85,8 @@ public final class MoreFiles {
     }
 
     /**
-     * Returns the file name without its fullName extension or path.
-     * This is similar to the {@code basename} unix command.
-     * The result does not include the '{@code .}'.
+     * Returns the file name without its fullName extension or path. This is similar to the {@code basename} unix
+     * command. The result does not include the '{@code .}'.
      *
      * @param fullName the file name
      *
