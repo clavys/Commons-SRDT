@@ -15,7 +15,10 @@ import fr.inria.atlanmod.commons.annotation.Static;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -97,5 +100,36 @@ public final class MoreReflection {
         }
 
         return methodName;
+    }
+
+    /**
+     * Retrieves all interfaces implemented by the given class and its superclasses.
+     * <p>
+     * The order is determined by looking through each interface in turn as declared in the source file and following
+     * its hierarchy up. Then each superclass is considered in the same way. Later duplicates are ignored, so the order
+     * is maintained.
+     *
+     * @param type the class to look up
+     *
+     * @return a {@link Set} of interfaces in order
+     */
+    @Nonnull
+    public static Set<Class<?>> getAllInterfaces(Class<?> type) {
+        Set<Class<?>> interfaces = new LinkedHashSet<>();
+        appendAllInterfaces(type, interfaces);
+        return interfaces;
+    }
+
+    /**
+     * Retrieves recursively the interfaces for the specified class.
+     *
+     * @param type       the class to look up
+     * @param interfaces the set where to append interfaces of the class
+     */
+    private static void appendAllInterfaces(Class<?> type, Set<Class<?>> interfaces) {
+        while (type != null) {
+            Arrays.stream(type.getInterfaces()).filter(interfaces::add).forEachOrdered(i -> appendAllInterfaces(i, interfaces));
+            type = type.getSuperclass();
+        }
     }
 }
