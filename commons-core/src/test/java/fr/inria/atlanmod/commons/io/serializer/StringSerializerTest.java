@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Atlanmod, Inria, LS2N, and IMT Nantes.
+ * Copyright (c) 2017-2018 Atlanmod, Inria, LS2N, and IMT Nantes.
  *
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v2.0 which accompanies
@@ -8,9 +8,11 @@
 
 package fr.inria.atlanmod.commons.io.serializer;
 
+import fr.inria.atlanmod.commons.AbstractTest;
+import fr.inria.atlanmod.commons.function.Converter;
+
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,14 +21,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * A test-case that checks the behavior of {@link Serializer} instances.
+ * A test-case that checks the behavior of {@link StringSerializer} instances.
  */
 @ParametersAreNonnullByDefault
-public class SerializerTest extends AbstractSerializerTest {
+public class StringSerializerTest extends AbstractSerializerTest {
 
     @Test
-    public void testSerializeDeserializeObject() {
-        Serializer<List<Integer>> serializer = SerializerFactory.getInstance().forAny();
+    void testSerializeDeserializeBase16() {
+        Serializer<List<Integer>> binarySerializer = SerializerFactory.getInstance().forAny();
+        StringSerializer<List<Integer>> serializer = StringSerializerFactory.base16(binarySerializer);
 
         List<Integer> object = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         List<Integer> result = process(object, serializer);
@@ -35,8 +38,9 @@ public class SerializerTest extends AbstractSerializerTest {
     }
 
     @Test
-    public void testSerializeDeserializeObjectWithStream() {
-        Serializer<List<Integer>> serializer = SerializerFactory.getInstance().forAny();
+    void testSerializeDeserializeBase64() {
+        Serializer<List<Integer>> binarySerializer = SerializerFactory.getInstance().forAny();
+        StringSerializer<List<Integer>> serializer = StringSerializerFactory.base64(binarySerializer);
 
         List<Integer> object = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         List<Integer> result = process(object, serializer);

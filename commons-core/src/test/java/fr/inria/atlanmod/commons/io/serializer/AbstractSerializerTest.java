@@ -9,6 +9,7 @@
 package fr.inria.atlanmod.commons.io.serializer;
 
 import fr.inria.atlanmod.commons.AbstractTest;
+import fr.inria.atlanmod.commons.function.Converter;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -35,13 +36,11 @@ public abstract class AbstractSerializerTest extends AbstractTest {
      * @param <T>        the type of the (de)serialized value
      *
      * @return the value after processing
-     *
-     * @throws IOException if an I/O error occurs during the serialization
      */
-    protected <T> T process(T value, Serializer<T> serializer) throws IOException {
-        byte[] bytes = serializer.serialize(value);
+    protected <T, U> T process(T value, Converter<T, U> serializer) {
+        U serialized = serializer.convert(value);
 
-        return serializer.deserialize(bytes);
+        return serializer.revert(serialized);
     }
 
     /**
