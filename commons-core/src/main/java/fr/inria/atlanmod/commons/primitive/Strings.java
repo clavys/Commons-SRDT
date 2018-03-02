@@ -46,6 +46,14 @@ public final class Strings {
     public static final String SPACE = " ";
 
     /**
+     * A string for a line separator character, dependencing on the system.
+     *
+     * @see System#lineSeparator()
+     */
+    @Nonnull
+    public static final String LR = System.lineSeparator();
+
+    /**
      * The predicate to test an hexadecimal string.
      */
     @Nonnull

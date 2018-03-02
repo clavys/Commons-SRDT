@@ -154,7 +154,7 @@ public class LoggingExtension implements BeforeEachCallback, TestExecutionExcept
      */
     private void onFail(ExtensionContext context, AssertionError e) {
         if (nonNull(e.getMessage())) {
-            Arrays.stream(e.getMessage().split("\n"))
+            Arrays.stream(e.getMessage().split(Strings.LR))
                     .filter(s -> nonNull(s) && !s.isEmpty())
                     .forEach(LOG::warn);
         }
