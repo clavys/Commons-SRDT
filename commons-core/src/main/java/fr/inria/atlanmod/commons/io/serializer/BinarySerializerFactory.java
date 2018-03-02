@@ -15,22 +15,22 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * A factory that creates {@link Serializer} instances.
+ * A factory that creates {@link BinarySerializer} instances.
  */
 @Singleton
 @ParametersAreNonnullByDefault
-public class SerializerFactory {
+public class BinarySerializerFactory {
 
     /**
-     * The default {@link Serializer}.
+     * The default {@link BinarySerializer}.
      */
     @Nonnull
-    private final Serializer<?> anySerializer = new ObjectSerializer<>();
+    private final BinarySerializer<?> anySerializer = new ObjectBinarySerializer<>();
 
     /**
-     * Constructs a new {@code SerializerFactory}.
+     * Constructs a new {@code BinarySerializerFactory}.
      */
-    protected SerializerFactory() {
+    protected BinarySerializerFactory() {
     }
 
     /**
@@ -39,12 +39,12 @@ public class SerializerFactory {
      * @return the instance of this class
      */
     @Nonnull
-    public static SerializerFactory getInstance() {
+    public static BinarySerializerFactory getInstance() {
         return Holder.INSTANCE;
     }
 
     /**
-     * Gets the {@link Serializer} for any {@link Object}.
+     * Gets the {@link BinarySerializer} for any {@link Object}.
      *
      * @param <T> the type of (de)serialized objects
      *
@@ -52,8 +52,8 @@ public class SerializerFactory {
      */
     @Nonnull
     @SuppressWarnings("unchecked")
-    public <T> Serializer<T> forAny() {
-        return (Serializer<T>) anySerializer;
+    public <T> BinarySerializer<T> forAny() {
+        return (BinarySerializer<T>) anySerializer;
     }
 
     /**
@@ -65,6 +65,6 @@ public class SerializerFactory {
         /**
          * The instance of the outer class.
          */
-        private static final SerializerFactory INSTANCE = new SerializerFactory();
+        private static final BinarySerializerFactory INSTANCE = new BinarySerializerFactory();
     }
 }

@@ -8,11 +8,9 @@
 
 package fr.inria.atlanmod.commons.io.serializer;
 
-import fr.inria.atlanmod.commons.AbstractTest;
-import fr.inria.atlanmod.commons.function.Converter;
-
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,8 +25,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class StringSerializerTest extends AbstractSerializerTest {
 
     @Test
-    void testSerializeDeserializeBase16() {
-        Serializer<List<Integer>> binarySerializer = SerializerFactory.getInstance().forAny();
+    void testSerializeDeserializeBase16() throws IOException {
+        BinarySerializer<List<Integer>> binarySerializer = BinarySerializerFactory.getInstance().forAny();
         StringSerializer<List<Integer>> serializer = StringSerializerFactory.base16(binarySerializer);
 
         List<Integer> object = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
@@ -38,8 +36,8 @@ public class StringSerializerTest extends AbstractSerializerTest {
     }
 
     @Test
-    void testSerializeDeserializeBase64() {
-        Serializer<List<Integer>> binarySerializer = SerializerFactory.getInstance().forAny();
+    void testSerializeDeserializeBase64() throws IOException {
+        BinarySerializer<List<Integer>> binarySerializer = BinarySerializerFactory.getInstance().forAny();
         StringSerializer<List<Integer>> serializer = StringSerializerFactory.base64(binarySerializer);
 
         List<Integer> object = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);

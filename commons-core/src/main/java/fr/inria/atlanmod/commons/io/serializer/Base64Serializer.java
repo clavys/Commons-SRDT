@@ -29,7 +29,7 @@ final class Base64Serializer<T> extends AbstractStringSerializer<T> {
      *
      * @param serializer the serializer to use before applying a {@link String} encoding or decoding
      */
-    protected Base64Serializer(@Nonnull Serializer<T> serializer) {
+    protected Base64Serializer(@Nonnull BinarySerializer<T> serializer) {
         super(serializer);
     }
 

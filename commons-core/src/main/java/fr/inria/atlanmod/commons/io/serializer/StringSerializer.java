@@ -8,9 +8,6 @@
 
 package fr.inria.atlanmod.commons.io.serializer;
 
-import fr.inria.atlanmod.commons.function.Converter;
-
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
@@ -19,47 +16,5 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * @param <T> the type of (de)serialized objects
  */
 @ParametersAreNonnullByDefault
-public interface StringSerializer<T> extends Converter<T, String> {
-
-    /**
-     * {@inheritDoc}
-     *
-     * @see #serialize(Object)
-     */
-    @Nonnull
-    @Override
-    default String convert(T t) {
-        return serialize(t);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @see #deserialize(String)
-     */
-    @Nonnull
-    @Override
-    default T revert(String data) {
-        return deserialize(data);
-    }
-
-    /**
-     * Write an object of type {@code T} as a {@code String}.
-     *
-     * @param t the object to serialize
-     *
-     * @return the serialized object as a string
-     */
-    @Nonnull
-    String serialize(T t);
-
-    /**
-     * Reads and assembles an object of type {@code T} from the given {@code string}.
-     *
-     * @param data a string
-     *
-     * @return the deserialized object
-     */
-    @Nonnull
-    T deserialize(String data);
+public interface StringSerializer<T> extends Serializer<T, String> {
 }

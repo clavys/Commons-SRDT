@@ -9,7 +9,6 @@
 package fr.inria.atlanmod.commons.io.serializer;
 
 import fr.inria.atlanmod.commons.AbstractTest;
-import fr.inria.atlanmod.commons.function.Converter;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,7 +21,7 @@ import java.io.ObjectOutputStream;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * An abstract test-case that checks the behavior of {@link Serializer} instances.
+ * An abstract test-case that checks the behavior of {@link BinarySerializer} instances.
  */
 @ParametersAreNonnullByDefault
 public abstract class AbstractSerializerTest extends AbstractTest {
@@ -37,10 +36,9 @@ public abstract class AbstractSerializerTest extends AbstractTest {
      *
      * @return the value after processing
      */
-    protected <T, U> T process(T value, Converter<T, U> serializer) {
-        U serialized = serializer.convert(value);
-
-        return serializer.revert(serialized);
+    protected <T, U> T process(T value, Serializer<T, U> serializer) throws IOException {
+        U serialized = serializer.serialize(value);
+        return serializer.deserialize(serialized);
     }
 
     /**
@@ -54,7 +52,7 @@ public abstract class AbstractSerializerTest extends AbstractTest {
      *
      * @throws IOException if an I/O error occurs during the serialization
      */
-    protected <T> T processWithStream(T value, Serializer<T> serializer) throws IOException {
+    protected <T> T processWithStream(T value, BinarySerializer<T> serializer) throws IOException {
         byte[] data;
 
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); ObjectOutput out = new ObjectOutputStream(baos)) {

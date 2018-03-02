@@ -21,12 +21,12 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.WillNotClose;
 
 /**
- * An abstract {@link Serializer} for objects of type {@code T}.
+ * An abstract {@link BinarySerializer} for objects of type {@code T}.
  *
  * @param <T> the type of (de)serialized objects
  */
 @ParametersAreNonnullByDefault
-public abstract class AbstractSerializer<T> implements Serializer<T> {
+public abstract class AbstractBinarySerializer<T> implements BinarySerializer<T> {
 
     /**
      * The default FST configuration.
@@ -42,18 +42,18 @@ public abstract class AbstractSerializer<T> implements Serializer<T> {
         return out.getCopyOfWrittenBuffer();
     }
 
-    @Override
-    public void serialize(T t, @WillNotClose OutputStream os) throws IOException {
-        FSTObjectOutput out = FST.getObjectOutput(os);
-        serialize(t, out);
-        out.flush();
-    }
-
     @Nonnull
     @Override
     public T deserialize(byte[] data) throws IOException {
         FSTObjectInput in = FST.getObjectInput(data);
         return deserialize(in);
+    }
+
+    @Override
+    public void serialize(T t, @WillNotClose OutputStream os) throws IOException {
+        FSTObjectOutput out = FST.getObjectOutput(os);
+        serialize(t, out);
+        out.flush();
     }
 
     @Nonnull

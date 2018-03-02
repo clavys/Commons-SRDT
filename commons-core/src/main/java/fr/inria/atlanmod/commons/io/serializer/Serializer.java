@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Atlanmod, Inria, LS2N, and IMT Nantes.
+ * Copyright (c) 2017-2018 Atlanmod, Inria, LS2N, and IMT Nantes.
  *
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v2.0 which accompanies
@@ -11,24 +11,19 @@ package fr.inria.atlanmod.commons.io.serializer;
 import fr.inria.atlanmod.commons.Throwables;
 import fr.inria.atlanmod.commons.function.Converter;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import javax.annotation.WillNotClose;
 
 /**
- * An object that is responsible of {@link Object} to {@code byte[]} encoding and decoding.
+ * An object that is responsible for encoding and decoding the basic representation of {@link Object}s.
  *
  * @param <T> the type of (de)serialized objects
+ * @param <U> the type of the basic representation of the objects
  */
 @ParametersAreNonnullByDefault
-public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
+public interface Serializer<T, U> extends Converter<T, U> {
 
     /**
      * {@inheritDoc}
@@ -37,7 +32,7 @@ public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
      */
     @Nonnull
     @Override
-    default byte[] convert(T t) {
+    default U convert(T t) {
         try {
             return serialize(t);
         }
@@ -49,13 +44,13 @@ public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
     /**
      * {@inheritDoc}
      *
-     * @see #deserialize(byte[])
+     * @see #deserialize(Object)
      */
     @Nonnull
     @Override
-    default T revert(byte[] bytes) {
+    default T revert(U data) {
         try {
-            return deserialize(bytes);
+            return deserialize(data);
         }
         catch (IOException e) {
             throw Throwables.shouldNeverHappen(e);
@@ -63,76 +58,26 @@ public interface Serializer<T> extends Converter<T, byte[]>, Serializable {
     }
 
     /**
-     * Write an object of type {@code T} to a {@code byte} array.
+     * Write an object of type {@code T} into its basic representation.
      *
      * @param t the object to serialize
      *
-     * @return the serialized object as a byte array
+     * @return the serialized object
      *
      * @throws IOException if an I/O error occurs during the serialization
      */
     @Nonnull
-    byte[] serialize(T t) throws IOException;
-
-    /**
-     * Write an object of type {@code T} to the given {@code os}.
-     * <p>
-     * If the {@code os} also implements {@link DataOutput}, prefer using {@link #serialize(Object, DataOutput)}. This
-     * method will create a adapter on {@code os} before calling it.
-     *
-     * @param t  the object to serialize
-     * @param os the output stream
-     *
-     * @throws IOException if an I/O error occurs during the serialization
-     */
-    void serialize(T t, @WillNotClose OutputStream os) throws IOException;
-
-    /**
-     * Write an object of type {@code T} to the given {@code out}.
-     *
-     * @param t   the object to serialize
-     * @param out the output stream
-     *
-     * @throws IOException if an I/O error occurs during the serialization
-     */
-    void serialize(T t, @WillNotClose DataOutput out) throws IOException;
+    U serialize(T t) throws IOException;
 
     /**
      * Reads and assembles an object of type {@code T} from the given {@code data}.
      *
-     * @param data a byte array
+     * @param data the basic representation of the object
      *
      * @return the deserialized object
      *
      * @throws IOException if an I/O error occurs during the deserialization
      */
     @Nonnull
-    T deserialize(byte[] data) throws IOException;
-
-    /**
-     * Reads and assembles an object of type {@code T} from the given {@code is}.
-     * <p>
-     * If the {@code is} also implements {@link DataInput}, prefer using {@link #deserialize(DataInput)}. This method
-     * will create a adapter on {@code is} before calling it.
-     *
-     * @param is the input stream
-     *
-     * @return the deserialized object
-     *
-     * @throws IOException if an I/O error occurs during the deserialization
-     */
-    @Nonnull
-    T deserialize(@WillNotClose InputStream is) throws IOException;
-
-    /**
-     * Reads and assembles an object of type {@code T} from the given {@code in}.
-     *
-     * @param in the input stream
-     *
-     * @return the deserialized object
-     *
-     * @throws IOException if an I/O error occurs during the deserialization
-     */
-    @Nonnull
-    T deserialize(@WillNotClose DataInput in) throws IOException;
+    T deserialize(U data) throws IOException;
 }

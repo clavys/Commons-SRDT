@@ -24,12 +24,12 @@ import javax.annotation.WillNotClose;
 import static fr.inria.atlanmod.commons.Preconditions.checkInstanceOf;
 
 /**
- * A {@link Serializer} for any object, using FST serialization.
+ * A {@link BinarySerializer} for any object, using FST serialization.
  *
  * @param <T> the type of (de)serialized objects
  */
 @ParametersAreNonnullByDefault
-final class ObjectSerializer<T> extends AbstractSerializer<T> {
+final class ObjectBinarySerializer<T> extends AbstractBinarySerializer<T> {
 
     @SuppressWarnings("JavaDoc")
     private static final long serialVersionUID = 1069734448451637293L;

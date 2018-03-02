@@ -30,7 +30,7 @@ final class Base16Serializer<T> extends AbstractStringSerializer<T> {
      *
      * @param serializer the serializer to use before applying a {@link String} encoding or decoding
      */
-    protected Base16Serializer(@Nonnull Serializer<T> serializer) {
+    protected Base16Serializer(@Nonnull BinarySerializer<T> serializer) {
         super(serializer);
     }
 

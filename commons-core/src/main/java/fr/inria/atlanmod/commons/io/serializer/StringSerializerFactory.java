@@ -32,7 +32,7 @@ public final class StringSerializerFactory {
      * @return a new string serializer
      */
     @Nonnull
-    public static <T> StringSerializer<T> base16(Serializer<T> serializer) {
+    public static <T> StringSerializer<T> base16(BinarySerializer<T> serializer) {
         return new Base16Serializer<>(serializer);
     }
 
@@ -45,7 +45,7 @@ public final class StringSerializerFactory {
      * @return a new string serializer
      */
     @Nonnull
-    public static <T> StringSerializer<T> base64(Serializer<T> serializer) {
+    public static <T> StringSerializer<T> base64(BinarySerializer<T> serializer) {
         return new Base64Serializer<>(serializer);
     }
 }

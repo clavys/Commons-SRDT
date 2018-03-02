@@ -25,14 +25,14 @@ public abstract class AbstractStringSerializer<T> implements StringSerializer<T>
      * The serializer to use before applying a {@link String} encoding or decoding.
      */
     @Nonnull
-    private final Serializer<T> serializer;
+    private final BinarySerializer<T> serializer;
 
     /**
-     * Constructs a new {@code Serializer}.
+     * Constructs a new {@code BinarySerializer}.
      *
      * @param serializer the serializer to use before applying a {@link String} encoding or decoding
      */
-    protected AbstractStringSerializer(@Nonnull Serializer<T> serializer) {
+    protected AbstractStringSerializer(@Nonnull BinarySerializer<T> serializer) {
         checkNotNull(serializer, "serializer");
 
         this.serializer = serializer;
