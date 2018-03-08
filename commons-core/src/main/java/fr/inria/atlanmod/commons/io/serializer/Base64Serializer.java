@@ -35,13 +35,13 @@ final class Base64Serializer<T> extends AbstractStringSerializer<T> {
 
     @Nonnull
     @Override
-    public String encode(byte[] data) {
+    protected String encode(byte[] data) {
         return Base64.getEncoder().encodeToString(data);
     }
 
     @Nonnull
     @Override
-    public byte[] decode(String data) {
+    protected byte[] decode(String data) {
         return Base64.getDecoder().decode(data);
     }
 }
