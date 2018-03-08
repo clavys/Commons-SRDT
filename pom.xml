@@ -16,7 +16,7 @@
 
     <organization>
         <name>Atlanmod, Inria, LS2N, and IMT Nantes</name>
-        <url>http://www.emn.fr/z-info/atlanmod/index.php/Main_Page</url>
+        <url>http://www.atlanmod.org</url>
     </organization>
 
     <scm>
@@ -88,10 +88,10 @@
 
         <javax-annotations.version>3.0.2</javax-annotations.version>
 
-        <assertj.version>3.9.0</assertj.version>
-        <mockito.version>2.13.0</mockito.version>
-        <junit.version>5.0.3</junit.version>
-        <junit-surefire.version>1.0.3</junit-surefire.version>
+        <assertj.version>3.9.1</assertj.version>
+        <mockito.version>2.15.0</mockito.version>
+        <junit.version>5.1.0</junit.version>
+        <junit-surefire.version>1.1.0</junit-surefire.version>
     </properties>
 
     <dependencies>
