@@ -4,7 +4,8 @@
     <ignoreVersions> <!-- Ignore ALPHA and BETA versions -->
         <ignoreVersion type="regex">.*-[aA]lpha(-?\d+)?</ignoreVersion>
         <ignoreVersion type="regex">.*-[bB]eta(-?\d+)?</ignoreVersion>
-        <ignoreVersion type="regex">.*-rc(-?\d+)?</ignoreVersion>
+        <ignoreVersion type="regex">.*-[rR][cC](-?\d+)?</ignoreVersion>
+        <ignoreVersion type="regex">.*-[mM](-?\d+)?</ignoreVersion>
         <ignoreVersion type="regex">.*-android</ignoreVersion>
     </ignoreVersions>
 

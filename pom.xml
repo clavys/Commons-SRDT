@@ -89,9 +89,9 @@
         <javax-annotations.version>3.0.2</javax-annotations.version>
 
         <assertj.version>3.9.1</assertj.version>
-        <mockito.version>2.15.0</mockito.version>
-        <junit.version>5.1.0</junit.version>
-        <junit-surefire.version>1.1.0</junit-surefire.version>
+        <mockito.version>2.18.3</mockito.version>
+        <junit.version>5.1.1</junit.version>
+        <junit-surefire.version>1.1.1</junit-surefire.version>
     </properties>
 
     <dependencies>
@@ -313,7 +313,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.19.1</version><!-- 2.20+ : Not compatible with 'junit-platform-surefire-provider:1.0.0' -->
+                    <version>2.19.1</version><!-- 2.20+ : Not compatible with 'junit-platform-surefire-provider' -->
                     <configuration>
                         <!-- Property @{argLine} : created by jacoco:prepare-agent -->
                         <argLine>@{argLine} ${argLine.global}</argLine>
@@ -377,7 +377,7 @@
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-javadoc-plugin</artifactId>
-                            <version>3.0.0-M1</version>
+                            <version>3.0.0</version>
                             <configuration>
                                 <includeDependencySources>true</includeDependencySources>
                                 <excludePackageNames>
@@ -419,7 +419,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.0.0-M1</version>
+                        <version>3.0.0</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
