@@ -10,6 +10,8 @@ package fr.inria.atlanmod.commons;
 
 import fr.inria.atlanmod.commons.annotation.Static;
 
+import org.jetbrains.annotations.Contract;
+
 import java.util.Collection;
 import java.util.Objects;
 
@@ -24,7 +26,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * be {@code true} (or in the case of {@code checkNotNull}, an object reference which is expected to be non-null). When
  * {@code false} (or {@code null}) is passed instead, the {@code Preconditions} method throws an unchecked exception,
  * which helps the calling method communicate to <i>its</i> caller that <i>that</i> caller has made a mistake.
- * <p>
+ *
  * <b>Warning:</b> The goal of this class is to improve readability of code, but in some circumstances this may come at
  * a significant performance cost. Remember that parameter values for message construction must all be computed eagerly,
  * and autoboxing and varargs array creation may happen as well, even when the precondition check then succeeds (as it
@@ -61,6 +63,7 @@ public final class Preconditions {
      *
      * @throws IllegalArgumentException if {@code expression} is false
      */
+    @Contract(value = "false -> fail", pure = true)
     public static void checkArgument(boolean expression) {
         checkArgument(expression, NO_MESSAGE);
     }
@@ -73,6 +76,7 @@ public final class Preconditions {
      *
      * @throws IllegalArgumentException if {@code expression} is false
      */
+    @Contract(value = "false, _ -> fail", pure = true)
     public static void checkArgument(boolean expression, String message) {
         checkArgument(expression, message, NO_PARAMS);
     }
@@ -87,6 +91,7 @@ public final class Preconditions {
      * @throws IllegalArgumentException if {@code expression} is false
      * @throws NullPointerException     if the check fails and either {@code pattern} or {@code args} is null
      */
+    @Contract(value = "false, _, _ -> fail", pure = true)
     public static void checkArgument(boolean expression, String pattern, Object... args) {
         if (!expression) {
             throw new IllegalArgumentException(format(pattern, args));
@@ -105,6 +110,7 @@ public final class Preconditions {
      *
      * @throws IllegalStateException if {@code expression} is false
      */
+    @Contract(value = "false -> fail", pure = true)
     public static void checkState(boolean expression) {
         checkState(expression, NO_MESSAGE);
     }
@@ -118,6 +124,7 @@ public final class Preconditions {
      *
      * @throws IllegalStateException if {@code expression} is false
      */
+    @Contract(value = "false, _ -> fail", pure = true)
     public static void checkState(boolean expression, String message) {
         checkState(expression, message, NO_PARAMS);
     }
@@ -133,6 +140,7 @@ public final class Preconditions {
      * @throws IllegalStateException if {@code expression} is false
      * @throws NullPointerException  if the check fails and either {@code pattern} or {@code args} is null
      */
+    @Contract(value = "false, _, _ -> fail", pure = true)
     public static void checkState(boolean expression, String pattern, Object... args) {
         if (!expression) {
             throw new IllegalStateException(format(pattern, args));
@@ -153,6 +161,7 @@ public final class Preconditions {
      * @throws NullPointerException if {@code reference} is null
      */
     @Nonnull
+    @Contract(value = "null -> fail", pure = true)
     public static <T> T checkNotNull(@Nullable T reference) {
         return checkNotNull(reference, NO_MESSAGE);
     }
@@ -168,6 +177,7 @@ public final class Preconditions {
      * @throws NullPointerException if {@code reference} is null
      */
     @Nonnull
+    @Contract(value = "null, _ -> fail", pure = true)
     public static <T> T checkNotNull(@Nullable T reference, String message) {
         return checkNotNull(reference, message, NO_PARAMS);
     }
@@ -185,6 +195,7 @@ public final class Preconditions {
      * @throws NullPointerException if {@code reference} is null
      */
     @Nonnull
+    @Contract(value = "null, _, _ -> fail", pure = true)
     public static <T> T checkNotNull(@Nullable T reference, String pattern, Object... args) {
         if (null == reference) {
             throw new NullPointerException(format(pattern, args));
