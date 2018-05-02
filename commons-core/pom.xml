@@ -117,6 +117,7 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <dependency>
@@ -139,6 +140,9 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}</Bundle-SymbolicName>
+                        <Import-Package>
+                            org.slf4j
+                        </Import-Package>
                         <Export-Package>
                             !fr.inria.atlanmod.commons.*.internal.*,
                             fr.inria.atlanmod.commons.*
