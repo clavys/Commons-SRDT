@@ -8,8 +8,12 @@
 
 package fr.inria.atlanmod.commons.service;
 
+import fr.inria.atlanmod.commons.Lazy;
+import fr.inria.atlanmod.commons.annotation.VisibleForReflection;
+
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -26,8 +30,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * <b>NOTE:</b> This context is automatically loaded and configured when this bundle is starting under an OSGi environment.
  */
 @Component(immediate = true)
+@VisibleForReflection
 @ParametersAreNonnullByDefault
-public class BundleServiceContext implements ServiceContext {
+public class OSGiContext implements ServiceContext {
 
     /**
      * The current bundle context.
@@ -40,23 +45,23 @@ public class BundleServiceContext implements ServiceContext {
      * @param context the current bundle context
      */
     @Activate
-    public void onActivate(BundleContext context) {
+    final void onInit(BundleContext context) {
         this.context = context;
-        ServiceResolver.getInstance().setContext(this);
+        ServiceProvider.getInstance().setContext(this);
     }
 
     /**
      * Deactivates this context.
      */
     @Deactivate
-    public void onDeactivate() {
+    final void onDestroy() {
         this.context = null;
-        ServiceResolver.getInstance().unloadContext();
+        ServiceProvider.getInstance().unloadContext();
     }
 
     @Nonnull
     @Override
-    public <T> Stream<T> getServices(Class<T> type) {
+    public <S> Stream<ServiceDefinition<S>> getServices(Class<S> type) {
         return getServices(type, null);
     }
 
@@ -69,12 +74,54 @@ public class BundleServiceContext implements ServiceContext {
      * @return a parallel stream of all registered services of the specified {@code type}
      */
     @Nonnull
-    public <T> Stream<T> getServices(Class<T> type, @Nullable String filter) {
+    public <T> Stream<ServiceDefinition<T>> getServices(Class<T> type, @Nullable String filter) {
         try {
-            return context.getServiceReferences(type, filter).stream().map(context::getService).parallel();
+            return context.getServiceReferences(type, filter).parallelStream().map(OSGiServiceDefinition::new);
         }
         catch (InvalidSyntaxException e) {
             throw new IllegalArgumentException(e);
+        }
+    }
+
+    /**
+     * @param <S>
+     */
+    @ParametersAreNonnullByDefault
+    private class OSGiServiceDefinition<S> implements ServiceDefinition<S> {
+
+        /**
+         * The service reference.
+         */
+        @Nonnull
+        private final ServiceReference<S> serviceReference;
+
+        /**
+         * The on-demand service.
+         */
+        @Nonnull
+        private final Lazy<S> service;
+
+        /**
+         * Constructs a new {@code OSGiServiceDefinition}.
+         *
+         * @param serviceReference the service reference
+         */
+        public OSGiServiceDefinition(ServiceReference<S> serviceReference) {
+            this.serviceReference = serviceReference;
+            this.service = Lazy.with(() -> context.getService(this.serviceReference));
+        }
+
+        @Nonnull
+        @Override
+        @SuppressWarnings("unchecked")
+        public Class<? extends S> type() {
+            return (Class<? extends S>) get().getClass();
+        }
+
+        @Nonnull
+        @Override
+        public S get() {
+            return service.get();
         }
     }
 }

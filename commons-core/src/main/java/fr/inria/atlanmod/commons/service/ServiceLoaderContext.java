@@ -8,6 +8,7 @@
 
 package fr.inria.atlanmod.commons.service;
 
+import fr.inria.atlanmod.commons.annotation.VisibleForReflection;
 import fr.inria.atlanmod.commons.collect.MoreIterables;
 
 import java.util.ServiceLoader;
@@ -19,12 +20,51 @@ import javax.annotation.ParametersAreNonnullByDefault;
 /**
  * A {@link ServiceContext} able to retrieve registered services from a {@link ServiceLoader}.
  */
+@VisibleForReflection
 @ParametersAreNonnullByDefault
 public class ServiceLoaderContext implements ServiceContext {
 
     @Nonnull
     @Override
-    public <T> Stream<T> getServices(Class<T> type) {
-        return MoreIterables.parallelStream(ServiceLoader.load(type));
+    public <S> Stream<ServiceDefinition<S>> getServices(Class<S> type) {
+        final ClassLoader classLoader = type.getClassLoader();
+        final ServiceLoader<S> serviceLoader = ServiceLoader.load(type, classLoader);
+
+        return MoreIterables.parallelStream(serviceLoader).map(DirectServiceDefinition::new);
+    }
+
+    /**
+     * @param <S>
+     */
+    @ParametersAreNonnullByDefault
+    private static class DirectServiceDefinition<S> implements ServiceDefinition<S> {
+
+        /**
+         * The service.
+         */
+        @Nonnull
+        private final S service;
+
+        /**
+         * Constructs a new {@code DirectServiceDefinition}.
+         *
+         * @param service the service
+         */
+        public DirectServiceDefinition(S service) {
+            this.service = service;
+        }
+
+        @Nonnull
+        @Override
+        @SuppressWarnings("unchecked")
+        public Class<? extends S> type() {
+            return (Class<? extends S>) service.getClass();
+        }
+
+        @Nonnull
+        @Override
+        public S get() {
+            return service;
+        }
     }
 }

@@ -22,7 +22,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  */
 @Singleton
 @ParametersAreNonnullByDefault
-public final class ServiceResolver {
+public final class ServiceProvider {
 
     /**
      * The current on-demand service provider.
@@ -31,9 +31,9 @@ public final class ServiceResolver {
     private final Lazy<ServiceContext> provider = Lazy.with(ServiceLoaderContext::new);
 
     /**
-     * Constructs a new {@code ServiceResolver}.
+     * Constructs a new {@code ServiceProvider}.
      */
-    private ServiceResolver() {
+    private ServiceProvider() {
     }
 
     /**
@@ -42,7 +42,7 @@ public final class ServiceResolver {
      * @return the instance of this class
      */
     @Nonnull
-    public static ServiceResolver getInstance() {
+    public static ServiceProvider getInstance() {
         return Holder.INSTANCE;
     }
 
@@ -66,7 +66,7 @@ public final class ServiceResolver {
      * @return a parallel stream of all registered services of the specified {@code type}
      */
     @Nonnull
-    public <T> Stream<T> resolve(Class<T> type) {
+    public <S> Stream<ServiceDefinition<S>> load(Class<S> type) {
         return provider.get().getServices(type);
     }
 
@@ -79,6 +79,6 @@ public final class ServiceResolver {
         /**
          * The instance of the outer class.
          */
-        static final ServiceResolver INSTANCE = new ServiceResolver();
+        static final ServiceProvider INSTANCE = new ServiceProvider();
     }
 }

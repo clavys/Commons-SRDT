@@ -8,24 +8,32 @@
 
 package fr.inria.atlanmod.commons.service;
 
-import java.util.stream.Stream;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * A context able to retrieve registered services.
+ * Represents a service definition.
  */
+// TODO Can be replace by `ServiceLoader.Provider` with Java 9
 @ParametersAreNonnullByDefault
-public interface ServiceContext {
+public interface ServiceDefinition<T> extends Supplier<T> {
 
     /**
-     * Retrieves all registered services of the specified {@code type}.
+     * Returns the service type.
      *
-     * @param type the type of services to look for
-     *
-     * @return a parallel stream of all registered services of the specified {@code type}
+     * @return the service type
      */
     @Nonnull
-    <T> Stream<ServiceDefinition<T>> getServices(Class<T> type);
+    Class<? extends T> type();
+
+    /**
+     * Returns an instance of the service.
+     *
+     * @return an instance of the service
+     */
+    @Nonnull
+    @Override
+    T get();
 }
