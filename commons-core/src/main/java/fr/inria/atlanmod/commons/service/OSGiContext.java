@@ -93,7 +93,7 @@ public class OSGiContext implements ServiceContext {
          * The service reference.
          */
         @Nonnull
-        private final ServiceReference<S> serviceReference;
+        private final ServiceReference<S> reference;
 
         /**
          * The on-demand service.
@@ -104,11 +104,11 @@ public class OSGiContext implements ServiceContext {
         /**
          * Constructs a new {@code OSGiServiceDefinition}.
          *
-         * @param serviceReference the service reference
+         * @param reference the service reference
          */
-        public OSGiServiceDefinition(ServiceReference<S> serviceReference) {
-            this.serviceReference = serviceReference;
-            this.service = Lazy.with(() -> context.getService(this.serviceReference));
+        public OSGiServiceDefinition(ServiceReference<S> reference) {
+            this.reference = reference;
+            this.service = Lazy.with(() -> context.getService(this.reference));
         }
 
         @Nonnull
@@ -116,6 +116,14 @@ public class OSGiContext implements ServiceContext {
         @SuppressWarnings("unchecked")
         public Class<? extends S> type() {
             return (Class<? extends S>) get().getClass();
+
+//            try {
+//                final String className = String[].class.cast(reference.getProperty("objectClass"))[0];
+//                return (Class<? extends S>) reference.getBundle().loadClass(className);
+//            }
+//            catch (ClassNotFoundException e) {
+//                throw Throwables.shouldNeverHappen(e);
+//            }
         }
 
         @Nonnull
