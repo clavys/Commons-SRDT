@@ -185,4 +185,20 @@ public class MoreArraysTest extends AbstractTest {
 
         assertThat(MoreArrays.lastIndexOf(array0, 10)).isEqualTo(MoreArrays.NO_INDEX);
     }
+
+    @Test
+    public void testBytesToPrimitive() {
+        Byte[] boxedArray = new Byte[] {0, 1, 2, 3, 4};
+        byte[] primitiveArray = new byte[] {0, 1, 2, 3, 4};
+
+        assertThat(primitiveArray).isEqualTo(MoreArrays.toPrimitive(boxedArray));
+    }
+
+    @Test
+    public void testBytesToObject() {
+        Byte[] boxedArray = new Byte[] {0, 1, 2, 3, 4};
+        byte[] primitiveArray = new byte[] {0, 1, 2, 3, 4};
+
+        assertThat(boxedArray).isEqualTo(MoreArrays.toObject(primitiveArray));
+    }
 }

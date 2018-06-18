@@ -275,4 +275,39 @@ public final class MoreArrays {
 
         return NO_INDEX;
     }
+
+    /**
+     * Converts an array of {@link Byte} to an array of primitive types {@link byte}.
+     *
+     * @param boxedArray The array of {@link Byte} to convert.
+     * @return An array of {@link byte} containing the same elements as {@code boxedArray},
+     * in the same order, converted to primitives.
+     */
+    @Nonnull
+    public static byte[] toPrimitive(final Byte... boxedArray) {
+        checkNotNull(boxedArray, "boxedArray");
+        byte[] primitiveArray = new byte[boxedArray.length];
+        for (int i = 0; i < boxedArray.length; i++) {
+            primitiveArray[i] = boxedArray[i].byteValue();
+        }
+        return primitiveArray;
+    }
+
+    /**
+     * Converts an array of primitive types {@link byte} to an array of Objects {@Byte}.
+     *
+     * @param primitiveArray The array of {@linke byte} to convert.
+     *
+     * @return An array of {@link Byte}  containing the same elements as {@code primitiveArray}, in the same order,
+     * converted to boxed types.
+     */
+    public static Byte[] toObject(final byte... primitiveArray) {
+        checkNotNull(primitiveArray, "primitiveArray");
+        Byte[] boxedArray = new Byte[primitiveArray.length];
+
+        for (int i = 0; i < boxedArray.length; i++) {
+            boxedArray[i] = Byte.valueOf(primitiveArray[i]);
+        }
+        return boxedArray;
+    }
 }
