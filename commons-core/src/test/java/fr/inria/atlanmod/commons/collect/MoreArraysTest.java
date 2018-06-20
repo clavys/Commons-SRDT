@@ -126,6 +126,17 @@ public class MoreArraysTest extends AbstractTest {
     }
 
     @Test
+    public void testAddAllBytes() {
+        byte[] array1 = new byte[] {6,5,4,3,2,1};
+        byte[] array2 = new byte[] {1, 2, 3};
+        byte[] expected = new byte[] {6,5,4,3,2,1,1,2,3};
+
+        byte[] joinedArray = MoreArrays.addAll(array1, array2);
+
+        assertThat(joinedArray).isEqualTo(expected);
+    }
+
+    @Test
     public void testRemove() {
         Integer[] array0 = new Integer[]{0, 1, 2, 3, 4};
         assertThat(array0).hasSize(5);

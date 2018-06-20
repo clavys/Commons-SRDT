@@ -11,15 +11,13 @@ package fr.inria.atlanmod.commons.primitive;
 import fr.inria.atlanmod.commons.Throwables;
 import fr.inria.atlanmod.commons.annotation.Static;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import static fr.inria.atlanmod.commons.Preconditions.checkEqualTo;
 import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
@@ -260,7 +258,7 @@ public final class Bytes {
         }
         List<Byte> byteCollection = new ArrayList<>(primitiveArray.length);
         for (byte each : primitiveArray) {
-            byteCollection.add(new Byte(each));
+            byteCollection.add(Byte.valueOf(each));
         }
         return byteCollection;
     }

@@ -124,7 +124,7 @@ public class BytesTest extends AbstractTest {
         byte[] expected = new byte[] {1, 2, 3, 4, 5};
         List<Byte> boxedList = new ArrayList<>();
         for(byte each : expected) {
-            boxedList.add(new Byte(each));
+            boxedList.add(Byte.valueOf(each));
         }
         assertThat(boxedList.size()).isEqualTo(expected.length);
         assertThat(Bytes.toArray(boxedList)).isEqualTo(expected);

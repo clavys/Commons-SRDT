@@ -190,6 +190,29 @@ public final class MoreArrays {
     }
 
     /**
+     * Adds all {@code array2} at the end of the {@code array1}.
+     *
+     * @param array1    the array to add the element to
+     * @param array2    the values to add
+     *
+     * @return a new array of bytes containing all the existing elements in arrays 1 and 2.
+     *
+     * @throws NullPointerException if any argument is {@code null}
+     */
+    @Nonnull
+    public static byte[] addAll(byte[] array1, byte... array2) {
+        checkNotNull(array1, "array1");
+        checkNotNull(array2, "array2");
+
+        final byte[] newArray = new byte[array1.length + array2.length];
+        System.arraycopy(array1, 0, newArray, 0, array1.length);
+        System.arraycopy(array2, 0, newArray, array1.length, array2.length);
+
+        return newArray;
+
+    }
+
+    /**
      * Removes the element at the specified {@code index} from the specified {@code array}.
      *
      * @param array the array to remove the element from
