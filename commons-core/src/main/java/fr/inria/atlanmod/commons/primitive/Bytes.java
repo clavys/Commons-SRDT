@@ -11,11 +11,13 @@ package fr.inria.atlanmod.commons.primitive;
 import fr.inria.atlanmod.commons.Throwables;
 import fr.inria.atlanmod.commons.annotation.Static;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.charset.UnsupportedCharsetException;
-
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static fr.inria.atlanmod.commons.Preconditions.checkEqualTo;
 import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
@@ -238,4 +240,46 @@ public final class Bytes {
 
         return new String(result);
     }
+
+
+    /**
+     * Converts a {@code byte} array into a {@link List} of {@link Byte}.
+     *
+     * @param primitiveArray the {@code byte} array to convert
+     * @return A {@link List} containing the same elements as {@code primitiveArray}, in the same order,
+     * coverted to wrapper objects.
+     */
+    @Nonnull
+    public static List<Byte> asList(byte... primitiveArray) {
+        checkNotNull(primitiveArray, "primitiveArray");
+
+        if (primitiveArray.length == 0) {
+            return Collections.emptyList();
+        }
+        List<Byte> byteCollection = new ArrayList<>(primitiveArray.length);
+        for (byte each : primitiveArray) {
+            byteCollection.add(Byte.valueOf(each));
+        }
+        return byteCollection;
+    }
+
+
+    /**
+     * Converts a {@link List} of {@link Byte} into a {@code byte} array.
+     *
+     * @param boxedList the {@link List} of {@link Byte} to convert.
+     * @return an array containing the same elements as {@code boxedList}, in the same order, converted to primitives.
+     */
+    @Nonnull
+    public static byte[] toArray(List<Byte> boxedList) {
+        checkNotNull(boxedList, "boxedList");
+
+        int i = 0;
+        byte[] elements = new byte[boxedList.size()];
+        for (Byte each : boxedList) {
+            elements[i++] = each.byteValue();
+        }
+        return elements;
+    }
+
 }

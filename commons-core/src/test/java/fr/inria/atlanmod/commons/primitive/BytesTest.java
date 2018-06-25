@@ -13,6 +13,8 @@ import fr.inria.atlanmod.commons.AbstractTest;
 import org.junit.jupiter.api.Test;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -101,5 +103,30 @@ public class BytesTest extends AbstractTest {
         assertThat(actualBytes0).contains(bytes);
 
         assertThat(Bytes.toString(actualBytes0)).isEqualTo(expected0);
+    }
+
+    @Test
+    public void testAsList() {
+        byte[] bytes = new byte[] {1, 2, 3, 4, 5};
+        List<Byte> boxedList = Bytes.asList(bytes);
+
+        assertThat(boxedList.size()).isEqualTo(bytes.length);
+
+        List<Byte> expected = new ArrayList<>(bytes.length);
+        for(byte each : bytes) {
+            expected.add(each);
+        }
+        assertThat(expected).isEqualTo(boxedList);
+    }
+
+    @Test
+    public void testToArray() {
+        byte[] expected = new byte[] {1, 2, 3, 4, 5};
+        List<Byte> boxedList = new ArrayList<>();
+        for(byte each : expected) {
+            boxedList.add(Byte.valueOf(each));
+        }
+        assertThat(boxedList.size()).isEqualTo(expected.length);
+        assertThat(Bytes.toArray(boxedList)).isEqualTo(expected);
     }
 }

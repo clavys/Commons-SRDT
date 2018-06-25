@@ -126,6 +126,17 @@ public class MoreArraysTest extends AbstractTest {
     }
 
     @Test
+    public void testAddAllBytes() {
+        byte[] array1 = new byte[] {6,5,4,3,2,1};
+        byte[] array2 = new byte[] {1, 2, 3};
+        byte[] expected = new byte[] {6,5,4,3,2,1,1,2,3};
+
+        byte[] joinedArray = MoreArrays.addAll(array1, array2);
+
+        assertThat(joinedArray).isEqualTo(expected);
+    }
+
+    @Test
     public void testRemove() {
         Integer[] array0 = new Integer[]{0, 1, 2, 3, 4};
         assertThat(array0).hasSize(5);
@@ -184,5 +195,21 @@ public class MoreArraysTest extends AbstractTest {
         assertThat(MoreArrays.lastIndexOf(array0, 2)).isEqualTo(3);
 
         assertThat(MoreArrays.lastIndexOf(array0, 10)).isEqualTo(MoreArrays.NO_INDEX);
+    }
+
+    @Test
+    public void testBytesToPrimitive() {
+        Byte[] boxedArray = new Byte[] {0, 1, 2, 3, 4};
+        byte[] primitiveArray = new byte[] {0, 1, 2, 3, 4};
+
+        assertThat(primitiveArray).isEqualTo(MoreArrays.toPrimitive(boxedArray));
+    }
+
+    @Test
+    public void testBytesToObject() {
+        Byte[] boxedArray = new Byte[] {0, 1, 2, 3, 4};
+        byte[] primitiveArray = new byte[] {0, 1, 2, 3, 4};
+
+        assertThat(boxedArray).isEqualTo(MoreArrays.toObject(primitiveArray));
     }
 }
