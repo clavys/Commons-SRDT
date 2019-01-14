@@ -1,7 +1,14 @@
-## *1.0.2*
+## 1.0.2
 
-Current SNAPSHOT.
+*Released on 2019-01-15.*
 
+### Updated
+
+-   __\[UPD\]__ Update GroupId and Affiliation
+
+### Added
+
+- Support for unsigned types
 
 ## 1.0.1
 

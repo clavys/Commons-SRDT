@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>fr.inria.atlanmod.commons</groupId>
+        <groupId>org.atlanmod.commons</groupId>
         <artifactId>commons</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.0.2</version>
     </parent>
 
     <artifactId>commons-core</artifactId>
@@ -157,8 +157,8 @@
                             org.slf4j
                         </Import-Package>
                         <Export-Package>
-                            !fr.inria.atlanmod.commons.*.internal.*,
-                            fr.inria.atlanmod.commons.*
+                            !org.atlanmod.commons.*.internal.*,
+                            org.atlanmod.commons.*
                         </Export-Package>
                     </instructions>
                 </configuration>
@@ -166,5 +166,4 @@
 
         </plugins>
     </build>
-
 </project>
