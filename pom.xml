@@ -2,7 +2,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.inria.atlanmod.commons</groupId>
+    <groupId>org.atlanmod.commons</groupId>
     <artifactId>commons</artifactId>
     <version>1.0.2-SNAPSHOT</version>
 
@@ -15,7 +15,7 @@
     <inceptionYear>2017</inceptionYear>
 
     <organization>
-        <name>Atlanmod, Inria, LS2N, and IMT Nantes</name>
+        <name>Atlanmod</name>
         <url>http://www.atlanmod.org</url>
     </organization>
 
@@ -66,7 +66,17 @@
         <developer>
             <name>Yoann Vernageau</name>
             <id>yoann.vernageau</id>
-            <email>yoann.vernageau@inria.fr</email>
+            <email>vernageau@atlanmod.org</email>
+            <roles>
+                <role>admin</role>
+                <role>developer</role>
+            </roles>
+            <timezone>+2</timezone>
+        </developer>
+        <developer>
+            <name>Gerson Sunyé</name>
+            <id>sunye</id>
+            <email>sunye@atlanmod.org</email>
             <roles>
                 <role>admin</role>
                 <role>developer</role>
