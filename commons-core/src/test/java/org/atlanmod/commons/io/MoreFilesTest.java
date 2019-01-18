@@ -20,10 +20,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case about {@link MoreFiles}.
  */
 @ParametersAreNonnullByDefault
-public class MoreFilesTest extends AbstractTest {
+class MoreFilesTest extends AbstractTest {
 
     @Test
-    public void testFileExtension() {
+    void testFileExtension() {
         assertThat(MoreFiles.fileExtension(".log")).isEqualTo("log");
         assertThat(MoreFiles.fileExtension("atlanmod.log")).isEqualTo("log");
         assertThat(MoreFiles.fileExtension("atlanmod..log")).isEqualTo("log");
@@ -42,7 +42,7 @@ public class MoreFilesTest extends AbstractTest {
     }
 
     @Test
-    public void testNameWithoutExtension() {
+    void testNameWithoutExtension() {
         assertThat(MoreFiles.nameWithoutExtension(".log")).isEmpty();
         assertThat(MoreFiles.nameWithoutExtension("atlanmod.log")).isEqualTo("atlanmod");
         assertThat(MoreFiles.nameWithoutExtension("atlanmod..log")).isEqualTo("atlanmod.");

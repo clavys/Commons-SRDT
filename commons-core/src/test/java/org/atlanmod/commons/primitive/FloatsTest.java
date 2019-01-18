@@ -22,10 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case that checks the behavior of {@link Floats}.
  */
 @ParametersAreNonnullByDefault
-public class FloatsTest extends AbstractTest {
+class FloatsTest extends AbstractTest {
 
     @Test
-    public void testToBytes() {
+    void testToBytes() {
         final Float float0 = 139895433915.09579569E18f;
         byte[] actual0 = Floats.toBytes(float0);
         byte[] expected0 = ByteBuffer.allocate(Float.BYTES).putFloat(float0).array();

@@ -28,12 +28,12 @@ import static org.assertj.core.api.Assertions.catchThrowable;
  * A test-case that checks the behavior of {@link Cache}.
  */
 @ParametersAreNonnullByDefault
-public class CacheTest extends AbstractTest {
+class CacheTest extends AbstractTest {
 
     private Cache<Integer, String> cache;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         cache = CacheBuilder.builder()
                 .weakKeys()
                 .softValues()
@@ -45,19 +45,19 @@ public class CacheTest extends AbstractTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         cache.invalidateAll();
         cache.cleanUp();
     }
 
     @Test
-    public void createCacheInvalidSize() {
+    void createCacheInvalidSize() {
         assertThat(catchThrowable(() -> CacheBuilder.builder().maximumSize(-1)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    public void testGetPut() {
+    void testGetPut() {
         String value0 = "Value0";
 
         cache.put(0, value0);
@@ -67,12 +67,12 @@ public class CacheTest extends AbstractTest {
     }
 
     @Test
-    public void testGetAbsent() {
+    void testGetAbsent() {
         assertThat(cache.get(0)).isNull();
     }
 
     @Test
-    public void testGetWithFunction() {
+    void testGetWithFunction() {
         String prefix = "Value";
         String value0 = prefix + '0';
 
@@ -86,7 +86,7 @@ public class CacheTest extends AbstractTest {
     }
 
     @Test
-    public void testGetWithNullFunction() {
+    void testGetWithNullFunction() {
         assertThat(cache.get(0)).isNull();
 
         assertThat(cache.get(0, key -> null)).isNull();
@@ -98,7 +98,7 @@ public class CacheTest extends AbstractTest {
     }
 
     @Test
-    public void testGetPutAllKeys() {
+    void testGetPutAllKeys() {
         String value0 = "Value0";
         String value1 = "Value1";
         String value2 = "Value2";
@@ -123,7 +123,7 @@ public class CacheTest extends AbstractTest {
     }
 
     @Test
-    public void testInvalidate() {
+    void testInvalidate() {
         String value0 = "Value0";
         String value1 = "Value1";
 
@@ -144,7 +144,7 @@ public class CacheTest extends AbstractTest {
     }
 
     @Test
-    public void testInvalidateAllKeys() {
+    void testInvalidateAllKeys() {
         String value0 = "Value0";
         String value1 = "Value1";
         String value2 = "Value2";
@@ -169,7 +169,7 @@ public class CacheTest extends AbstractTest {
     }
 
     @Test
-    public void testInvalidateAll() {
+    void testInvalidateAll() {
         String value0 = "Value0";
         String value1 = "Value1";
 
@@ -190,7 +190,7 @@ public class CacheTest extends AbstractTest {
     }
 
     @Test
-    public void asMap() throws Exception {
+    void asMap() throws Exception {
         String value0 = "Value0";
         String value1 = "Value1";
         String value2 = "Value2";
@@ -208,7 +208,7 @@ public class CacheTest extends AbstractTest {
     }
 
     @Test
-    public void stats() throws Exception {
+    void stats() throws Exception {
         CacheStats stats = cache.stats();
         assertThat(stats).isNotNull();
     }

@@ -27,12 +27,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case that checks the behavior of {@link Cache} with a loading {@link java.util.function.Function}.
  */
 @ParametersAreNonnullByDefault
-public class LoadingCacheTest extends AbstractTest {
+class LoadingCacheTest extends AbstractTest {
 
     private Cache<Integer, String> cache;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         cache = CacheBuilder.builder()
                 .weakKeys()
                 .softValues()
@@ -44,13 +44,13 @@ public class LoadingCacheTest extends AbstractTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         cache.invalidateAll();
         cache.cleanUp();
     }
 
     @Test
-    public void testGetPut() {
+    void testGetPut() {
         String value0 = "Value0";
 
         assertThat(cache.get(0)).isEqualTo(value0);
@@ -58,7 +58,7 @@ public class LoadingCacheTest extends AbstractTest {
     }
 
     @Test
-    public void testGetWithFunction() {
+    void testGetWithFunction() {
         String prefix = "Value";
         String value0 = prefix + '0';
 
@@ -67,7 +67,7 @@ public class LoadingCacheTest extends AbstractTest {
     }
 
     @Test
-    public void testGetWithNullFunction() {
+    void testGetWithNullFunction() {
         String value0 = "Value0";
 
         assertThat(cache.get(0, key -> null)).isNull();
@@ -78,7 +78,7 @@ public class LoadingCacheTest extends AbstractTest {
     }
 
     @Test
-    public void testGetPutAllKeys() {
+    void testGetPutAllKeys() {
         String value0 = "Value0";
         String value1 = "Value1";
         String value2 = "Value2";
@@ -98,7 +98,7 @@ public class LoadingCacheTest extends AbstractTest {
     }
 
     @Test
-    public void testInvalidate() {
+    void testInvalidate() {
         String value0 = "Value0";
         String value1 = "Value1";
 
@@ -115,7 +115,7 @@ public class LoadingCacheTest extends AbstractTest {
     }
 
     @Test
-    public void testInvalidateAllKeys() {
+    void testInvalidateAllKeys() {
         String value0 = "Value0";
         String value1 = "Value1";
         String value2 = "Value2";
@@ -134,7 +134,7 @@ public class LoadingCacheTest extends AbstractTest {
     }
 
     @Test
-    public void testInvalidateAll() {
+    void testInvalidateAll() {
         String value0 = "Value0";
         String value1 = "Value1";
 
@@ -147,7 +147,7 @@ public class LoadingCacheTest extends AbstractTest {
     }
 
     @Test
-    public void asMap() throws Exception {
+    void asMap() throws Exception {
         String value0 = "Value0";
         String value1 = "Value1";
         String value2 = "Value2";
@@ -167,7 +167,7 @@ public class LoadingCacheTest extends AbstractTest {
     }
 
     @Test
-    public void stats() throws Exception {
+    void stats() throws Exception {
         CacheStats stats = cache.stats();
         assertThat(stats).isNotNull();
     }

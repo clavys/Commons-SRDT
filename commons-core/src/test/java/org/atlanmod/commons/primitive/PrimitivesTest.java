@@ -22,10 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case that checks the behavior of {@link Primitives}.
  */
 @ParametersAreNonnullByDefault
-public class PrimitivesTest extends AbstractTest {
+class PrimitivesTest extends AbstractTest {
 
     @Test
-    public void testIsPrimitive() {
+    void testIsPrimitive() {
         assertThat(Primitives.isPrimitive(boolean.class)).isTrue();
         assertThat(Primitives.isPrimitive(Boolean.class)).isFalse();
 
@@ -56,7 +56,7 @@ public class PrimitivesTest extends AbstractTest {
     }
 
     @Test
-    public void testIsBoxed() {
+    void testIsBoxed() {
         assertThat(Primitives.isBoxed(boolean.class)).isFalse();
         assertThat(Primitives.isBoxed(Boolean.class)).isTrue();
 
@@ -87,7 +87,7 @@ public class PrimitivesTest extends AbstractTest {
     }
 
     @Test
-    public void testIsPrimitiveOrString() {
+    void testIsPrimitiveOrString() {
         assertThat(Primitives.isPrimitiveOrString(boolean.class)).isTrue();
         assertThat(Primitives.isPrimitiveOrString(Boolean.class)).isTrue();
 

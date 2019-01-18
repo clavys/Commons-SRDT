@@ -22,10 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case that checks the behavior of {@link BinarySerializer} instances.
  */
 @ParametersAreNonnullByDefault
-public class BinarySerializerTest extends AbstractSerializerTest {
+class BinarySerializerTest extends AbstractSerializerTest {
 
     @Test
-    public void testSerializeDeserializeObject() throws IOException {
+    void testSerializeDeserializeObject() throws IOException {
         BinarySerializer<List<Integer>> serializer = BinarySerializerFactory.getInstance().forAny();
 
         List<Integer> object = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
@@ -35,7 +35,7 @@ public class BinarySerializerTest extends AbstractSerializerTest {
     }
 
     @Test
-    public void testSerializeDeserializeObjectWithStream() throws IOException {
+    void testSerializeDeserializeObjectWithStream() throws IOException {
         BinarySerializer<List<Integer>> serializer = BinarySerializerFactory.getInstance().forAny();
 
         List<Integer> object = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);

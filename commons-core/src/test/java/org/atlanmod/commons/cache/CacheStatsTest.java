@@ -24,17 +24,17 @@ import static org.assertj.core.api.Assertions.catchThrowable;
  * A test-case that checks the behavior of {@link CacheStats}.
  */
 @ParametersAreNonnullByDefault
-public class CacheStatsTest extends AbstractTest {
+class CacheStatsTest extends AbstractTest {
 
     private CacheStats stats;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         stats = new CacheStats(30, 10, 15, 5, 2000, 2);
     }
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         assertThat(catchThrowable(() -> new CacheStats(0, 0, 0, 0, 0, 0)))
                 .isNull();
 
@@ -58,67 +58,67 @@ public class CacheStatsTest extends AbstractTest {
     }
 
     @Test
-    public void testRequestCount() {
+    void testRequestCount() {
         assertThat(stats.requestCount()).isEqualTo(40);
     }
 
     @Test
-    public void testHitCount() {
+    void testHitCount() {
         assertThat(stats.hitCount()).isEqualTo(30);
     }
 
     @Test
-    public void testHitRate() {
+    void testHitRate() {
         assertThat(stats.hitRate()).isEqualTo(0.75);
     }
 
     @Test
-    public void testMissCount() {
+    void testMissCount() {
         assertThat(stats.missCount()).isEqualTo(10);
     }
 
     @Test
-    public void testMissRate() {
+    void testMissRate() {
         assertThat(stats.missRate()).isEqualTo(0.25);
     }
 
     @Test
-    public void testLoadCount() {
+    void testLoadCount() {
         assertThat(stats.loadCount()).isEqualTo(20);
     }
 
     @Test
-    public void testLoadSuccessCount() {
+    void testLoadSuccessCount() {
         assertThat(stats.loadSuccessCount()).isEqualTo(15);
     }
 
     @Test
-    public void testLoadFailureCount() {
+    void testLoadFailureCount() {
         assertThat(stats.loadFailureCount()).isEqualTo(5);
     }
 
     @Test
-    public void testLoadFailureRate() {
+    void testLoadFailureRate() {
         assertThat(stats.loadFailureRate()).isEqualTo(0.25);
     }
 
     @Test
-    public void testTotalLoadTime() {
+    void testTotalLoadTime() {
         assertThat(stats.totalLoadTime()).isEqualByComparingTo(Duration.ofNanos(2000));
     }
 
     @Test
-    public void testAverageLoadPenalty() {
+    void testAverageLoadPenalty() {
         assertThat(stats.averageLoadPenalty()).isEqualTo(100);
     }
 
     @Test
-    public void testEvictionCount() {
+    void testEvictionCount() {
         assertThat(stats.evictionCount()).isEqualTo(2);
     }
 
     @Test
-    public void testMinus() {
+    void testMinus() {
         CacheStats result = stats.minus(stats);
 
         //noinspection EqualsReplaceableByObjectsCall
@@ -141,7 +141,7 @@ public class CacheStatsTest extends AbstractTest {
     }
 
     @Test
-    public void testPlus() {
+    void testPlus() {
         CacheStats result = stats.plus(stats);
 
         //noinspection EqualsReplaceableByObjectsCall
@@ -163,11 +163,11 @@ public class CacheStatsTest extends AbstractTest {
     }
 
     @Test
-    public void testEquals() {
-        //noinspection EqualsWithItself, EqualsReplaceableByObjectsCall
+    void testEquals() {
+        //noinspection EqualsWithItself
         assertThat(stats.equals(stats)).isTrue();
 
-        //noinspection ObjectEqualsNull, EqualsReplaceableByObjectsCall
+        //noinspection ConstantConditions
         assertThat(stats.equals(null)).isFalse();
 
         //noinspection EqualsReplaceableByObjectsCall

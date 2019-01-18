@@ -23,27 +23,27 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case that checks the behavior of {@link HashCode}.
  */
 @ParametersAreNonnullByDefault
-public class LongHashCodeTest extends AbstractTest {
+class LongHashCodeTest extends AbstractTest {
 
     private final static HashCode HASH = new LongHashCode(123456789);
 
     @Test
-    public void testBits() {
+    void testBits() {
         assertThat(HASH.bits()).isEqualTo(64);
     }
 
     @Test
-    public void testToBytes() {
+    void testToBytes() {
         assertThat(HASH.toBytes()).isEqualTo(Longs.toBytes(123456789));
     }
 
     @Test
-    public void testToHexString() {
+    void testToHexString() {
         assertThat(HASH.toHexString()).isEqualToIgnoringCase("75bcd15");
     }
 
     @Test
-    public void testHashCode() {
+    void testHashCode() {
         assertThat(HASH.hashCode()).isEqualTo(Objects.hash(123456789));
 
         HashCode littleHash = new LongHashCode(25);
@@ -52,17 +52,15 @@ public class LongHashCodeTest extends AbstractTest {
     }
 
     @Test
-    public void testEquals() {
-        //noinspection EqualsWithItself,EqualsReplaceableByObjectsCall
+    void testEquals() {
+        //noinspection EqualsWithItself
         assertThat(HASH.equals(HASH)).isTrue();
 
-        //noinspection ObjectEqualsNull,EqualsReplaceableByObjectsCall
+        //noinspection ObjectEqualsCanBeEquality,ConstantConditions
         assertThat(HASH.equals(null)).isFalse();
 
-        //noinspection EqualsReplaceableByObjectsCall
         assertThat(HASH.equals(new LongHashCode(123456789))).isTrue();
 
-        //noinspection EqualsReplaceableByObjectsCall
         assertThat(HASH.equals(new LongHashCode(25))).isFalse();
     }
 }

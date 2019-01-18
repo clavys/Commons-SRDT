@@ -22,10 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case that checks the behavior of {@link Ints}.
  */
 @ParametersAreNonnullByDefault
-public class IntsTest extends AbstractTest {
+class IntsTest extends AbstractTest {
 
     @Test
-    public void testToBytes() {
+    void testToBytes() {
         final Integer int0 = 1654125381;
         byte[] actual0 = Ints.toBytes(int0);
         byte[] expected0 = ByteBuffer.allocate(Integer.BYTES).putInt(int0).array();

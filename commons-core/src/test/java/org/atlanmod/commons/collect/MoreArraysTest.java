@@ -25,10 +25,10 @@ import static org.assertj.core.api.Assertions.catchThrowable;
  * A test-case that checks the behavior of {@link MoreArrays}.
  */
 @ParametersAreNonnullByDefault
-public class MoreArraysTest extends AbstractTest {
+class MoreArraysTest extends AbstractTest {
 
     @Test
-    public void testConstructor() throws Exception {
+    void testConstructor() throws Exception {
         Constructor<?> constructor = MoreArrays.class.getDeclaredConstructor();
         assertThat(Modifier.isPrivate(constructor.getModifiers())).isTrue();
 
@@ -40,7 +40,7 @@ public class MoreArraysTest extends AbstractTest {
     }
 
     @Test
-    public void testNewArray() {
+    void testNewArray() {
         Object[] array0 = MoreArrays.newArray(Object.class, 1);
         assertThat(array0).isExactlyInstanceOf(Object[].class);
         assertThat(array0).hasSize(1);
@@ -51,18 +51,17 @@ public class MoreArraysTest extends AbstractTest {
     }
 
     @Test
-    public void testInvalidNewArray() {
+    void testInvalidNewArray() {
         //noinspection ConstantConditions
         assertThat(catchThrowable(() -> MoreArrays.newArray(null, 0)))
                 .isExactlyInstanceOf(NullPointerException.class);
 
-        //noinspection ConstantConditions
         assertThat(catchThrowable(() -> MoreArrays.newArray(Object.class, -1)))
                 .isExactlyInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    public void testResize() {
+    void testResize() {
         Integer[] array0 = new Integer[]{0, 1, 2, 3};
         assertThat(array0).hasSize(4);
 
@@ -78,7 +77,7 @@ public class MoreArraysTest extends AbstractTest {
     }
 
     @Test
-    public void testAppend() {
+    void testAppend() {
         Integer[] array0 = new Integer[0];
         assertThat(array0).hasSize(0);
 
@@ -98,7 +97,7 @@ public class MoreArraysTest extends AbstractTest {
     }
 
     @Test
-    public void testAdd() {
+    void testAdd() {
         Integer[] array0 = new Integer[0];
         assertThat(array0).hasSize(0);
 
@@ -126,7 +125,7 @@ public class MoreArraysTest extends AbstractTest {
     }
 
     @Test
-    public void testAddAllBytes() {
+    void testAddAllBytes() {
         byte[] array1 = new byte[] {6,5,4,3,2,1};
         byte[] array2 = new byte[] {1, 2, 3};
         byte[] expected = new byte[] {6,5,4,3,2,1,1,2,3};
@@ -137,7 +136,7 @@ public class MoreArraysTest extends AbstractTest {
     }
 
     @Test
-    public void testRemove() {
+    void testRemove() {
         Integer[] array0 = new Integer[]{0, 1, 2, 3, 4};
         assertThat(array0).hasSize(5);
 
@@ -165,7 +164,7 @@ public class MoreArraysTest extends AbstractTest {
     }
 
     @Test
-    public void testContains() {
+    void testContains() {
         Integer[] array0 = new Integer[]{0, 1, 2, 3, 4};
 
         assertThat(MoreArrays.contains(array0, 0)).isTrue();
@@ -176,7 +175,7 @@ public class MoreArraysTest extends AbstractTest {
     }
 
     @Test
-    public void testIndexOf() {
+    void testIndexOf() {
         Integer[] array0 = new Integer[]{0, 1, 2, 2, 0, 1};
 
         assertThat(MoreArrays.indexOf(array0, 0)).isEqualTo(0);
@@ -187,7 +186,7 @@ public class MoreArraysTest extends AbstractTest {
     }
 
     @Test
-    public void testLastIndexOf() {
+    void testLastIndexOf() {
         Integer[] array0 = new Integer[]{0, 1, 2, 2, 0, 1};
 
         assertThat(MoreArrays.lastIndexOf(array0, 0)).isEqualTo(4);
@@ -198,7 +197,7 @@ public class MoreArraysTest extends AbstractTest {
     }
 
     @Test
-    public void testBytesToPrimitive() {
+    void testBytesToPrimitive() {
         Byte[] boxedArray = new Byte[] {0, 1, 2, 3, 4};
         byte[] primitiveArray = new byte[] {0, 1, 2, 3, 4};
 
@@ -206,7 +205,7 @@ public class MoreArraysTest extends AbstractTest {
     }
 
     @Test
-    public void testBytesToObject() {
+    void testBytesToObject() {
         Byte[] boxedArray = new Byte[] {0, 1, 2, 3, 4};
         byte[] primitiveArray = new byte[] {0, 1, 2, 3, 4};
 

@@ -24,10 +24,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case that checks the behavior of {@link MoreStreams}.
  */
 @ParametersAreNonnullByDefault
-public class MoreStreamsTest extends AbstractTest {
+class MoreStreamsTest extends AbstractTest {
 
     @Test
-    public void indexOf() {
+    void indexOf() {
         List<Integer> list0 = Arrays.asList(1, 3, 2, 3, 1, 2, 1);
 
         assertThat(MoreStreams.indexOf(list0.stream(), 1)).isNotEmpty().contains(0);
@@ -40,7 +40,7 @@ public class MoreStreamsTest extends AbstractTest {
     }
 
     @Test
-    public void lastIndexOf() {
+    void lastIndexOf() {
         List<Integer> list0 = Arrays.asList(1, 3, 2, 3, 1, 2, 1);
 
         assertThat(MoreStreams.lastIndexOf(list0.stream(), 1)).isNotEmpty().contains(6);
@@ -53,7 +53,7 @@ public class MoreStreamsTest extends AbstractTest {
     }
 
     @Test
-    public void size() {
+    void size() {
         List<Integer> list0 = Arrays.asList(1, 3, 2, 3, 1, 2, 1);
         assertThat(MoreStreams.size(list0.stream())).isNotEmpty().contains(7);
 
