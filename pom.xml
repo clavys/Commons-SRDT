@@ -4,7 +4,7 @@
 
     <groupId>org.atlanmod.commons</groupId>
     <artifactId>commons</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -246,7 +246,7 @@
                     <configuration>
                         <instructions>
                             <Bundle-Version>
-                                1.0.2.${maven.build.timestamp}
+                                1.0.3.${maven.build.timestamp}
                             </Bundle-Version>
                             <Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
                             <Import-Package />
@@ -324,7 +324,7 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>3.0.1</version>
                     <configuration>
-                        <additionalparam>-Xdoclint:none</additionalparam>
+                        <additionalOptions>-Xdoclint:none</additionalOptions>
                         <failOnError>false</failOnError>
                         <quiet>true</quiet>
                         <notimestamp>true</notimestamp>

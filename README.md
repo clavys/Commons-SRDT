@@ -21,8 +21,8 @@ Some of methods are inspired by [Guava][guava-home].
 
 ## Latest release
 
-The most recent release is Atlanmod Commons 1.0.2, released November 22, 2017.
--   Javadoc: [neoemf][release-doc]
+The most recent release is Atlanmod Commons 1.0.2, released January 15, 2019.
+-   Javadoc: [commons][release-doc]
 
 To add a dependency on this library using Maven, use the following:
 ```xml
@@ -39,7 +39,7 @@ To add a dependency on this library using Maven, use the following:
 ## Snapshots
 
 Snapshots are automatically build from the `master` and are available throught Maven using `1.0.3-SNAPSHOT`.
--   Javadoc: [neoemf][snapshot-doc]
+-   Javadoc: [commons][snapshot-doc]
 
 
 [release-doc]: https://atlanmod.github.io/Commons/releases/latest/doc/
