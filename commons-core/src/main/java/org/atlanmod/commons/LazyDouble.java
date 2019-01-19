@@ -99,8 +99,7 @@ public final class LazyDouble {
      * @param updateOperator the operator to update the wrapped value
      */
     public void update(DoubleUnaryOperator updateOperator) {
-        value = updateOperator.applyAsDouble(getAsDouble());
-        isLoaded = true;
+        update(updateOperator.applyAsDouble(getAsDouble()));
     }
 
     /**

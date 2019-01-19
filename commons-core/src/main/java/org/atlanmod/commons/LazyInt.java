@@ -99,8 +99,7 @@ public final class LazyInt {
      * @param updateOperator the operator to update the wrapped value
      */
     public void update(IntUnaryOperator updateOperator) {
-        value = updateOperator.applyAsInt(getAsInt());
-        isLoaded = true;
+        update(updateOperator.applyAsInt(getAsInt()));
     }
 
     /**

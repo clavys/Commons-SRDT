@@ -99,8 +99,7 @@ public final class LazyLong {
      * @param updateOperator the operator to update the wrapped value
      */
     public void update(LongUnaryOperator updateOperator) {
-        value = updateOperator.applyAsLong(getAsLong());
-        isLoaded = true;
+        update(updateOperator.applyAsLong(getAsLong()));
     }
 
     /**

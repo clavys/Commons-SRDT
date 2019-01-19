@@ -105,8 +105,7 @@ public final class Lazy<T> {
      * @param updateOperator the operator to update the wrapped value
      */
     public void update(UnaryOperator<T> updateOperator) {
-        value = updateOperator.apply(get());
-        isLoaded = true;
+        update(updateOperator.apply(get()));
     }
 
     /**
