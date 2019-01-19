@@ -9,7 +9,6 @@
 package org.atlanmod.commons;
 
 import org.atlanmod.commons.annotation.Static;
-
 import org.jetbrains.annotations.Contract;
 
 import java.util.Collection;

@@ -8,8 +8,6 @@
 
 package org.atlanmod.commons.io.serializer;
 
-import org.atlanmod.commons.Preconditions;
-
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -51,7 +49,7 @@ final class ObjectBinarySerializer<T> extends AbstractBinarySerializer<T> {
 
     @Override
     public void serialize(T t, @WillNotClose DataOutput out) throws IOException {
-        Preconditions.checkInstanceOf(t, Serializable.class, "Requires a Serializable payload but received an object of type %s", t.getClass().getName());
+        checkInstanceOf(t, Serializable.class, "Requires a Serializable payload but received an object of type %s", t.getClass().getName());
 
         if (ObjectOutput.class.isInstance(out)) {
             serialize(t, ObjectOutput.class.cast(out));

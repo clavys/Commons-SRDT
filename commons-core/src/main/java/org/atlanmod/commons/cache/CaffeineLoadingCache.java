@@ -8,8 +8,6 @@
 
 package org.atlanmod.commons.cache;
 
-import org.atlanmod.commons.Preconditions;
-
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -40,7 +38,7 @@ class CaffeineLoadingCache<C extends com.github.benmanes.caffeine.cache.LoadingC
     @Nullable
     @Override
     public V get(K key) {
-        Preconditions.checkNotNull(key, "key");
+        checkNotNull(key, "key");
 
         return cache.get(key);
     }
@@ -48,14 +46,14 @@ class CaffeineLoadingCache<C extends com.github.benmanes.caffeine.cache.LoadingC
     @Nonnull
     @Override
     public Map<K, V> getAll(Iterable<? extends K> keys) {
-        Preconditions.checkNotNull(keys, "keys");
+        checkNotNull(keys, "keys");
 
         return cache.getAll(keys);
     }
 
     @Override
     public void refresh(K key) {
-        Preconditions.checkNotNull(key, "key");
+        checkNotNull(key, "key");
 
         cache.refresh(key);
     }

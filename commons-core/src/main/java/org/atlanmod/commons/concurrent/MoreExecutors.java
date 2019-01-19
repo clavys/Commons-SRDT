@@ -11,7 +11,6 @@ package org.atlanmod.commons.concurrent;
 import org.atlanmod.commons.Throwables;
 import org.atlanmod.commons.annotation.Static;
 import org.atlanmod.commons.log.Log;
-import org.atlanmod.commons.Preconditions;
 
 import java.util.Collections;
 import java.util.List;
@@ -161,9 +160,9 @@ public final class MoreExecutors {
      */
     @Nonnull
     public static List<Runnable> shutdown(ExecutorService service, long timeout, TimeUnit unit) {
-        Preconditions.checkNotNull(service, "service");
-        Preconditions.checkNotNull(unit, "unit");
-        Preconditions.checkGreaterThanOrEqualTo(timeout, 0L, "timeout (%d) must not be negative", timeout);
+        checkNotNull(service, "service");
+        checkNotNull(unit, "unit");
+        checkGreaterThanOrEqualTo(timeout, 0L, "timeout (%d) must not be negative", timeout);
 
         if (!service.isShutdown() && !service.isTerminated()) {
             try {
@@ -199,9 +198,9 @@ public final class MoreExecutors {
      */
     @Nonnull
     public static ExecutorService shutdownAtExit(ExecutorService service, long timeout, TimeUnit unit, boolean executeUnstarted) {
-        Preconditions.checkNotNull(service, "service");
-        Preconditions.checkNotNull(unit, "unit");
-        Preconditions.checkGreaterThanOrEqualTo(timeout, 0L, "timeout (%d) must not be negative", timeout);
+        checkNotNull(service, "service");
+        checkNotNull(unit, "unit");
+        checkGreaterThanOrEqualTo(timeout, 0L, "timeout (%d) must not be negative", timeout);
 
         MoreThreads.executeAtExit(() -> shutdown(service, timeout, unit, executeUnstarted));
 

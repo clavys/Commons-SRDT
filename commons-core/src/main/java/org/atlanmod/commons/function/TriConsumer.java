@@ -8,8 +8,6 @@
 
 package org.atlanmod.commons.function;
 
-import org.atlanmod.commons.Preconditions;
-
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNullableByDefault;
 
@@ -54,7 +52,7 @@ public interface TriConsumer<T, U, V> {
      */
     @Nonnull
     default TriConsumer<T, U, V> andThen(@Nonnull TriConsumer<? super T, ? super U, ? super V> after) {
-        Preconditions.checkNotNull(after, "after");
+        checkNotNull(after, "after");
 
         return (t, u, v) -> {
             accept(t, u, v);

@@ -9,7 +9,6 @@
 package org.atlanmod.commons.hash;
 
 import org.atlanmod.commons.primitive.Bytes;
-import org.atlanmod.commons.Preconditions;
 
 import java.security.MessageDigest;
 
@@ -43,7 +42,7 @@ final class BinaryHashCode implements HashCode {
      * @param hashCode the bytes representation of this hash code
      */
     public BinaryHashCode(byte[] hashCode) {
-        this.bytes = Preconditions.checkNotNull(hashCode, "hashCode");
+        this.bytes = checkNotNull(hashCode, "hashCode");
     }
 
     @Nonnegative

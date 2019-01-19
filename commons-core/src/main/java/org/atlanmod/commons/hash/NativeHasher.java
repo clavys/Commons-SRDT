@@ -9,7 +9,6 @@
 package org.atlanmod.commons.hash;
 
 import org.atlanmod.commons.Throwables;
-import org.atlanmod.commons.Preconditions;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -37,7 +36,7 @@ final class NativeHasher implements Hasher {
      * @param algorithm the name of the algorithm of this hasher
      */
     public NativeHasher(String algorithm) {
-        Preconditions.checkNotNull(algorithm, "algorithm");
+        checkNotNull(algorithm, "algorithm");
 
         this.digest = create(algorithm);
     }

@@ -14,7 +14,6 @@ import org.atlanmod.commons.annotation.Static;
 import org.atlanmod.commons.cache.Cache;
 import org.atlanmod.commons.cache.CacheBuilder;
 import org.atlanmod.commons.primitive.Strings;
-import org.atlanmod.commons.Preconditions;
 
 import java.text.MessageFormat;
 
@@ -74,7 +73,7 @@ public final class Log {
      */
     @Nonnull
     public static Logger forName(@Nonnull String name) {
-        return LOGGERS.get(Preconditions.checkNotNull(name, "name"));
+        return LOGGERS.get(checkNotNull(name, "name"));
     }
 
     /**

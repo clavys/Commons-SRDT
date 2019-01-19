@@ -8,8 +8,6 @@
 
 package org.atlanmod.commons.cache;
 
-import org.atlanmod.commons.Preconditions;
-
 import java.util.function.Function;
 import java.util.function.ToIntBiFunction;
 
@@ -59,7 +57,7 @@ final class CaffeineCacheBuilder<K, V> implements CacheBuilder<K, V> {
     @Nonnull
     @Override
     public CacheBuilder<K, V> maximumSize(@Nonnegative long maximumSize) {
-        Preconditions.checkGreaterThanOrEqualTo(maximumSize, 0L, "maximumSize (%d) must not be negative", maximumSize);
+        checkGreaterThanOrEqualTo(maximumSize, 0L, "maximumSize (%d) must not be negative", maximumSize);
 
         builder.maximumSize(maximumSize);
         return this;
@@ -67,7 +65,7 @@ final class CaffeineCacheBuilder<K, V> implements CacheBuilder<K, V> {
 
     @Override
     public <K1 extends K, V1 extends V> CacheBuilder<K, V> maximumWeight(@Nonnegative long maximumWeight, ToIntBiFunction<? super K1, ? extends V1> weigher) {
-        Preconditions.checkGreaterThanOrEqualTo(maximumWeight, 0L, "maximumWeight (%d) must not be negative", maximumWeight);
+        checkGreaterThanOrEqualTo(maximumWeight, 0L, "maximumWeight (%d) must not be negative", maximumWeight);
 
         builder.maximumWeight(maximumWeight);
         builder.weigher(weigher::applyAsInt);
@@ -104,7 +102,7 @@ final class CaffeineCacheBuilder<K, V> implements CacheBuilder<K, V> {
     @Nonnull
     @Override
     public <K1 extends K, V1 extends V> Cache<K1, V1> build(Function<? super K1, ? extends V1> mappingFunction) {
-        Preconditions.checkNotNull(mappingFunction, "mappingFunction");
+        checkNotNull(mappingFunction, "mappingFunction");
 
         return new CaffeineLoadingCache<>(builder.build(mappingFunction::apply));
     }

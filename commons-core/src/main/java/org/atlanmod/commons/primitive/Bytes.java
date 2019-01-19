@@ -11,13 +11,14 @@ package org.atlanmod.commons.primitive;
 import org.atlanmod.commons.Throwables;
 import org.atlanmod.commons.annotation.Static;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import static org.atlanmod.commons.Preconditions.checkEqualTo;
 import static org.atlanmod.commons.Preconditions.checkNotNull;

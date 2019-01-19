@@ -10,7 +10,6 @@ package org.atlanmod.commons.primitive;
 
 import org.atlanmod.commons.Throwables;
 import org.atlanmod.commons.annotation.Static;
-import org.atlanmod.commons.Preconditions;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
@@ -23,9 +22,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import static java.util.Objects.isNull;
 import static org.atlanmod.commons.Preconditions.checkEqualTo;
 import static org.atlanmod.commons.Preconditions.checkNotNull;
-import static java.util.Objects.isNull;
 
 /**
  * Static utility methods related to {@link String}.
@@ -111,7 +110,7 @@ public final class Strings {
      */
     @Nonnull
     public static byte[] toBytes(final String value) {
-        Preconditions.checkNotNull(value, "value");
+        checkNotNull(value, "value");
 
         try {
             return value.getBytes(StandardCharsets.UTF_8);
@@ -135,8 +134,8 @@ public final class Strings {
      */
     @Nonnull
     public static byte[] toBytesBinary(final String value) {
-        Preconditions.checkNotNull(value, "value");
-        Preconditions.checkEqualTo(value.length() % 2, 0, "value.length (%d) must be pair", value.length());
+        checkNotNull(value, "value");
+        checkEqualTo(value.length() % 2, 0, "value.length (%d) must be pair", value.length());
 
         byte[] bytes = new byte[value.length() / 2];
 

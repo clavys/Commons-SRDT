@@ -10,7 +10,6 @@ package org.atlanmod.commons.collect;
 
 import org.atlanmod.commons.Throwables;
 import org.atlanmod.commons.annotation.Static;
-import org.atlanmod.commons.Preconditions;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -21,8 +20,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static org.atlanmod.commons.Preconditions.checkNotNull;
 import static java.util.Objects.isNull;
+import static org.atlanmod.commons.Preconditions.checkNotNull;
 
 /**
  * Static utility methods related to {@link Iterable} instances.
@@ -43,7 +42,6 @@ public final class MoreIterables {
      * @return a sequential {@link Stream} of the contents of {@code iterable}
      */
     @Nonnull
-    @SuppressWarnings("unchecked")
     public static <E> Stream<E> stream(@Nullable Iterable<E> iterable) {
         if (isNull(iterable)) {
             return Stream.empty();
@@ -60,7 +58,6 @@ public final class MoreIterables {
      * @return a parallel {@link Stream} of the contents of {@code iterable}
      */
     @Nonnull
-    @SuppressWarnings("unchecked")
     public static <E> Stream<E> parallelStream(@Nullable Iterable<E> iterable) {
         if (isNull(iterable)) {
             return Stream.empty();
@@ -77,7 +74,7 @@ public final class MoreIterables {
      * @return {@code true} if the iterable contains no element
      */
     public static boolean isEmpty(Iterable<?> iterable) {
-        Preconditions.checkNotNull(iterable, "iterable");
+        checkNotNull(iterable, "iterable");
 
         return Collection.class.isInstance(iterable)
                 ? Collection.class.cast(iterable).isEmpty()

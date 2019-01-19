@@ -10,7 +10,6 @@ package org.atlanmod.commons.service;
 
 import org.atlanmod.commons.Lazy;
 import org.atlanmod.commons.annotation.VisibleForReflection;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
