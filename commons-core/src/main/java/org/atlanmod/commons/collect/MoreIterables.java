@@ -76,8 +76,8 @@ public final class MoreIterables {
     public static boolean isEmpty(Iterable<?> iterable) {
         checkNotNull(iterable, "iterable");
 
-        return Collection.class.isInstance(iterable)
-                ? Collection.class.cast(iterable).isEmpty()
+        return iterable instanceof Collection
+                ? ((Collection) iterable).isEmpty()
                 : MoreIterators.isEmpty(iterable.iterator());
     }
 

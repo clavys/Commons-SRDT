@@ -14,7 +14,6 @@ import org.atlanmod.commons.annotation.Static;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -246,41 +245,43 @@ public final class Bytes {
     /**
      * Converts a {@code byte} array into a {@link List} of {@link Byte}.
      *
-     * @param primitiveArray the {@code byte} array to convert
-     * @return A {@link List} containing the same elements as {@code primitiveArray}, in the same order,
-     * coverted to wrapper objects.
+     * @param bytes the {@code byte} array to convert
+     *
+     * @return a {@link List} containing the same elements as {@code bytes}, in the same order, converted to wrapper
+     * objects.
      */
     @Nonnull
-    public static List<Byte> asList(byte... primitiveArray) {
-        checkNotNull(primitiveArray, "primitiveArray");
+    public static List<Byte> asList(byte... bytes) {
+        checkNotNull(bytes, "bytes");
 
-        if (primitiveArray.length == 0) {
-            return Collections.emptyList();
+        final List<Byte> list = new ArrayList<>(bytes.length);
+
+        for (byte b : bytes) {
+            list.add(b);
         }
-        List<Byte> byteCollection = new ArrayList<>(primitiveArray.length);
-        for (byte each : primitiveArray) {
-            byteCollection.add(Byte.valueOf(each));
-        }
-        return byteCollection;
+
+        return list;
     }
 
 
     /**
      * Converts a {@link List} of {@link Byte} into a {@code byte} array.
      *
-     * @param boxedList the {@link List} of {@link Byte} to convert.
-     * @return an array containing the same elements as {@code boxedList}, in the same order, converted to primitives.
+     * @param list the {@link List} of {@link Byte} to convert.
+     *
+     * @return an array containing the same elements as {@code list}, in the same order, converted to primitives.
      */
     @Nonnull
-    public static byte[] toArray(List<Byte> boxedList) {
-        checkNotNull(boxedList, "boxedList");
+    public static byte[] toArray(List<Byte> list) {
+        checkNotNull(list, "list");
+
+        final byte[] bytes = new byte[list.size()];
 
         int i = 0;
-        byte[] elements = new byte[boxedList.size()];
-        for (Byte each : boxedList) {
-            elements[i++] = each.byteValue();
+        for (Byte b : list) {
+            bytes[i++] = b;
         }
-        return elements;
-    }
 
+        return bytes;
+    }
 }

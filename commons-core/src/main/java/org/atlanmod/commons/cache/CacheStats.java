@@ -282,11 +282,11 @@ public final class CacheStats {
         if (this == o) {
             return true;
         }
-        if (!CacheStats.class.isInstance(o)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
-        CacheStats that = CacheStats.class.cast(o);
+        CacheStats that = (CacheStats) o;
         return hitCount == that.hitCount
                 && missCount == that.missCount
                 && loadSuccessCount == that.loadSuccessCount

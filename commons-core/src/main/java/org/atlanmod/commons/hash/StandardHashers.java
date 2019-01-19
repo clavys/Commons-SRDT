@@ -100,7 +100,7 @@ public final class StandardHashers {
     @Nonnull
     public static Hasher forName(String name) {
         try {
-            return Hasher.class.cast(StandardHashers.class.getDeclaredField(name).get(null));
+            return (Hasher) StandardHashers.class.getDeclaredField(name).get(null);
         }
         catch (IllegalAccessException | NoSuchFieldException e) {
             final String possibleValues = Arrays.stream(StandardHashers.class.getDeclaredFields())

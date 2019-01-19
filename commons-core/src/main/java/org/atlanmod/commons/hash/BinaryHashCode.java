@@ -91,11 +91,11 @@ final class BinaryHashCode implements HashCode {
         if (this == o) {
             return true;
         }
-        if (!BinaryHashCode.class.isInstance(o)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
-        BinaryHashCode that = BinaryHashCode.class.cast(o);
+        BinaryHashCode that = (BinaryHashCode) o;
         return MessageDigest.isEqual(bytes, that.bytes);
     }
 

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -108,28 +109,43 @@ class BytesTest extends AbstractTest {
     @Test
     void testAsList() {
         byte[] bytes = new byte[] {1, 2, 3, 4, 5};
-        List<Byte> boxedList = Bytes.asList(bytes);
 
-        assertThat(boxedList.size()).isEqualTo(bytes.length);
+        final List<Byte> actual = Bytes.asList(bytes);
+        assertThat(actual.size()).isEqualTo(bytes.length);
 
         List<Byte> expected = new ArrayList<>(bytes.length);
         for(byte each : bytes) {
             expected.add(each);
         }
 
-        assertThat(expected).isEqualTo(boxedList);
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void testAsListEmpty() {
+        final List<Byte> actual = Bytes.asList();
+        assertThat(actual).isEmpty();
     }
 
     @Test
     void testToArray() {
         byte[] expected = new byte[] {1, 2, 3, 4, 5};
 
-        List<Byte> boxedList = new ArrayList<>();
+        List<Byte> expectedAsList = new ArrayList<>();
         for(byte each : expected) {
-            boxedList.add(each);
+            expectedAsList.add(each);
         }
 
-        assertThat(boxedList.size()).isEqualTo(expected.length);
-        assertThat(Bytes.toArray(boxedList)).isEqualTo(expected);
+        assertThat(expectedAsList.size()).isEqualTo(expected.length);
+
+        final byte[] actual = Bytes.toArray(expectedAsList);
+        assertThat(actual.length).isEqualTo(expected.length);
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void testToArrayEmpty() {
+        final byte[] actual = Bytes.toArray(Collections.emptyList());
+        assertThat(actual).isEmpty();
     }
 }

@@ -172,9 +172,9 @@ public interface Cache<K, V> {
      * Due to the performance penalty of maintaining statistics, some implementations may not record the usage history
      * immediately or at all.
      * <p>
-     * <b>Warning:</b> this cache may not be recording statistical data. For example, a cache created using CacheBuilder
-     * only does so if the {@link CacheBuilder#recordStats()} method was called. If statistics are not being recorded, a
-     * {@link CacheStats} instance with zero for all values is returned.
+     * <b>Warning:</b> this cache may not be recording statistical data. For example, a cache created using
+     * CacheBuilder only does so if the {@link CacheBuilder#recordStats()} method was called. If statistics are not
+     * being recorded, a {@link CacheStats} instance with zero for all values is returned.
      *
      * @return the current snapshot of the statistics of this cache
      */

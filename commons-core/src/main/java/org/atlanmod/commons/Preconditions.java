@@ -21,10 +21,11 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * Static convenience methods that help a method or constructor check whether it was invoked correctly (whether its
- * <i>preconditions</i> have been met). These methods generally accept a {@code boolean} expression which is expected to
- * be {@code true} (or in the case of {@code checkNotNull}, an object reference which is expected to be non-null). When
- * {@code false} (or {@code null}) is passed instead, the {@code Preconditions} method throws an unchecked exception,
- * which helps the calling method communicate to <i>its</i> caller that <i>that</i> caller has made a mistake.
+ * <i>preconditions</i> have been met). These methods generally accept a {@code boolean} expression which is expected
+ * to be {@code true} (or in the case of {@code checkNotNull}, an object reference which is expected to be non-null).
+ * When {@code false} (or {@code null}) is passed instead, the {@code Preconditions} method throws an unchecked
+ * exception, which helps the calling method communicate to <i>its</i> caller that <i>that</i> caller has made a
+ * mistake.
  *
  * <b>Warning:</b> The goal of this class is to improve readability of code, but in some circumstances this may come at
  * a significant performance cost. Remember that parameter values for message construction must all be computed eagerly,

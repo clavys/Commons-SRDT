@@ -26,7 +26,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 /**
  * A {@link ServiceContext} able to retrieve OSGi Declarative Services from a {@link BundleContext}.
  *
- * <b>NOTE:</b> This context is automatically loaded and configured when this bundle is starting under an OSGi environment.
+ * <b>NOTE:</b> This context is automatically loaded and configured when this bundle is starting under an OSGi
+ * environment.
  */
 @Component(immediate = true)
 @VisibleForReflection
@@ -115,14 +116,6 @@ public class OSGiContext implements ServiceContext {
         @SuppressWarnings("unchecked")
         public Class<? extends S> type() {
             return (Class<? extends S>) get().getClass();
-
-//            try {
-//                final String className = String[].class.cast(reference.getProperty("objectClass"))[0];
-//                return (Class<? extends S>) reference.getBundle().loadClass(className);
-//            }
-//            catch (ClassNotFoundException e) {
-//                throw Throwables.shouldNeverHappen(e);
-//            }
         }
 
         @Nonnull
