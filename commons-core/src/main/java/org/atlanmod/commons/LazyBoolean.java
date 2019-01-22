@@ -34,7 +34,7 @@ public final class LazyBoolean {
     /**
      * Whether the value has been loaded.
      */
-    private boolean isLoaded;
+    private volatile boolean isLoaded;
 
     /**
      * Constructs a new {@code LazyBoolean}.
@@ -76,9 +76,20 @@ public final class LazyBoolean {
      */
     public boolean getAsBoolean() {
         if (!isLoaded) {
-            update(loadFunction.getAsBoolean());
+            load();
         }
         return value;
+    }
+
+    /**
+     * Loads the value.
+     */
+    private void load() {
+        synchronized (loadFunction) {
+            if (!isLoaded) {
+                update(loadFunction.getAsBoolean());
+            }
+        }
     }
 
     /**
