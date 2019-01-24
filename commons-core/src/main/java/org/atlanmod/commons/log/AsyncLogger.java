@@ -9,7 +9,6 @@
 package org.atlanmod.commons.log;
 
 import org.atlanmod.commons.concurrent.MoreExecutors;
-
 import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;

@@ -8,8 +8,6 @@
 
 package org.atlanmod.commons.collect;
 
-import org.atlanmod.commons.Preconditions;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.IntFunction;
@@ -18,6 +16,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import static org.atlanmod.commons.Preconditions.checkNotNull;
+import static org.atlanmod.commons.Preconditions.checkPositionIndex;
 
 /**
  * A size-based {@link Iterator} that loads each value with a {@link IntFunction}.
@@ -63,8 +62,8 @@ public class SizedIterator<E> implements Iterator<E> {
      * @param index           the starting index
      */
     public SizedIterator(@Nonnegative int size, IntFunction<E> mappingFunction, @Nonnegative int index) {
-        Preconditions.checkNotNull(mappingFunction, "mappingFunction");
-        Preconditions.checkPositionIndex(index, size);
+        checkNotNull(mappingFunction, "mappingFunction");
+        checkPositionIndex(index, size);
 
         this.size = size;
         this.index = index;

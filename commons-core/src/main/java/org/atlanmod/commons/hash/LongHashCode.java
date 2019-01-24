@@ -78,7 +78,7 @@ final class LongHashCode implements HashCode {
             return false;
         }
 
-        LongHashCode that = LongHashCode.class.cast(o);
+        LongHashCode that = (LongHashCode) o;
         return value == that.value;
     }
 

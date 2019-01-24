@@ -10,7 +10,6 @@ package org.atlanmod.commons.primitive;
 
 import org.atlanmod.commons.Throwables;
 import org.atlanmod.commons.annotation.Static;
-import org.atlanmod.commons.Preconditions;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -55,7 +54,7 @@ public final class Chars {
      */
     @Nonnull
     public static byte[] toBytes(final Character value) {
-        Preconditions.checkNotNull(value, "value");
+        checkNotNull(value, "value");
 
         return toBytes(value.charValue());
     }

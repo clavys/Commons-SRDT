@@ -36,7 +36,7 @@ public final class LazyInt {
     /**
      * Whether the value has been loaded.
      */
-    private boolean isLoaded;
+    private volatile boolean isLoaded;
 
     /**
      * Constructs a new {@code LazyInt}.
@@ -78,9 +78,20 @@ public final class LazyInt {
      */
     public int getAsInt() {
         if (!isLoaded) {
-            update(loadFunction.getAsInt());
+            load();
         }
         return value;
+    }
+
+    /**
+     * Loads the value.
+     */
+    private void load() {
+        synchronized (loadFunction) {
+            if (!isLoaded) {
+                update(loadFunction.getAsInt());
+            }
+        }
     }
 
     /**
@@ -99,8 +110,7 @@ public final class LazyInt {
      * @param updateOperator the operator to update the wrapped value
      */
     public void update(IntUnaryOperator updateOperator) {
-        value = updateOperator.applyAsInt(getAsInt());
-        isLoaded = true;
+        update(updateOperator.applyAsInt(getAsInt()));
     }
 
     /**

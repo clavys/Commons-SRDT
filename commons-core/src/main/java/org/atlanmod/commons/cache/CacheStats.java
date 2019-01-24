@@ -8,8 +8,6 @@
 
 package org.atlanmod.commons.cache;
 
-import org.atlanmod.commons.Preconditions;
-
 import java.time.Duration;
 import java.util.Objects;
 
@@ -75,12 +73,12 @@ public final class CacheStats {
      * @param evictionCount    the number of entries evicted from the cache
      */
     protected CacheStats(@Nonnegative long hitCount, @Nonnegative long missCount, @Nonnegative long loadSuccessCount, @Nonnegative long loadFailureCount, @Nonnegative long totalLoadTime, @Nonnegative long evictionCount) {
-        Preconditions.checkGreaterThanOrEqualTo(hitCount, 0L, "hitCount (%d) must not be negative", hitCount);
-        Preconditions.checkGreaterThanOrEqualTo(missCount, 0L, "missCount (%d) must not be negative", missCount);
-        Preconditions.checkGreaterThanOrEqualTo(loadSuccessCount, 0L, "loadSuccessCount (%d) must not be negative", loadSuccessCount);
-        Preconditions.checkGreaterThanOrEqualTo(loadFailureCount, 0L, "loadFailureCount (%d) must not be negative", loadFailureCount);
-        Preconditions.checkGreaterThanOrEqualTo(totalLoadTime, 0L, "totalLoadTime (%d) must not be negative", totalLoadTime);
-        Preconditions.checkGreaterThanOrEqualTo(evictionCount, 0L, "evictionCount (%d) must not be negative", evictionCount);
+        checkGreaterThanOrEqualTo(hitCount, 0L, "hitCount (%d) must not be negative", hitCount);
+        checkGreaterThanOrEqualTo(missCount, 0L, "missCount (%d) must not be negative", missCount);
+        checkGreaterThanOrEqualTo(loadSuccessCount, 0L, "loadSuccessCount (%d) must not be negative", loadSuccessCount);
+        checkGreaterThanOrEqualTo(loadFailureCount, 0L, "loadFailureCount (%d) must not be negative", loadFailureCount);
+        checkGreaterThanOrEqualTo(totalLoadTime, 0L, "totalLoadTime (%d) must not be negative", totalLoadTime);
+        checkGreaterThanOrEqualTo(evictionCount, 0L, "evictionCount (%d) must not be negative", evictionCount);
 
         this.hitCount = hitCount;
         this.missCount = missCount;
@@ -284,11 +282,11 @@ public final class CacheStats {
         if (this == o) {
             return true;
         }
-        if (!CacheStats.class.isInstance(o)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
-        CacheStats that = CacheStats.class.cast(o);
+        CacheStats that = (CacheStats) o;
         return hitCount == that.hitCount
                 && missCount == that.missCount
                 && loadSuccessCount == that.loadSuccessCount

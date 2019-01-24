@@ -107,14 +107,14 @@ public class LoggingExtension implements BeforeEachCallback, TestExecutionExcept
         }
         hasErrors = true;
 
-        if (AssertionError.class.isInstance(e)) {
-            onFail(context, AssertionError.class.cast(e));
+        if (e instanceof AssertionError) {
+            onFail(context, (AssertionError) e);
         }
-        else if (TestSkippedException.class.isInstance(e)) {
-            onSkip(context, TestSkippedException.class.cast(e));
+        else if (e instanceof TestSkippedException) {
+            onSkip(context, (TestSkippedException) e);
         }
-        else if (TestAbortedException.class.isInstance(e)) {
-            onAbort(context, TestAbortedException.class.cast(e));
+        else if (e instanceof TestAbortedException) {
+            onAbort(context, (TestAbortedException) e);
         }
         else {
             onError(context, e);

@@ -41,9 +41,11 @@ class DirectExecutorService extends AbstractExecutorService {
 
     /**
      * Conceptually, these two variables describe the executor being in one of three states:
-     * - Active: shutdown == false
-     * - Shutdown: runningTasks > 0 and shutdown == true
-     * - Terminated: runningTasks == 0 and shutdown == true
+     * <ul>
+     * <li>Active: shutdown == {@code false}</li>
+     * <li>Shutdown: runningTasks > 0 and shutdown == {@code true}</li>
+     * <li>Terminated: runningTasks == 0 and shutdown == {@code true}</li>
+     * </ul>
      */
     @GuardedBy("lock")
     private int runningTasks = 0;

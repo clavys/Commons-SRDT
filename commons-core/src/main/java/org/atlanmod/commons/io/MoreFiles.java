@@ -11,7 +11,6 @@ package org.atlanmod.commons.io;
 import org.atlanmod.commons.Throwables;
 import org.atlanmod.commons.annotation.Static;
 import org.atlanmod.commons.primitive.Strings;
-import org.atlanmod.commons.Preconditions;
 
 import java.io.File;
 
@@ -46,7 +45,7 @@ public final class MoreFiles {
      */
     @Nonnull
     public static String fileExtension(File file) {
-        Preconditions.checkNotNull(file, "file");
+        checkNotNull(file, "file");
 
         String fileName = file.getName();
         int dotIndex = fileName.lastIndexOf(DOT);
@@ -63,7 +62,7 @@ public final class MoreFiles {
      */
     @Nonnull
     public static String fileExtension(String fullName) {
-        Preconditions.checkNotNull(fullName, "fullName");
+        checkNotNull(fullName, "fullName");
 
         return fileExtension(new File(fullName));
     }
@@ -78,7 +77,7 @@ public final class MoreFiles {
      */
     @Nonnull
     public static String nameWithoutExtension(File file) {
-        Preconditions.checkNotNull(file, "file");
+        checkNotNull(file, "file");
 
         String fileName = file.getName();
         int dotIndex = fileName.lastIndexOf(DOT);
@@ -95,7 +94,7 @@ public final class MoreFiles {
      */
     @Nonnull
     public static String nameWithoutExtension(String fullName) {
-        Preconditions.checkNotNull(fullName, "fullName");
+        checkNotNull(fullName, "fullName");
 
         return nameWithoutExtension(new File(fullName));
     }

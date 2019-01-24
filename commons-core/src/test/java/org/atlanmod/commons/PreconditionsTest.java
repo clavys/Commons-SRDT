@@ -25,10 +25,10 @@ import static org.assertj.core.api.Assertions.catchThrowable;
  * A test-case that checks the behavior of {@link Preconditions}.
  */
 @ParametersAreNonnullByDefault
-public class PreconditionsTest extends AbstractTest {
+class PreconditionsTest extends AbstractTest {
 
     @Test
-    public void testConstructor() throws Exception {
+    void testConstructor() throws Exception {
         Constructor<?> constructor = Preconditions.class.getDeclaredConstructor();
         assertThat(Modifier.isPrivate(constructor.getModifiers())).isTrue();
 
@@ -40,7 +40,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckArgument() {
+    void testCheckArgument() {
         assertThat(catchThrowable(() -> Preconditions.checkArgument(true)))
                 .isNull();
 
@@ -51,7 +51,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckArgumentWithMessage() {
+    void testCheckArgumentWithMessage() {
         assertThat(catchThrowable(() -> Preconditions.checkArgument(true, "Message0")))
                 .isNull();
 
@@ -62,7 +62,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckArgumentWithPattern() {
+    void testCheckArgumentWithPattern() {
         assertThat(catchThrowable(() -> Preconditions.checkArgument(true, "Message%d", 0)))
                 .isNull();
 
@@ -73,7 +73,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckState() {
+    void testCheckState() {
         assertThat(catchThrowable(() -> Preconditions.checkState(true)))
                 .isNull();
 
@@ -84,7 +84,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckStateWithMessage() {
+    void testCheckStateWithMessage() {
         assertThat(catchThrowable(() -> Preconditions.checkState(true, "Message0")))
                 .isNull();
 
@@ -95,7 +95,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckStateWithPattern() {
+    void testCheckStateWithPattern() {
         assertThat(catchThrowable(() -> Preconditions.checkState(true, "Message%d", 0)))
                 .isNull();
 
@@ -106,7 +106,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckNotNull() {
+    void testCheckNotNull() {
         assertThat(catchThrowable(() -> Preconditions.checkNotNull(new Object())))
                 .isNull();
 
@@ -117,7 +117,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckNotNullWithMessage() {
+    void testCheckNotNullWithMessage() {
         assertThat(catchThrowable(() -> Preconditions.checkNotNull(new Object(), "Message0")))
                 .isNull();
 
@@ -128,7 +128,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckNotNullWithPattern() {
+    void testCheckNotNullWithPattern() {
         assertThat(catchThrowable(() -> Preconditions.checkNotNull(new Object(), "Message%d", 0)))
                 .isNull();
 
@@ -139,7 +139,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckNotContainsNull() {
+    void testCheckNotContainsNull() {
         assertThat(catchThrowable(() -> Preconditions.checkNotContainsNull(Collections.emptyList())))
                 .isNull();
 
@@ -156,7 +156,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckElementIndex() {
+    void testCheckElementIndex() {
         // index < 0
         assertThat(catchThrowable(() -> Preconditions.checkElementIndex(-1, 0)))
                 .isExactlyInstanceOf(IndexOutOfBoundsException.class)
@@ -187,7 +187,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckPositionIndex() {
+    void testCheckPositionIndex() {
         // index < 0
         assertThat(catchThrowable(() -> Preconditions.checkPositionIndex(-1, 0)))
                 .isExactlyInstanceOf(IndexOutOfBoundsException.class)
@@ -216,7 +216,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckEqualTo() {
+    void testCheckEqualTo() {
         assertThat(catchThrowable(() -> Preconditions.checkEqualTo(null, null)))
                 .isNull();
 
@@ -230,7 +230,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckLessThan() {
+    void testCheckLessThan() {
         // value > upperBound
         assertThat(catchThrowable(() -> Preconditions.checkLessThan(10, 9)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
@@ -249,7 +249,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckLessThanOrEqualTo() {
+    void testCheckLessThanOrEqualTo() {
         // value > upperBound
         assertThat(catchThrowable(() -> Preconditions.checkLessThanOrEqualTo(10, 9)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
@@ -266,7 +266,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckGreaterThan() {
+    void testCheckGreaterThan() {
         // value > upperBound
         assertThat(catchThrowable(() -> Preconditions.checkGreaterThan(10, 9)))
                 .isNull();
@@ -285,7 +285,7 @@ public class PreconditionsTest extends AbstractTest {
     }
 
     @Test
-    public void testCheckGreaterThanOrEqualTo() {
+    void testCheckGreaterThanOrEqualTo() {
         // value > upperBound
         assertThat(catchThrowable(() -> Preconditions.checkGreaterThanOrEqualTo(10, 9)))
                 .isNull();

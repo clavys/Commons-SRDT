@@ -42,7 +42,7 @@ public abstract class LazyReference<T> {
      * The reference of the value.
      */
     @Nullable
-    private Reference<T> reference;
+    private volatile Reference<T> reference;
 
     /**
      * Whether this reference has a value.
@@ -89,8 +89,10 @@ public abstract class LazyReference<T> {
      */
     public T get() {
         if (nonNull(reference)) { // Has been loaded at least once
+            //noinspection ConstantConditions
             T value = reference.get();
             if (isPresent && isNull(value)) { // The object has been cleared
+                reset();
                 return refresh();
             }
             return value;
@@ -116,9 +118,23 @@ public abstract class LazyReference<T> {
      */
     @Nullable
     private T refresh() {
-        T value = refreshFunction.get();
-        update(value);
-        return value;
+        synchronized (refreshFunction) {
+            if (isNull(reference)) { // Never assigned, or resetted
+                T value = refreshFunction.get();
+                update(value);
+                return value;
+            }
+            //noinspection ConstantConditions
+            return reference.get();
+        }
+    }
+
+    /**
+     * Resets the value.
+     */
+    private void reset() {
+        reference = null;
+        isPresent = false;
     }
 
     /**

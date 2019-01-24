@@ -10,7 +10,6 @@ package org.atlanmod.commons.primitive;
 
 import org.atlanmod.commons.Throwables;
 import org.atlanmod.commons.annotation.Static;
-import org.atlanmod.commons.Preconditions;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -58,7 +57,7 @@ public final class Shorts {
      */
     @Nonnull
     public static byte[] toBytes(final Short value) {
-        Preconditions.checkNotNull(value, "value");
+        checkNotNull(value, "value");
 
         return toBytes(value.shortValue());
     }

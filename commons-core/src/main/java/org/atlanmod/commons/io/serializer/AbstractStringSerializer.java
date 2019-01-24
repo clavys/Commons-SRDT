@@ -8,8 +8,6 @@
 
 package org.atlanmod.commons.io.serializer;
 
-import org.atlanmod.commons.Preconditions;
-
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -35,7 +33,7 @@ public abstract class AbstractStringSerializer<T> implements StringSerializer<T>
      * @param serializer the serializer to use before applying a {@link String} encoding or decoding
      */
     protected AbstractStringSerializer(@Nonnull BinarySerializer<T> serializer) {
-        Preconditions.checkNotNull(serializer, "serializer");
+        checkNotNull(serializer, "serializer");
 
         this.serializer = serializer;
     }

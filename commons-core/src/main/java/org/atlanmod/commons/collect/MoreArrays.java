@@ -192,8 +192,8 @@ public final class MoreArrays {
     /**
      * Adds all {@code array2} at the end of the {@code array1}.
      *
-     * @param array1    the array to add the element to
-     * @param array2    the values to add
+     * @param array1 the array to add the element to
+     * @param array2 the values to add
      *
      * @return a new array of bytes containing all the existing elements in arrays 1 and 2.
      *
@@ -302,35 +302,43 @@ public final class MoreArrays {
     /**
      * Converts an array of {@link Byte} to an array of primitive types {@link byte}.
      *
-     * @param boxedArray The array of {@link Byte} to convert.
-     * @return An array of {@link byte} containing the same elements as {@code boxedArray},
-     * in the same order, converted to primitives.
+     * @param boxedArray the array of {@link Byte} to convert.
+     *
+     * @return an array of {@link byte} containing the same elements as {@code boxedArray}, in the same order, converted
+     * to primitives.
      */
     @Nonnull
     public static byte[] toPrimitive(final Byte... boxedArray) {
         checkNotNull(boxedArray, "boxedArray");
-        byte[] primitiveArray = new byte[boxedArray.length];
-        for (int i = 0; i < boxedArray.length; i++) {
-            primitiveArray[i] = boxedArray[i].byteValue();
+
+        final int size = boxedArray.length;
+
+        final byte[] primitiveArray = new byte[size];
+        for (int i = 0; i < size; i++) {
+            primitiveArray[i] = boxedArray[i];
         }
+
         return primitiveArray;
     }
 
     /**
-     * Converts an array of primitive types {@link byte} to an array of Objects {@Byte}.
+     * Converts an array of primitive types {@code byte} to an array of {@link Byte}.
      *
-     * @param primitiveArray The array of {@linke byte} to convert.
+     * @param primitiveArray the array of {@code byte} to convert.
      *
-     * @return An array of {@link Byte}  containing the same elements as {@code primitiveArray}, in the same order,
+     * @return an array of {@link Byte} containing the same elements as {@code primitiveArray}, in the same order,
      * converted to boxed types.
      */
     public static Byte[] toObject(final byte... primitiveArray) {
         checkNotNull(primitiveArray, "primitiveArray");
-        Byte[] boxedArray = new Byte[primitiveArray.length];
 
-        for (int i = 0; i < boxedArray.length; i++) {
-            boxedArray[i] = Byte.valueOf(primitiveArray[i]);
+        final int size = primitiveArray.length;
+        final Byte[] boxedArray = new Byte[size];
+
+        for (int i = 0; i < size; i++) {
+            boxedArray[i] = primitiveArray[i];
         }
+
         return boxedArray;
     }
 }

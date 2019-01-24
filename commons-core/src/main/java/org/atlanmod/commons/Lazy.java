@@ -40,7 +40,7 @@ public final class Lazy<T> {
     /**
      * Whether the value has been loaded.
      */
-    private boolean isLoaded;
+    private volatile boolean isLoaded;
 
     /**
      * Constructs a new {@code Lazy}.
@@ -84,9 +84,20 @@ public final class Lazy<T> {
      */
     public T get() {
         if (!isLoaded) {
-            update(loadFunction.get());
+            load();
         }
         return value;
+    }
+
+    /**
+     * Loads the value.
+     */
+    private void load() {
+        synchronized (loadFunction) {
+            if (!isLoaded) {
+                update(loadFunction.get());
+            }
+        }
     }
 
     /**
@@ -105,8 +116,7 @@ public final class Lazy<T> {
      * @param updateOperator the operator to update the wrapped value
      */
     public void update(UnaryOperator<T> updateOperator) {
-        value = updateOperator.apply(get());
-        isLoaded = true;
+        update(updateOperator.apply(get()));
     }
 
     /**

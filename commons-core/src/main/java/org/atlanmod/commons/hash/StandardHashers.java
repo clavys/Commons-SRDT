@@ -8,10 +8,10 @@
 
 package org.atlanmod.commons.hash;
 
+import net.openhft.hashing.LongHashFunction;
+
 import org.atlanmod.commons.Throwables;
 import org.atlanmod.commons.annotation.Static;
-
-import net.openhft.hashing.LongHashFunction;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -100,11 +100,11 @@ public final class StandardHashers {
     @Nonnull
     public static Hasher forName(String name) {
         try {
-            return Hasher.class.cast(StandardHashers.class.getDeclaredField(name).get(null));
+            return (Hasher) StandardHashers.class.getDeclaredField(name).get(null);
         }
         catch (IllegalAccessException | NoSuchFieldException e) {
             final String possibleValues = Arrays.stream(StandardHashers.class.getDeclaredFields())
-                    .filter(f -> Hasher.class.isInstance(f.getType()))
+                    .filter(f -> f.getType().isAssignableFrom(Hasher.class))
                     .filter(f -> Modifier.isStatic(f.getModifiers()))
                     .map(Field::getName)
                     .collect(Collectors.joining(" | "));

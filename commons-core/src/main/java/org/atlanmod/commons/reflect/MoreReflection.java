@@ -12,7 +12,6 @@ import org.atlanmod.commons.Throwables;
 import org.atlanmod.commons.annotation.Builder;
 import org.atlanmod.commons.annotation.Singleton;
 import org.atlanmod.commons.annotation.Static;
-import org.atlanmod.commons.Preconditions;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -53,7 +52,7 @@ public final class MoreReflection {
     @Nonnull
     @SuppressWarnings("unchecked")
     public static <T> T newInstance(Class<T> type) {
-        Preconditions.checkNotNull(type, "type");
+        checkNotNull(type, "type");
 
         T instance;
         Optional<String> methodName = findConstructionMethod(type);
@@ -65,7 +64,7 @@ public final class MoreReflection {
                 instance = (T) method.invoke(null);
             }
             else {
-                instance = type.newInstance();
+                instance = type.getConstructor().newInstance();
             }
         }
         catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
@@ -85,7 +84,7 @@ public final class MoreReflection {
      */
     @Nonnull
     private static Optional<String> findConstructionMethod(Class<?> type) {
-        Preconditions.checkArgument(!type.isAnnotationPresent(Static.class), "%s is annotated with @%s: cannot be instantiated", type.getName(), Static.class.getSimpleName());
+        checkArgument(!type.isAnnotationPresent(Static.class), "%s is annotated with @%s: cannot be instantiated", type.getName(), Static.class.getSimpleName());
 
         Optional<String> methodName;
 

@@ -20,10 +20,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case that checks the behavior of {@link Booleans}.
  */
 @ParametersAreNonnullByDefault
-public class BooleansTest extends AbstractTest {
+class BooleansTest extends AbstractTest {
 
     @Test
-    public void testToBytes() {
+    void testToBytes() {
         final byte zero = 0;
 
         byte[] actual0 = Booleans.toBytes(Boolean.TRUE);

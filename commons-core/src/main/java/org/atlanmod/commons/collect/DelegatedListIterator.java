@@ -9,7 +9,6 @@
 package org.atlanmod.commons.collect;
 
 import org.atlanmod.commons.function.Converter;
-import org.atlanmod.commons.Preconditions;
 
 import java.util.ListIterator;
 
@@ -46,8 +45,8 @@ public class DelegatedListIterator<T, R> implements ListIterator<R> {
      * @param converter the function used to map elements from the {@code delegate}
      */
     public DelegatedListIterator(ListIterator<T> delegate, Converter<T, R> converter) {
-        Preconditions.checkNotNull(delegate, "delegate");
-        Preconditions.checkNotNull(converter, "converter");
+        checkNotNull(delegate, "delegate");
+        checkNotNull(converter, "converter");
 
         this.delegate = delegate;
         this.converter = converter;

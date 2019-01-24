@@ -20,10 +20,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case that checks the behavior of {@link Range}.
  */
 @ParametersAreNonnullByDefault
-public class RangeTest extends AbstractTest {
+class RangeTest extends AbstractTest {
 
     @Test
-    public void testOpen() {
+    void testOpen() {
         Range<Integer> r0 = Range.open(0, 2);
 
         assertThat(r0.contains(-1)).isFalse();
@@ -34,7 +34,7 @@ public class RangeTest extends AbstractTest {
     }
 
     @Test
-    public void testClosed() {
+    void testClosed() {
         Range<Integer> r0 = Range.closed(0, 2);
 
         assertThat(r0.contains(-1)).isFalse();
@@ -45,7 +45,7 @@ public class RangeTest extends AbstractTest {
     }
 
     @Test
-    public void testOpenClosed() {
+    void testOpenClosed() {
         Range<Integer> r0 = Range.openClosed(0, 2);
 
         assertThat(r0.contains(-1)).isFalse();
@@ -56,7 +56,7 @@ public class RangeTest extends AbstractTest {
     }
 
     @Test
-    public void testClosedOpen() {
+    void testClosedOpen() {
         Range<Integer> r0 = Range.closedOpen(0, 2);
 
         assertThat(r0.contains(-1)).isFalse();
@@ -67,7 +67,7 @@ public class RangeTest extends AbstractTest {
     }
 
     @Test
-    public void testSingleton() {
+    void testSingleton() {
         Range<Integer> r0 = Range.singleton(1);
 
         assertThat(r0.contains(-1)).isFalse();
@@ -78,7 +78,7 @@ public class RangeTest extends AbstractTest {
     }
 
     @Test
-    public void testAtLeast() {
+    void testAtLeast() {
         Range<Integer> r0 = Range.atLeast(1);
 
         assertThat(r0.contains(-1)).isFalse();
@@ -89,7 +89,7 @@ public class RangeTest extends AbstractTest {
     }
 
     @Test
-    public void testAtMost() {
+    void testAtMost() {
         Range<Integer> r0 = Range.atMost(1);
 
         assertThat(r0.contains(-1)).isTrue();
@@ -100,7 +100,7 @@ public class RangeTest extends AbstractTest {
     }
 
     @Test
-    public void testGreaterThan() {
+    void testGreaterThan() {
         Range<Integer> r0 = Range.greaterThan(1);
 
         assertThat(r0.contains(-1)).isFalse();
@@ -111,7 +111,7 @@ public class RangeTest extends AbstractTest {
     }
 
     @Test
-    public void testLessThan() {
+    void testLessThan() {
         Range<Integer> r0 = Range.lessThan(1);
 
         assertThat(r0.contains(-1)).isTrue();
@@ -122,7 +122,7 @@ public class RangeTest extends AbstractTest {
     }
 
     @Test
-    public void testAll() {
+    void testAll() {
         Range<Integer> r0 = Range.all();
 
         assertThat(r0.contains(-1)).isTrue();
@@ -133,7 +133,7 @@ public class RangeTest extends AbstractTest {
     }
 
     @Test
-    public void testEmpty() {
+    void testEmpty() {
         Range<Integer> r0 = Range.empty();
 
         assertThat(r0.contains(-1)).isFalse();
@@ -144,7 +144,7 @@ public class RangeTest extends AbstractTest {
     }
 
     @Test
-    public void testAnd() {
+    void testAnd() {
         Range<Integer> r0 = Range.closed(0, 2);
         Range<Integer> r1 = Range.closed(1, 3);
 
@@ -157,7 +157,7 @@ public class RangeTest extends AbstractTest {
     }
 
     @Test
-    public void testOr() {
+    void testOr() {
         Range<Integer> r0 = Range.closed(0, 2);
         Range<Integer> r1 = Range.closed(1, 3);
 
@@ -170,7 +170,7 @@ public class RangeTest extends AbstractTest {
     }
 
     @Test
-    public void testXor() {
+    void testXor() {
         Range<Integer> r0 = Range.closed(0, 2);
         Range<Integer> r1 = Range.closed(1, 3);
         Range<Integer> r01 = Range.xor(r0, r1);

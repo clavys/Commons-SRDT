@@ -8,8 +8,6 @@
 
 package org.atlanmod.commons.cache;
 
-import org.atlanmod.commons.Preconditions;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
@@ -18,8 +16,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static org.atlanmod.commons.Preconditions.checkNotNull;
 import static java.util.Objects.nonNull;
+import static org.atlanmod.commons.Preconditions.checkNotNull;
 
 /**
  * A Caffeine {@link Cache} implementation which does not automatically load values when keys are requested.
@@ -48,15 +46,15 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
     @Nullable
     @Override
     public V get(K key) {
-        Preconditions.checkNotNull(key, "key");
+        checkNotNull(key, "key");
 
         return cache.getIfPresent(key);
     }
 
     @Override
     public V get(K key, Function<? super K, ? extends V> mappingFunction) {
-        Preconditions.checkNotNull(key, "key");
-        Preconditions.checkNotNull(mappingFunction, "mappingFunction");
+        checkNotNull(key, "key");
+        checkNotNull(mappingFunction, "mappingFunction");
 
         return cache.get(key, mappingFunction);
     }
@@ -64,15 +62,15 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
     @Nonnull
     @Override
     public Map<K, V> getAll(Iterable<? extends K> keys) {
-        Preconditions.checkNotNull(keys, "keys");
+        checkNotNull(keys, "keys");
 
         return cache.getAllPresent(keys);
     }
 
     @Override
     public void put(K key, V value) {
-        Preconditions.checkNotNull(key, "key");
-        Preconditions.checkNotNull(value, "value");
+        checkNotNull(key, "key");
+        checkNotNull(value, "value");
 
         cache.put(key, value);
     }
@@ -84,21 +82,21 @@ class CaffeineManualCache<C extends com.github.benmanes.caffeine.cache.Cache<K, 
 
     @Override
     public void putAll(Map<? extends K, ? extends V> map) {
-        Preconditions.checkNotNull(map, "map");
+        checkNotNull(map, "map");
 
         cache.putAll(map);
     }
 
     @Override
     public void invalidate(K key) {
-        Preconditions.checkNotNull(key, "key");
+        checkNotNull(key, "key");
 
         cache.invalidate(key);
     }
 
     @Override
     public void invalidateAll(Iterable<? extends K> keys) {
-        Preconditions.checkNotNull(keys, "keys");
+        checkNotNull(keys, "keys");
 
         cache.invalidateAll(keys);
     }

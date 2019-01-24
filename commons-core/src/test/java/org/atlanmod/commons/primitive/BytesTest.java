@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -24,10 +25,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case that checks the behavior of {@link Bytes}.
  */
 @ParametersAreNonnullByDefault
-public class BytesTest extends AbstractTest {
+class BytesTest extends AbstractTest {
 
     @Test
-    public void testToBoolean() {
+    void testToBoolean() {
         boolean actual0 = Bytes.toBoolean(Booleans.toBytes(Boolean.TRUE));
         assertThat(actual0).isTrue();
 
@@ -36,7 +37,7 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void testToShort() {
+    void testToShort() {
         final short expected0 = 28433;
         byte[] bytes = ByteBuffer.allocate(Short.BYTES).putShort(expected0).array();
         short actual0 = Bytes.toShort(bytes);
@@ -44,7 +45,7 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void testToChar() {
+    void testToChar() {
         final char expected0 = 'N';
         byte[] bytes = ByteBuffer.allocate(Character.BYTES).putChar(expected0).array();
         char actual0 = Bytes.toChar(bytes);
@@ -52,7 +53,7 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void testToInt() {
+    void testToInt() {
         final int expected0 = 1654125381;
         byte[] bytes = ByteBuffer.allocate(Integer.BYTES).putInt(expected0).array();
         int actual0 = Bytes.toInt(bytes);
@@ -60,7 +61,7 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void testToLong() {
+    void testToLong() {
         final long long0 = 1354566516474223156L;
         byte[] bytes = ByteBuffer.allocate(Long.BYTES).putLong(long0).array();
         long actual0 = Bytes.toLong(bytes);
@@ -68,7 +69,7 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void testToFloat() {
+    void testToFloat() {
         final float expected0 = 139895433915.09579569E18f;
         byte[] bytes = ByteBuffer.allocate(Float.BYTES).putFloat(expected0).array();
         float actual0 = Bytes.toFloat(bytes);
@@ -76,7 +77,7 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void testToDouble() {
+    void testToDouble() {
         final double expected0 = 19876412.08910810486479E196;
         byte[] bytes = ByteBuffer.allocate(Double.BYTES).putDouble(expected0).array();
         double actual0 = Bytes.toDouble(bytes);
@@ -84,7 +85,7 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         final String expected0 = "AtlanmodIsAwesome!";
         byte[] bytes = expected0.getBytes();
         String actual0 = Bytes.toString(bytes);
@@ -92,7 +93,7 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void testToStringBinaryAndReverse() {
+    void testToStringBinaryAndReverse() {
         String expected0 = "AtlanmodIsAwesome!";
         byte[] bytes = Strings.toBytes(expected0);
 
@@ -106,27 +107,45 @@ public class BytesTest extends AbstractTest {
     }
 
     @Test
-    public void testAsList() {
+    void testAsList() {
         byte[] bytes = new byte[] {1, 2, 3, 4, 5};
-        List<Byte> boxedList = Bytes.asList(bytes);
 
-        assertThat(boxedList.size()).isEqualTo(bytes.length);
+        final List<Byte> actual = Bytes.asList(bytes);
+        assertThat(actual.size()).isEqualTo(bytes.length);
 
         List<Byte> expected = new ArrayList<>(bytes.length);
         for(byte each : bytes) {
             expected.add(each);
         }
-        assertThat(expected).isEqualTo(boxedList);
+
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    public void testToArray() {
+    void testAsListEmpty() {
+        final List<Byte> actual = Bytes.asList();
+        assertThat(actual).isEmpty();
+    }
+
+    @Test
+    void testToArray() {
         byte[] expected = new byte[] {1, 2, 3, 4, 5};
-        List<Byte> boxedList = new ArrayList<>();
+
+        List<Byte> expectedAsList = new ArrayList<>();
         for(byte each : expected) {
-            boxedList.add(Byte.valueOf(each));
+            expectedAsList.add(each);
         }
-        assertThat(boxedList.size()).isEqualTo(expected.length);
-        assertThat(Bytes.toArray(boxedList)).isEqualTo(expected);
+
+        assertThat(expectedAsList.size()).isEqualTo(expected.length);
+
+        final byte[] actual = Bytes.toArray(expectedAsList);
+        assertThat(actual.length).isEqualTo(expected.length);
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void testToArrayEmpty() {
+        final byte[] actual = Bytes.toArray(Collections.emptyList());
+        assertThat(actual).isEmpty();
     }
 }

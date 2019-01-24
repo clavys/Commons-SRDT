@@ -8,8 +8,6 @@
 
 package org.atlanmod.commons.collect;
 
-import org.atlanmod.commons.Preconditions;
-
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.Immutable;
@@ -37,7 +35,7 @@ public interface IntRange {
      */
     @Nonnull
     static IntRange open(int lower, int upper) {
-        Preconditions.checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
+        checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
         return v -> v > lower && v < upper;
     }
 
@@ -54,7 +52,7 @@ public interface IntRange {
      */
     @Nonnull
     static IntRange closed(int lower, int upper) {
-        Preconditions.checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
+        checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
         return v -> v >= lower && v <= upper;
     }
 
@@ -71,7 +69,7 @@ public interface IntRange {
      */
     @Nonnull
     static IntRange openClosed(int lower, int upper) {
-        Preconditions.checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
+        checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
         return v -> v > lower && v <= upper;
     }
 
@@ -88,7 +86,7 @@ public interface IntRange {
      */
     @Nonnull
     static IntRange closedOpen(int lower, int upper) {
-        Preconditions.checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
+        checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
         return v -> v >= lower && v < upper;
     }
 
@@ -115,7 +113,6 @@ public interface IntRange {
      */
     @Nonnull
     static IntRange atLeast(int lower) {
-        Preconditions.checkNotNull(lower, "lower");
         return v -> v >= 0;
     }
 
@@ -190,8 +187,8 @@ public interface IntRange {
      */
     @Nonnull
     static IntRange and(IntRange r1, IntRange r2) {
-        Preconditions.checkNotNull(r1, "r1");
-        Preconditions.checkNotNull(r2, "r2");
+        checkNotNull(r1, "r1");
+        checkNotNull(r2, "r2");
         return v -> Boolean.logicalAnd(r1.contains(v), r2.contains(v));
     }
 
@@ -208,8 +205,8 @@ public interface IntRange {
      */
     @Nonnull
     static IntRange or(IntRange r1, IntRange r2) {
-        Preconditions.checkNotNull(r1, "r1");
-        Preconditions.checkNotNull(r2, "r2");
+        checkNotNull(r1, "r1");
+        checkNotNull(r2, "r2");
         return v -> Boolean.logicalOr(r1.contains(v), r2.contains(v));
     }
 
@@ -226,8 +223,8 @@ public interface IntRange {
      */
     @Nonnull
     static IntRange xor(IntRange r1, IntRange r2) {
-        Preconditions.checkNotNull(r1, "r1");
-        Preconditions.checkNotNull(r2, "r2");
+        checkNotNull(r1, "r1");
+        checkNotNull(r2, "r2");
         return v -> Boolean.logicalXor(r1.contains(v), r2.contains(v));
     }
 
@@ -251,7 +248,7 @@ public interface IntRange {
      * @see #contains(int)
      */
     default boolean containsAll(Iterable<Integer> values) {
-        Preconditions.checkNotNull(values, "values");
+        checkNotNull(values, "values");
         return MoreIterables.stream(values).allMatch(this::contains);
     }
 }

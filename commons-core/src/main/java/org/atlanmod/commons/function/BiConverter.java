@@ -8,8 +8,6 @@
 
 package org.atlanmod.commons.function;
 
-import org.atlanmod.commons.Preconditions;
-
 import java.util.function.BiFunction;
 
 import javax.annotation.Nonnull;
@@ -70,8 +68,8 @@ public interface BiConverter<T, U, R> extends BiFunction<T, U, R> {
      */
     @Nonnull
     static <T, U, R> BiConverter<T, U, R> from(BiFunction<? super T, ? super U, ? extends R> convertFunc, BiFunction<? super R, ? super U, ? extends T> revertFunc) {
-        Preconditions.checkNotNull(convertFunc, "convertFunc");
-        Preconditions.checkNotNull(revertFunc, "revertFunc");
+        checkNotNull(convertFunc, "convertFunc");
+        checkNotNull(revertFunc, "revertFunc");
 
         return new BiConverter<T, U, R>() {
             @Nonnull

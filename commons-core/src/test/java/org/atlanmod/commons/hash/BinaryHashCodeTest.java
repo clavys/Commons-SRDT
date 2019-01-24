@@ -21,27 +21,27 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case that checks the behavior of {@link HashCode}.
  */
 @ParametersAreNonnullByDefault
-public class BinaryHashCodeTest extends AbstractTest {
+class BinaryHashCodeTest extends AbstractTest {
 
     private final static HashCode HASH = new BinaryHashCode(Strings.toBytes("HashCode0"));
 
     @Test
-    public void testBits() {
+    void testBits() {
         assertThat(HASH.bits()).isEqualTo(72);
     }
 
     @Test
-    public void testToBytes() {
+    void testToBytes() {
         assertThat(HASH.toBytes()).isEqualTo(Strings.toBytes("HashCode0"));
     }
 
     @Test
-    public void testToHexString() {
+    void testToHexString() {
         assertThat(HASH.toHexString()).isEqualToIgnoringCase("48617368436f646530");
     }
 
     @Test
-    public void testHashCode() {
+    void testHashCode() {
         final byte[] bytes = HASH.toBytes();
         int hashCode = (bytes[0] & 0xff)
                 | ((bytes[1] & 0xff) << 8)
@@ -56,17 +56,15 @@ public class BinaryHashCodeTest extends AbstractTest {
     }
 
     @Test
-    public void testEquals() {
-        //noinspection EqualsWithItself,EqualsReplaceableByObjectsCall
+    void testEquals() {
+        //noinspection EqualsWithItself
         assertThat(HASH.equals(HASH)).isTrue();
 
-        //noinspection ObjectEqualsNull,EqualsReplaceableByObjectsCall
+        //noinspection ConstantConditions
         assertThat(HASH.equals(null)).isFalse();
 
-        //noinspection EqualsReplaceableByObjectsCall
         assertThat(HASH.equals(new BinaryHashCode(Strings.toBytes("HashCode0")))).isTrue();
 
-        //noinspection EqualsReplaceableByObjectsCall
         assertThat(HASH.equals(new BinaryHashCode(Strings.toBytes("HC")))).isFalse();
     }
 }

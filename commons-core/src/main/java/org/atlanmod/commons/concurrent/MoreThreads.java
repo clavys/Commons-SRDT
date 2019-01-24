@@ -10,7 +10,6 @@ package org.atlanmod.commons.concurrent;
 
 import org.atlanmod.commons.Throwables;
 import org.atlanmod.commons.annotation.Static;
-import org.atlanmod.commons.Preconditions;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,8 +20,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static org.atlanmod.commons.Preconditions.checkNotNull;
 import static java.util.Objects.nonNull;
+import static org.atlanmod.commons.Preconditions.checkNotNull;
 
 /**
  * Static utility methods related to {@link Thread} instances.
@@ -89,7 +88,7 @@ public final class MoreThreads {
      * @throws NullPointerException if the {@code task} is {@code null}
      */
     public static void executeAtExit(Runnable task) {
-        Preconditions.checkNotNull(task, "task");
+        checkNotNull(task, "task");
 
         Runtime.getRuntime().addShutdownHook(DEFAULT_THREAD_FACTORY.newThread(task));
     }

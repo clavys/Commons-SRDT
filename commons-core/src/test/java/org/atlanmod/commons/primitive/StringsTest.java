@@ -20,10 +20,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case that checks the behavior of {@link Strings}.
  */
 @ParametersAreNonnullByDefault
-public class StringsTest extends AbstractTest {
+class StringsTest extends AbstractTest {
 
     @Test
-    public void testIsNullOrEmpty() {
+    void testIsNullOrEmpty() {
         String string0 = "";
         String string1 = null;
         String string2 = "MyString";
@@ -34,7 +34,7 @@ public class StringsTest extends AbstractTest {
     }
 
     @Test
-    public void testNullToEmpty() {
+    void testNullToEmpty() {
         String string0 = "";
         String string1 = null;
         String string2 = "MyString";
@@ -45,7 +45,7 @@ public class StringsTest extends AbstractTest {
     }
 
     @Test
-    public void testEmptyToNull() {
+    void testEmptyToNull() {
         String string0 = "";
         String string1 = null;
         String string2 = "MyString";
@@ -56,7 +56,7 @@ public class StringsTest extends AbstractTest {
     }
 
     @Test
-    public void testIsBinary() {
+    void testIsBinary() {
         String string0 = "";
         String string1 = null;
         String string2 = "MyString";
@@ -66,6 +66,7 @@ public class StringsTest extends AbstractTest {
         String string6 = "G";
 
         assertThat(Strings.isBinary(string0)).isFalse();
+        //noinspection ConstantConditions
         assertThat(Strings.isBinary(string1)).isFalse();
         assertThat(Strings.isBinary(string2)).isFalse();
         assertThat(Strings.isBinary(string3)).isTrue();
@@ -75,7 +76,7 @@ public class StringsTest extends AbstractTest {
     }
 
     @Test
-    public void testToBytes() {
+    void testToBytes() {
         final String string0 = "AtlanmodIsAwesome!";
         byte[] actual0 = Strings.toBytes(string0);
         byte[] expected0 = string0.getBytes();

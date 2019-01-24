@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * A test-case that checks the behavior of {@link StringSerializer} instances.
  */
 @ParametersAreNonnullByDefault
-public class StringSerializerTest extends AbstractSerializerTest {
+class StringSerializerTest extends AbstractSerializerTest {
 
     @Test
     void testSerializeDeserializeBase16() throws IOException {

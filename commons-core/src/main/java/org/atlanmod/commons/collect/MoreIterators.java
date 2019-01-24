@@ -10,7 +10,6 @@ package org.atlanmod.commons.collect;
 
 import org.atlanmod.commons.Throwables;
 import org.atlanmod.commons.annotation.Static;
-import org.atlanmod.commons.Preconditions;
 
 import java.util.Iterator;
 import java.util.Optional;
@@ -39,7 +38,7 @@ public final class MoreIterators {
      * @return {@code true} if the iterator contains no element
      */
     public static boolean isEmpty(Iterator<?> iterator) {
-        Preconditions.checkNotNull(iterator, "iterator");
+        checkNotNull(iterator, "iterator");
 
         return !iterator.hasNext();
     }

@@ -36,7 +36,7 @@ public final class LazyDouble {
     /**
      * Whether the value has been loaded.
      */
-    private boolean isLoaded;
+    private volatile boolean isLoaded;
 
     /**
      * Constructs a new {@code LazyDouble}.
@@ -78,9 +78,20 @@ public final class LazyDouble {
      */
     public double getAsDouble() {
         if (!isLoaded) {
-            update(loadFunction.getAsDouble());
+            load();
         }
         return value;
+    }
+
+    /**
+     * Loads the value.
+     */
+    private void load() {
+        synchronized (loadFunction) {
+            if (!isLoaded) {
+                update(loadFunction.getAsDouble());
+            }
+        }
     }
 
     /**
@@ -99,8 +110,7 @@ public final class LazyDouble {
      * @param updateOperator the operator to update the wrapped value
      */
     public void update(DoubleUnaryOperator updateOperator) {
-        value = updateOperator.applyAsDouble(getAsDouble());
-        isLoaded = true;
+        update(updateOperator.applyAsDouble(getAsDouble()));
     }
 
     /**

@@ -8,8 +8,6 @@
 
 package org.atlanmod.commons.collect;
 
-import org.atlanmod.commons.Preconditions;
-
 import java.util.Iterator;
 import java.util.function.Function;
 
@@ -46,8 +44,8 @@ public class DelegatedIterator<T, R> implements Iterator<R> {
      * @param mappingFunction the function used to map elements from the {@code delegate}
      */
     public DelegatedIterator(Iterator<T> delegate, Function<T, R> mappingFunction) {
-        Preconditions.checkNotNull(delegate, "delegate");
-        Preconditions.checkNotNull(mappingFunction, "mappingFunction");
+        checkNotNull(delegate, "delegate");
+        checkNotNull(mappingFunction, "mappingFunction");
 
         this.delegate = delegate;
         this.mappingFunction = mappingFunction;

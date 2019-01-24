@@ -36,7 +36,7 @@ public final class LazyLong {
     /**
      * Whether the value has been loaded.
      */
-    private boolean isLoaded;
+    private volatile boolean isLoaded;
 
     /**
      * Constructs a new {@code LazyLong}.
@@ -78,9 +78,20 @@ public final class LazyLong {
      */
     public long getAsLong() {
         if (!isLoaded) {
-            update(loadFunction.getAsLong());
+            load();
         }
         return value;
+    }
+
+    /**
+     * Loads the value.
+     */
+    private void load() {
+        synchronized (loadFunction) {
+            if (!isLoaded) {
+                update(loadFunction.getAsLong());
+            }
+        }
     }
 
     /**
@@ -99,8 +110,7 @@ public final class LazyLong {
      * @param updateOperator the operator to update the wrapped value
      */
     public void update(LongUnaryOperator updateOperator) {
-        value = updateOperator.applyAsLong(getAsLong());
-        isLoaded = true;
+        update(updateOperator.applyAsLong(getAsLong()));
     }
 
     /**

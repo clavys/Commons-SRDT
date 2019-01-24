@@ -8,8 +8,6 @@
 
 package org.atlanmod.commons.collect;
 
-import org.atlanmod.commons.Preconditions;
-
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.Immutable;
@@ -42,9 +40,9 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> open(C lower, C upper) {
-        Preconditions.checkNotNull(lower, "lower");
-        Preconditions.checkNotNull(upper, "upper");
-        Preconditions.checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
+        checkNotNull(lower, "lower");
+        checkNotNull(upper, "upper");
+        checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
         return v -> v.compareTo(lower) > 0 && v.compareTo(upper) < 0;
     }
 
@@ -63,9 +61,9 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> closed(C lower, C upper) {
-        Preconditions.checkNotNull(lower, "lower");
-        Preconditions.checkNotNull(upper, "upper");
-        Preconditions.checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
+        checkNotNull(lower, "lower");
+        checkNotNull(upper, "upper");
+        checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
         return v -> v.compareTo(lower) >= 0 && v.compareTo(upper) <= 0;
     }
 
@@ -84,9 +82,9 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> openClosed(C lower, C upper) {
-        Preconditions.checkNotNull(lower, "lower");
-        Preconditions.checkNotNull(upper, "upper");
-        Preconditions.checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
+        checkNotNull(lower, "lower");
+        checkNotNull(upper, "upper");
+        checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
         return v -> v.compareTo(lower) > 0 && v.compareTo(upper) <= 0;
     }
 
@@ -105,9 +103,9 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> closedOpen(C lower, C upper) {
-        Preconditions.checkNotNull(lower, "lower");
-        Preconditions.checkNotNull(upper, "upper");
-        Preconditions.checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
+        checkNotNull(lower, "lower");
+        checkNotNull(upper, "upper");
+        checkLessThanOrEqualTo(lower, upper, "upper (%d) must not be less than lower (%d)", upper, lower);
         return v -> v.compareTo(lower) >= 0 && v.compareTo(upper) < 0;
     }
 
@@ -139,7 +137,7 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> atLeast(C lower) {
-        Preconditions.checkNotNull(lower, "lower");
+        checkNotNull(lower, "lower");
         return v -> v.compareTo(lower) >= 0;
     }
 
@@ -155,7 +153,7 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> atMost(C upper) {
-        Preconditions.checkNotNull(upper, "upper");
+        checkNotNull(upper, "upper");
         return v -> v.compareTo(upper) <= 0;
     }
 
@@ -171,7 +169,7 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> greaterThan(C lower) {
-        Preconditions.checkNotNull(lower, "lower");
+        checkNotNull(lower, "lower");
         return v -> v.compareTo(lower) > 0;
     }
 
@@ -187,7 +185,7 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> lessThan(C upper) {
-        Preconditions.checkNotNull(upper, "upper");
+        checkNotNull(upper, "upper");
         return v -> v.compareTo(upper) < 0;
     }
 
@@ -231,8 +229,8 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> and(Range<C> r1, Range<C> r2) {
-        Preconditions.checkNotNull(r1, "r1");
-        Preconditions.checkNotNull(r2, "r2");
+        checkNotNull(r1, "r1");
+        checkNotNull(r2, "r2");
         return v -> Boolean.logicalAnd(r1.contains(v), r2.contains(v));
     }
 
@@ -250,8 +248,8 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> or(Range<C> r1, Range<C> r2) {
-        Preconditions.checkNotNull(r1, "r1");
-        Preconditions.checkNotNull(r2, "r2");
+        checkNotNull(r1, "r1");
+        checkNotNull(r2, "r2");
         return v -> Boolean.logicalOr(r1.contains(v), r2.contains(v));
     }
 
@@ -269,8 +267,8 @@ public interface Range<C extends Comparable<C>> {
      */
     @Nonnull
     static <C extends Comparable<C>> Range<C> xor(Range<C> r1, Range<C> r2) {
-        Preconditions.checkNotNull(r1, "r1");
-        Preconditions.checkNotNull(r2, "r2");
+        checkNotNull(r1, "r1");
+        checkNotNull(r2, "r2");
         return v -> Boolean.logicalXor(r1.contains(v), r2.contains(v));
     }
 
@@ -296,7 +294,7 @@ public interface Range<C extends Comparable<C>> {
      * @see #contains(Comparable)
      */
     default boolean containsAll(Iterable<? extends C> values) {
-        Preconditions.checkNotNull(values, "values");
+        checkNotNull(values, "values");
         return MoreIterables.stream(values).allMatch(this::contains);
     }
 }

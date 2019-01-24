@@ -27,10 +27,10 @@ import static org.assertj.core.api.Assertions.catchThrowable;
  * A test-case that checks the behavior of {@link MoreIterables}.
  */
 @ParametersAreNonnullByDefault
-public class MoreIterablesTest extends AbstractTest {
+class MoreIterablesTest extends AbstractTest {
 
     @Test
-    public void testConstructor() throws Exception {
+    void testConstructor() throws Exception {
         Constructor<?> constructor = MoreIterables.class.getDeclaredConstructor();
         assertThat(Modifier.isPrivate(constructor.getModifiers())).isTrue();
 
@@ -42,7 +42,7 @@ public class MoreIterablesTest extends AbstractTest {
     }
 
     @Test
-    public void testIsEmptyWithIterator() {
+    void testIsEmptyWithIterator() {
         Iterable<Integer> iterable0 = () -> Collections.<Integer>emptyList().iterator();
         assertThat(MoreIterables.isEmpty(iterable0)).isTrue();
 
@@ -54,7 +54,7 @@ public class MoreIterablesTest extends AbstractTest {
     }
 
     @Test
-    public void testIsNotEmptyWithIterator() {
+    void testIsNotEmptyWithIterator() {
         Iterable<Integer> iterable0 = () -> Collections.<Integer>emptyList().iterator();
         assertThat(MoreIterables.notEmpty(iterable0)).isFalse();
 
@@ -66,7 +66,7 @@ public class MoreIterablesTest extends AbstractTest {
     }
 
     @Test
-    public void testIsEmptyWithList() {
+    void testIsEmptyWithList() {
         Iterable<Integer> iterable0 = Collections.emptyList();
         assertThat(MoreIterables.isEmpty(iterable0)).isTrue();
 
@@ -78,7 +78,7 @@ public class MoreIterablesTest extends AbstractTest {
     }
 
     @Test
-    public void testIsNotEmptyWithList() {
+    void testIsNotEmptyWithList() {
         Iterable<Integer> iterable0 = Collections.emptyList();
         assertThat(MoreIterables.notEmpty(iterable0)).isFalse();
 

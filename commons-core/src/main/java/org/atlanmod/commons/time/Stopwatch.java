@@ -8,16 +8,14 @@
 
 package org.atlanmod.commons.time;
 
-import org.atlanmod.commons.Preconditions;
-
 import java.time.Duration;
 import java.time.Instant;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static org.atlanmod.commons.Preconditions.checkState;
 import static java.util.Objects.isNull;
+import static org.atlanmod.commons.Preconditions.checkState;
 
 /**
  * An object that measures elapsed time using {@link Instant}.
@@ -86,7 +84,7 @@ public final class Stopwatch {
      */
     @Nonnull
     public Stopwatch start() {
-        Preconditions.checkState(!isRunning, "This stopwatch is already running");
+        checkState(!isRunning, "This stopwatch is already running");
         isRunning = true;
         start = Instant.now();
         return this;
@@ -101,7 +99,7 @@ public final class Stopwatch {
      */
     @Nonnull
     public Stopwatch stop() {
-        Preconditions.checkState(isRunning, "This stopwatch is already stopped");
+        checkState(isRunning, "This stopwatch is already stopped");
         isRunning = false;
         end = Instant.now();
         return this;

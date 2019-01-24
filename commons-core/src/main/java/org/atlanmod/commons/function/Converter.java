@@ -8,8 +8,6 @@
 
 package org.atlanmod.commons.function;
 
-import org.atlanmod.commons.Preconditions;
-
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -65,8 +63,8 @@ public interface Converter<T, R> extends Function<T, R> {
      */
     @Nonnull
     static <T, R> Converter<T, R> from(Function<? super T, ? extends R> convertFunc, Function<? super R, ? extends T> revertFunc) {
-        Preconditions.checkNotNull(convertFunc, "convertFunc");
-        Preconditions.checkNotNull(revertFunc, "revertFunc");
+        checkNotNull(convertFunc, "convertFunc");
+        checkNotNull(revertFunc, "revertFunc");
 
         return new Converter<T, R>() {
             @Override
@@ -95,8 +93,8 @@ public interface Converter<T, R> extends Function<T, R> {
      */
     @Nonnull
     static <T, U, R> Converter<T, R> compose(Converter<T, U> before, Converter<U, R> after) {
-        Preconditions.checkNotNull(before, "before");
-        Preconditions.checkNotNull(after, "after");
+        checkNotNull(before, "before");
+        checkNotNull(after, "after");
 
         return new Converter<T, R>() {
             @Override
