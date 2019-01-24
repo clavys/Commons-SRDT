@@ -14,6 +14,10 @@ env:
     # CI_DEPLOY_PASSWORD
     - secure: o6JbL2n5q1G0KekjNJrEsqEVqO1SsQWpYtNK+OlK5UQY/7UxeSyQXzgzLQf3gTa25tg6PslvVhyqjYmylxLy8Q4pcbpateKjGXe0LjCAe9AFC8HNDyMCgUDZYEYfilKwiG5z5DruZbW1LN6OKojgyMnV1DwmbmgcWlVhry26MW9GrFE3d1l2eYpjn0LGrbObtXFXfTmJ0k1rD/LXlfby0iAm93YbilArcr+Qf5DhOIo48aMlDskrO4Lj1uRPKZ8uwPSYReDt1hovxbk8OwwxW/aO4TRHFgpUMWTnEInpVOpMGa464LyFJBnN7TRlHhdUsP6CBoW4EQdOzmZS7eriGmAzsXu2aQ0j3HkEFfKeIDgzCHcptwm/4G2hZ5EZjpPAcipG5NqCEDV3hWeiJsFTLr0Ni8sux1gOEi8eAOFR9mehLBDXpMrPdtV8WmDUEwhrlCPqHo77wVMrWN5nqqKags0edmJtsEwn+qTfsIzNS5jw7xBbHypYFSE/ZfxliUPaYWMhgOjg65HySG2E89ZXn41KLqvCrQBgx16K8mw3m2oTvVrBm/MP9MLAwfyV0lu8TtevfIJlAI6WEKojo1Cay3dIdlP15fqMpCem5uyGLp8bbDdsYN+cy2MiEXAKisqreF3NJZqqWJiJeattIjNSrYqmiCoishm4EnZhoLxjZ0M=
 
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+
 install:
   # Resolve all dependencies
   - mvn -B -V -q -DskipTests install
