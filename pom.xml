@@ -363,8 +363,6 @@
             <properties>
                 <skipTests>true</skipTests>
             </properties>
-            <dependencies>
-            </dependencies>
             <build>
                 <pluginManagement>
                     <plugins>
@@ -374,11 +372,9 @@
                             <artifactId>maven-javadoc-plugin</artifactId>
                             <version>3.0.1</version>
                             <configuration>
-                                <includeDependencySources>true</includeDependencySources>
                                 <excludePackageNames>
                                     javax.annotation*;
                                 </excludePackageNames>
-                                <detectLinks>true</detectLinks>
                             </configuration>
                         </plugin>
 
