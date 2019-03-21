@@ -21,7 +21,7 @@ Some of methods are inspired by [Guava][guava-home].
 
 ## Latest release
 
-The most recent release is Atlanmod Commons 1.0.3, released January 15, 2019.
+The most recent release is Atlanmod Commons 1.0.4, released March 21, 2019.
 -   Javadoc: [commons][release-doc]
 
 To add a dependency on this library using Maven, use the following:
@@ -30,7 +30,7 @@ To add a dependency on this library using Maven, use the following:
   <dependency>
     <groupId>org.atlanmod.commons</groupId>
     <artifactId>commons-core</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
   </dependency>
 </dependencies>
 ```
@@ -38,7 +38,7 @@ To add a dependency on this library using Maven, use the following:
 
 ## Snapshots
 
-Snapshots are automatically build from the `master` and are available throught Maven using `1.0.4-SNAPSHOT`.
+Snapshots are automatically build from the `master` and are available throught Maven using `1.0.5-SNAPSHOT`.
 -   Javadoc: [commons][snapshot-doc]
 
 
