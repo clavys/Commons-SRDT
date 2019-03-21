@@ -300,11 +300,11 @@ public final class MoreArrays {
     }
 
     /**
-     * Converts an array of {@link Byte} to an array of primitive types {@link byte}.
+     * Converts an array of {@link Byte} to an array of primitive types {@code byte}.
      *
      * @param boxedArray the array of {@link Byte} to convert.
      *
-     * @return an array of {@link byte} containing the same elements as {@code boxedArray}, in the same order, converted
+     * @return an array of {@code byte} containing the same elements as {@code boxedArray}, in the same order, converted
      * to primitives.
      */
     @Nonnull
