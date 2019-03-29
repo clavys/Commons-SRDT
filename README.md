@@ -8,7 +8,6 @@ Atlanmod Commons
 [![Licence](https://img.shields.io/badge/licence-EPL--2.0-blue.svg)](https://www.eclipse.org/legal/epl-2.0/)
 [![Javadocs](https://www.javadoc.io/badge/org.atlanmod.commons/commons-core.svg)](https://www.javadoc.io/doc/org.atlanmod.commons/commons-core)
 
-
 This library is a set of common classes and methods, including:
 -   Lazy objects and references for on-demand loading, and local caching
 -   An asynchronous logger
@@ -51,3 +50,16 @@ Snapshots are automatically build from the `master` and are available throught M
 [caffeine-home]: https://github.com/ben-manes/caffeine
 [zah-home]: https://github.com/OpenHFT/Zero-Allocation-Hashing
 [fst-home]: https://github.com/RuedigerMoeller/fast-serialization
+
+## SonarCloud badges
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=org.atlanmod.commons%3Acommons&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.atlanmod.commons%3Acommons)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=org.atlanmod.commons%3Acommons&metric=bugs)](https://sonarcloud.io/dashboard?id=org.atlanmod.commons%3Acommons)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=org.atlanmod.commons%3Acommons&metric=code_smells)](https://sonarcloud.io/dashboard?id=org.atlanmod.commons%3Acommons)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=org.atlanmod.commons%3Acommons&metric=coverage)](https://sonarcloud.io/dashboard?id=org.atlanmod.commons%3Acommons)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=org.atlanmod.commons%3Acommons&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=org.atlanmod.commons%3Acommons)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=org.atlanmod.commons%3Acommons&metric=ncloc)](https://sonarcloud.io/dashboard?id=org.atlanmod.commons%3Acommons)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=org.atlanmod.commons%3Acommons&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=org.atlanmod.commons%3Acommons)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=org.atlanmod.commons%3Acommons&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=org.atlanmod.commons%3Acommons)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=org.atlanmod.commons%3Acommons&metric=security_rating)](https://sonarcloud.io/dashboard?id=org.atlanmod.commons%3Acommons)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=org.atlanmod.commons%3Acommons&metric=sqale_index)](https://sonarcloud.io/dashboard?id=org.atlanmod.commons%3Acommons)
