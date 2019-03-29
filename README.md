@@ -6,6 +6,8 @@ Atlanmod Commons
 [![Codacy](https://api.codacy.com/project/badge/Grade/d5df667a5b264f9e95ad0095719b7d6a)](https://www.codacy.com/app/atlanmod/Commons?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=atlanmod/Commons&amp;utm_campaign=Badge_Grade)
 [![Javadoc](https://img.shields.io/badge/javadoc--blue.svg)](https://atlanmod.github.io/Commons/releases/latest/doc/)
 [![Licence](https://img.shields.io/badge/licence-EPL--2.0-blue.svg)](https://www.eclipse.org/legal/epl-2.0/)
+[![Javadocs](https://www.javadoc.io/badge/org.atlanmod.commons/commons-core.svg)](https://www.javadoc.io/doc/org.atlanmod.commons/commons-core)
+
 
 This library is a set of common classes and methods, including:
 -   Lazy objects and references for on-demand loading, and local caching
