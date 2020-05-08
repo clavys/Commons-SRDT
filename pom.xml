@@ -56,6 +56,7 @@
 
     <modules>
         <module>commons-core</module>
+        <module>commons-testing</module>
     </modules>
 
     <developers>
