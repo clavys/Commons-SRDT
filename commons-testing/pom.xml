@@ -16,13 +16,15 @@
     <description>A library of classes and methods for testing</description>
 
     <properties>
-        <caffeine.version>2.7.0</caffeine.version>
-        <zah.version>0.9</zah.version>
-        <fst.version>2.57</fst.version>
-        <slf4j.version>1.7.26</slf4j.version>
+        <slf4j.version>1.7.29</slf4j.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.atlanmod.commons</groupId>
+            <artifactId>commons-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- Logging -->
 

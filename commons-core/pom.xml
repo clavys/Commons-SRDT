@@ -16,10 +16,10 @@
     <description>A library of classes and methods common to all Atlanmod projects</description>
 
     <properties>
-        <caffeine.version>2.7.0</caffeine.version>
+        <caffeine.version>2.8.0</caffeine.version>
         <zah.version>0.9</zah.version>
         <fst.version>2.57</fst.version>
-        <slf4j.version>1.7.26</slf4j.version>
+        <slf4j.version>1.7.29</slf4j.version>
     </properties>
 
     <dependencies>
@@ -109,7 +109,7 @@
             <dependency>
                 <groupId>com.github.ben-manes.caffeine</groupId>
                 <artifactId>caffeine</artifactId>
-                <version>${caffeine.version}</version>
+                <version>2.8.0</version>
             </dependency>
 
             <!-- Hashing -->
@@ -117,7 +117,7 @@
             <dependency>
                 <groupId>net.openhft</groupId>
                 <artifactId>zero-allocation-hashing</artifactId>
-                <version>${zah.version}</version>
+                <version>0.9</version>
             </dependency>
 
             <!-- Serialization -->
@@ -125,7 +125,7 @@
             <dependency>
                 <groupId>de.ruedigermoeller</groupId>
                 <artifactId>fst</artifactId>
-                <version>${fst.version}</version>
+                <version>2.57</version>
             </dependency>
 
             <!-- Logging -->
@@ -133,14 +133,14 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
+                <version>1.7.29</version>
                 <scope>provided</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
-                <version>${slf4j.version}</version>
+                <version>1.7.29</version>
                 <scope>test</scope>
             </dependency>
 
