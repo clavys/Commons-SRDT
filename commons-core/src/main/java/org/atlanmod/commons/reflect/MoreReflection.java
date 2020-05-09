@@ -181,6 +181,7 @@ public final class MoreReflection {
                 try {
                     return (T) constructor.get().newInstance(arguments);
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
                     throw new RuntimeException("Could not instantiate class with constructor");
                 }
             };

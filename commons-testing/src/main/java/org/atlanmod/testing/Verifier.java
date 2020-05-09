@@ -7,21 +7,38 @@
  */
 package org.atlanmod.testing;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Executable;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Stream;
 
+import org.atlanmod.commons.Throwables;
+
+/**
+ * Entry point for verification methods that improve unit tests.
+ * Each method in this class is a static factory for a specific verification object.
+ *
+ * For instance:
+ *
+ * <pre><code class='java'>
+ * {@link Verifier#verifyEqualsOf(Class) verifyEqualsOf(String.class)}
+ *      .{@link EqualsVerifier#withArguments(Object...) withArguments("a String"}
+ *      .{@link EqualsVerifier#andVariants(Object...) andVariants("another String"}
+ *      .{@link EqualsVerifier#check() check()}
+ *
+ * </code></pre>
+ */
 public class Verifier {
 
-    public static EqualsPredicate verifyEqualsOf(Class klass) {
-        return new EqualsPredicate(klass);
+    private Verifier() {
+        throw Throwables.notInstantiableClass(getClass());
     }
 
+    /**
+     * Creates a {@link EqualsVerifier} for class {@code type}.
+     *
+     * @param type the class whose {@code equals()} method will be verified.
+     * @param <T> the actual class of the class {@type}.
+     * @return an instance of {@link EqualsVerifier}.
+     */
+    public static <T> EqualsVerifier verifyEqualsOf(Class<T> type) {
+        return new EqualsVerifier<T>(type);
+    }
 
 }
