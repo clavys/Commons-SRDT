@@ -16,7 +16,8 @@ This library is a set of common classes and methods, including:
 -   A wrapper for serialization, using [FST][fst-home]
 -   Utility classes about primitives, collections, functional interfaces, concurrency, reflection, etc.
 
-It was created to regroup and share classes, methods and dependencies between the different projects of the Atlanmod team, and was designed to ease updating without interfering with other projects.
+It was created to regroup and share classes, methods and dependencies between the different projects of the Atlanmod 
+team, and was designed to ease updating without interfering with other projects.
 
 Some of methods are inspired by [Guava][guava-home].
 
@@ -31,11 +32,10 @@ To add a dependency on this library using Maven, use the following:
   <dependency>
     <groupId>org.atlanmod.commons</groupId>
     <artifactId>commons-core</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
   </dependency>
 </dependencies>
 ```
-
 
 ## Snapshots
 

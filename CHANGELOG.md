@@ -1,3 +1,9 @@
+## 1.0.5
+
+*Released on 2020-05-09.*
+
+- __[ADD\]__ Add a new module `commons-testing` containing testing facility methods.
+
 ## 1.0.4
 
 *Released on 2019-03-21.*

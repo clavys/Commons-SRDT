@@ -20,8 +20,8 @@ class EqualsVerifierTest {
     void incompatibleArgumentsLength() {
         assertThatThrownBy(() -> {
             Verifier.verifyEqualsOf(String.class)
-                    .withArguments(1, "aaa")
-                    .andVariants(2, "bbbb")
+                    .withArguments(1, "value")
+                    .andVariants(2, "other")
                     .check();
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Could not find compatible constructor or factory method");
@@ -31,8 +31,8 @@ class EqualsVerifierTest {
     void differentArgumentLengths() {
         assertThatThrownBy(() -> {
             Verifier.verifyEqualsOf(String.class)
-                    .withArguments(1, "aaa")
-                    .andVariants("bbbb")
+                    .withArguments(1, "string")
+                    .andVariants("Longer string")
                     .check();
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("must have the same length");
@@ -42,8 +42,8 @@ class EqualsVerifierTest {
     void sameArguments() {
         assertThatThrownBy(() -> {
             Verifier.verifyEqualsOf(String.class)
-                    .withArguments("aaa")
-                    .andVariants("aaa")
+                    .withArguments("same")
+                    .andVariants("same")
                     .check();
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("different elements");
@@ -98,6 +98,10 @@ class EqualsVerifierTest {
         public boolean equals(Object obj) {
             return true;
         }
+        @Override
+        public int hashCode() {
+            return super.hashCode() ;
+        }
     }
 
     public static class AlwaysDifferentTestData {
@@ -105,6 +109,10 @@ class EqualsVerifierTest {
         @Override
         public boolean equals(Object obj) {
             return true;
+        }
+        @Override
+        public int hashCode() {
+            return super.hashCode();
         }
     }
 
