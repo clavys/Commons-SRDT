@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.atlanmod.commons</groupId>
         <artifactId>commons</artifactId>
-        <version>1.0.5</version>
+        <version>1.0.6-SNAPSHOT</version>
     </parent>
 
     <artifactId>commons-core</artifactId>
@@ -16,10 +16,10 @@
     <description>A library of classes and methods common to all Atlanmod projects</description>
 
     <properties>
-        <caffeine.version>2.8.0</caffeine.version>
-        <zah.version>0.9</zah.version>
-        <fst.version>2.57</fst.version>
-        <slf4j.version>1.7.29</slf4j.version>
+        <caffeine.version>2.8.5</caffeine.version>
+        <zah.version>0.12</zah.version>
+        <fst.version>3.0.1</fst.version>
+        <slf4j.version>1.7.30</slf4j.version>
     </properties>
 
     <dependencies>
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>17.0.0</version>
+            <version>20.1.0</version>
             <scope>provided</scope>
             <optional>true</optional><!-- needed only for annotations -->
         </dependency>
@@ -109,7 +109,7 @@
             <dependency>
                 <groupId>com.github.ben-manes.caffeine</groupId>
                 <artifactId>caffeine</artifactId>
-                <version>2.8.0</version>
+                <version>${caffeine.version}</version>
             </dependency>
 
             <!-- Hashing -->
@@ -117,7 +117,7 @@
             <dependency>
                 <groupId>net.openhft</groupId>
                 <artifactId>zero-allocation-hashing</artifactId>
-                <version>0.9</version>
+                <version>${zah.version}</version>
             </dependency>
 
             <!-- Serialization -->
@@ -125,7 +125,7 @@
             <dependency>
                 <groupId>de.ruedigermoeller</groupId>
                 <artifactId>fst</artifactId>
-                <version>2.57</version>
+                <version>${fst.version}</version>
             </dependency>
 
             <!-- Logging -->
@@ -133,14 +133,14 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.29</version>
+                <version>${slf4j.version}</version>
                 <scope>provided</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
-                <version>1.7.29</version>
+                <version>${slf4j.version}</version>
                 <scope>test</scope>
             </dependency>
 
