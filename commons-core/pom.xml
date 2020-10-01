@@ -18,7 +18,7 @@
     <properties>
         <caffeine.version>2.8.5</caffeine.version>
         <zah.version>0.12</zah.version>
-        <fst.version>3.0.1</fst.version>
+        <fst.version>2.57</fst.version>
         <slf4j.version>1.7.30</slf4j.version>
     </properties>
 
