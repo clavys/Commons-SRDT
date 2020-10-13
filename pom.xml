@@ -4,7 +4,7 @@
 
     <groupId>org.atlanmod.commons</groupId>
     <artifactId>commons</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -224,12 +224,12 @@
                     <configuration>
                         <exportScr>true</exportScr>
                         <instructions>
-                            <!--Bundle-Version>
-                                1.0.6.${maven.build.timestamp}
-                            </Bundle-Version-->
                             <Bundle-Version>
-                                1.0.6
+                                1.0.7.${maven.build.timestamp}
                             </Bundle-Version>
+                            <!--Bundle-Version>
+                                1.0.6
+                            </Bundle-Version-->
                             <Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
                             <Import-Package />
                             <Embed-Dependency>
