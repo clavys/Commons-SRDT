@@ -97,7 +97,7 @@
 
         <javax-annotations.version>3.0.2</javax-annotations.version>
 
-        <osgi.version>6.0.0</osgi.version>
+        <osgi.version>7.0.0</osgi.version>
         <osgi-annotations.version>1.4.0</osgi-annotations.version><!-- 1.4.0: requires OSGi R7 -->
 
         <assertj.version>3.17.2</assertj.version>
@@ -124,7 +124,7 @@
 
             <dependency>
                 <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.core</artifactId>
+                <artifactId>osgi.core</artifactId>
                 <version>${osgi.version}</version>
                 <scope>provided</scope>
             </dependency>
