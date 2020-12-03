@@ -3,18 +3,21 @@ package org.atlanmod.commons.tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class PairTest {
 
+    public static final String ONE = "one";
     private Pair<Integer, String> pair_int_string;
     private Pair<String, Integer> pair_string_int;
 
 
+
+
     @BeforeEach
     void init() {
-        pair_int_string = Pair.of(Integer.valueOf(1), "one");
-        pair_string_int = Pair.of("one", Integer.valueOf(1));
+        pair_int_string = Pair.of(Integer.valueOf(1), ONE);
+        pair_string_int = Pair.of(ONE, Integer.valueOf(1));
     }
 
 
@@ -28,7 +31,7 @@ class PairTest {
     @Test
     void testEquals() {
         assertThat(pair_int_string).isEqualTo(pair_int_string);
-        assertThat(pair_int_string).isEqualTo(Pair.of(Integer.valueOf(1), "one"));
+        assertThat(pair_int_string).isEqualTo(Pair.of(Integer.valueOf(1), ONE));
         assertThat(pair_int_string).isNotEqualTo(null);
         assertThat(pair_int_string.equals(pair_string_int)).isFalse();
     }
@@ -39,13 +42,13 @@ class PairTest {
 
         assertThat(pair_int_string).isNotEqualTo(swapped);
         assertThat(pair_int_string).isEqualTo(swapped.swap());
-        assertThat(swapped).isEqualTo(Pair.of("one", Integer.valueOf(1)));
+        assertThat(swapped).isEqualTo(Pair.of(ONE, Integer.valueOf(1)));
     }
 
     @Test
     void testHashCode() {
         assertThat(pair_int_string.hashCode()).isNotEqualTo(pair_string_int.hashCode());
-        assertThat(pair_int_string.hashCode()).isEqualTo(Pair.of(Integer.valueOf(1), "one").hashCode());
+        assertThat(pair_int_string.hashCode()).isEqualTo(Pair.of(Integer.valueOf(1), ONE).hashCode());
     }
 
 }
