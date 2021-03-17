@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.atlanmod.commons</groupId>
         <artifactId>commons</artifactId>
-        <version>1.0.7-SNAPSHOT</version>
+        <version>1.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>commons-core</artifactId>
@@ -16,9 +16,9 @@
     <description>A library of classes and methods common to all Atlanmod projects</description>
 
     <properties>
-        <caffeine.version>2.8.5</caffeine.version>
+        <caffeine.version>3.0.0</caffeine.version>
         <zah.version>0.12</zah.version>
-        <fst.version>2.57</fst.version>
+        <fst.version>2.56</fst.version>
         <!-- WARNING: Fst versions > 3.0.0 are compiled with jdk 14 -->
         <slf4j.version>1.7.30</slf4j.version>
     </properties>

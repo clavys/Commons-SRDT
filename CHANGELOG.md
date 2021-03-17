@@ -1,3 +1,10 @@
+## 1.1.0
+
+- __\[UPD\]__  Require JDK 11
+- __[ADD\]__ Require Maven 3.6.0
+- __\[ADD\]__  New class, `MutableInt` for representing mutable integers
+
+
 ## 1.0.5
 
 *Released on 2020-05-09.*
