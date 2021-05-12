@@ -80,6 +80,8 @@
                 <role>developer</role>
             </roles>
             <timezone>+2</timezone>
+            <organization>Atlanmod</organization>
+            <organizationUrl>https://www.atlanmod.org/</organizationUrl>
         </developer>
     </developers>
 
@@ -103,7 +105,7 @@
         <osgi-annotations.version>1.4.0</osgi-annotations.version><!-- 1.4.0: requires OSGi R7 -->
 
         <assertj.version>3.19.0</assertj.version>
-        <mockito.version>3.8.0</mockito.version>
+        <mockito.version>3.9.0</mockito.version>
         <junit.version>5.7.1</junit.version>
     </properties>
 
@@ -157,6 +159,13 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
@@ -250,7 +259,7 @@
                         <exportScr>true</exportScr>
                         <instructions>
                             <Bundle-Version>
-                                1.0.7.${maven.build.timestamp}
+                                1.1.0.${maven.build.timestamp}
                             </Bundle-Version>
                             <!--Bundle-Version>
                                 1.0.6
@@ -261,7 +270,8 @@
                                 *;
                                 scope=compile|runtime;
                                 type=!pom;
-                                groupId=!${project.groupId}
+                                groupId=!${project.groupId};
+                                inline=true
                             </Embed-Dependency>
                             <Embed-Transitive>true</Embed-Transitive>
                             <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>

@@ -9,12 +9,12 @@
 package org.atlanmod.commons.log;
 
 import org.atlanmod.commons.function.TriConsumer;
-
-import java.util.function.Predicate;
+import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.function.Predicate;
 
 /**
  * An object used for identifying the severity of an event.
@@ -32,7 +32,7 @@ public enum Level {
     /**
      * A fine-grained debug message, typically capturing the flow through the application.
      */
-    TRACE(org.slf4j.Logger::trace, org.slf4j.Logger::isTraceEnabled),
+    TRACE(Logger::trace, Logger::isTraceEnabled),
 
     /**
      * A general debugging event.
@@ -52,24 +52,24 @@ public enum Level {
     /**
      * An error in the application, possibly recoverable.
      */
-    ERROR(org.slf4j.Logger::error, org.slf4j.Logger::isErrorEnabled);
+    ERROR(Logger::error, Logger::isErrorEnabled);
 
     /**
      * The logging function.
      */
     @Nonnull
-    private final TriConsumer<org.slf4j.Logger, String, Throwable> loggingFunction;
+    private final TriConsumer<Logger, String, Throwable> loggingFunction;
 
     /**
      * The predicate used to determine if this level is enabled for a {@link org.slf4j.Logger}.
      */
     @Nonnull
-    private final Predicate<org.slf4j.Logger> isEnabledPredicate;
+    private final Predicate<Logger> isEnabledPredicate;
 
     /**
      * Constructs a new {@code Level}.
      */
-    Level(TriConsumer<org.slf4j.Logger, String, Throwable> loggingFunction, Predicate<org.slf4j.Logger> isEnabledPredicate) {
+    Level(TriConsumer<Logger, String, Throwable> loggingFunction, Predicate<Logger> isEnabledPredicate) {
         this.loggingFunction = loggingFunction;
         this.isEnabledPredicate = isEnabledPredicate;
     }
@@ -82,7 +82,7 @@ public enum Level {
      * @param message the message to log
      * @param e       the exception to log, including its stack trace
      */
-    void logWith(org.slf4j.Logger logger, @Nullable String message, @Nullable Throwable e) {
+    void logWith(Logger logger, @Nullable String message, @Nullable Throwable e) {
         loggingFunction.accept(logger, message, e);
     }
 
@@ -91,7 +91,7 @@ public enum Level {
      *
      * @return {@code true} if this level is enabled for the {@code logger}
      */
-    boolean isEnabledFor(org.slf4j.Logger logger) {
+    boolean isEnabledFor(Logger logger) {
         return isEnabledPredicate.test(logger);
     }
 }

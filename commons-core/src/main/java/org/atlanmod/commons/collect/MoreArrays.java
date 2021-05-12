@@ -11,18 +11,16 @@ package org.atlanmod.commons.collect;
 import org.atlanmod.commons.Throwables;
 import org.atlanmod.commons.annotation.Static;
 
-import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.Objects;
-
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Objects;
 
-import static org.atlanmod.commons.Preconditions.checkElementIndex;
-import static org.atlanmod.commons.Preconditions.checkGreaterThanOrEqualTo;
-import static org.atlanmod.commons.Preconditions.checkNotNull;
+import static org.atlanmod.commons.Guards.*;
 
 /**
  * Static utility methods related to arrays.
@@ -340,5 +338,33 @@ public final class MoreArrays {
         }
 
         return boxedArray;
+    }
+
+    /**
+     * Returns the tail of the {@code array}, that is, a new array containing all its elements except the first one.
+     *
+     * @param array the array containing the tail
+     * @param <T> the component type of the array
+     * @return an array containing the original array without its first element
+     */
+    static <T> T[] tail(T[] array) {
+        checkNotNull(array, "array");
+        checkArgument(array.length > 0, "The array must have at least one element");
+
+        return Arrays.copyOfRange(array, 1, array.length);
+    }
+
+    /**
+     * Returns the first element of the {@code array}.
+     *
+     * @param array the array containing the head
+     * @param <T> the component type of the array
+     * @return the first element
+     */
+    static <T> T head(T[] array) {
+        checkNotNull(array, "array");
+        checkArgument(array.length > 0, "The array must have at least one element");
+
+        return array[0];
     }
 }

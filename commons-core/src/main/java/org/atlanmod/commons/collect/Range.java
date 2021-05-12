@@ -12,8 +12,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.Immutable;
 
-import static org.atlanmod.commons.Preconditions.checkLessThanOrEqualTo;
-import static org.atlanmod.commons.Preconditions.checkNotNull;
+import static org.atlanmod.commons.Guards.checkLessThanOrEqualTo;
+import static org.atlanmod.commons.Guards.checkNotNull;
 
 /**
  * A range (or "interval") defines the boundaries around a contiguous span of values of some {@link Comparable} type.

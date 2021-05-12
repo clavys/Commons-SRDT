@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.concurrent.Immutable;
 
-import static org.atlanmod.commons.Preconditions.checkGreaterThanOrEqualTo;
+import static org.atlanmod.commons.Guards.checkGreaterThanOrEqualTo;
 
 /**
  * Statistics about the performance of a {@link Cache}.

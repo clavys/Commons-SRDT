@@ -11,7 +11,7 @@ package org.atlanmod.commons.io.serializer;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static org.atlanmod.commons.Preconditions.checkNotNull;
+import static org.atlanmod.commons.Guards.checkNotNull;
 
 /**
  * An abstract {@link StringSerializer} for objects of type {@code T}.

@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.WillNotClose;
 
-import static org.atlanmod.commons.Preconditions.checkInstanceOf;
+import static org.atlanmod.commons.Guards.checkInstanceOf;
 
 /**
  * A {@link BinarySerializer} for any object, using FST serialization.

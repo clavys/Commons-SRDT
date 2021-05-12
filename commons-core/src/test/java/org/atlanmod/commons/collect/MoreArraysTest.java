@@ -46,8 +46,8 @@ class MoreArraysTest extends AbstractTest {
         assertThat(array0).hasSize(1);
 
         String[] array1 = MoreArrays.newArray(String.class, 2);
-        assertThat(array1).isExactlyInstanceOf(String[].class);
-        assertThat(array1).hasSize(2);
+        assertThat(array1).isExactlyInstanceOf(String[].class)
+                .hasSize(2);
     }
 
     @Test
@@ -210,5 +210,27 @@ class MoreArraysTest extends AbstractTest {
         byte[] primitiveArray = new byte[] {0, 1, 2, 3, 4};
 
         assertThat(boxedArray).isEqualTo(MoreArrays.toObject(primitiveArray));
+    }
+
+    @Test
+    void testHead() {
+        Integer[] array0 = new Integer[]{0, 1, 2, 2, 0, 1};
+        assertThat(MoreArrays.head(array0)).isEqualTo(array0[0]);
+    }
+
+    @Test
+    void testTail() {
+        Integer[] data = new Integer[]{0, 1, 2, 2, 0, 1};
+        Integer[] expected = new Integer[]{1, 2, 2, 0, 1};
+
+        assertThat(MoreArrays.tail(data)).isEqualTo(expected);
+    }
+
+    @Test
+    void testEmptyTail() {
+        Integer[] data = new Integer[]{0};
+        Integer[] expected = new Integer[]{};
+
+        assertThat(MoreArrays.tail(data)).isEqualTo(expected);
     }
 }

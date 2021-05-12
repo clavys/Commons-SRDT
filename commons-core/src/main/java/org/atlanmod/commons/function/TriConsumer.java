@@ -11,7 +11,7 @@ package org.atlanmod.commons.function;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNullableByDefault;
 
-import static org.atlanmod.commons.Preconditions.checkNotNull;
+import static org.atlanmod.commons.Guards.checkNotNull;
 
 /**
  * Represents an operation that accepts three input arguments and returns no result. This is the three-arity

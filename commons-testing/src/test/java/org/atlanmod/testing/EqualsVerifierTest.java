@@ -17,6 +17,14 @@ class EqualsVerifierTest {
     }
 
     @Test
+    void testEqualsWithTwoArguments() {
+        Verifier.verifyEqualsOf(Person.class)
+                .withArguments("Anna", 33)
+                .andVariants("Carol", 44)
+                .check();
+    }
+
+    @Test
     void incompatibleArgumentsLength() {
         assertThatThrownBy(() -> {
             Verifier.verifyEqualsOf(String.class)
@@ -160,3 +168,26 @@ class EqualsVerifierTest {
 
 }
 
+class TestDataPerson {
+
+    private String name;
+    private int age;
+
+    public TestDataPerson(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TestDataPerson person = (TestDataPerson) o;
+        return age == person.age && Objects.equals(name, person.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age);
+    }
+}

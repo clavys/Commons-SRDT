@@ -8,15 +8,16 @@
 
 package org.atlanmod.commons.cache;
 
-import java.util.function.Function;
-import java.util.function.ToIntBiFunction;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.function.Function;
+import java.util.function.ToIntBiFunction;
 
-import static org.atlanmod.commons.Preconditions.checkGreaterThanOrEqualTo;
-import static org.atlanmod.commons.Preconditions.checkNotNull;
+import static org.atlanmod.commons.Guards.checkGreaterThanOrEqualTo;
+import static org.atlanmod.commons.Guards.checkNotNull;
 
 /**
  * A Caffeine {@link CacheBuilder} implementation.
@@ -31,7 +32,7 @@ final class CaffeineCacheBuilder<K, V> implements CacheBuilder<K, V> {
      * The internal cache builder implementation.
      */
     @Nonnull
-    private final com.github.benmanes.caffeine.cache.Caffeine<Object, Object> builder;
+    private final Caffeine<Object, Object> builder;
 
     /**
      * Constructs a new {@code CacheBuilder}.

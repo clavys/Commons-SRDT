@@ -15,8 +15,8 @@ import java.util.function.IntFunction;
 import javax.annotation.Nonnegative;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static org.atlanmod.commons.Preconditions.checkNotNull;
-import static org.atlanmod.commons.Preconditions.checkPositionIndex;
+import static org.atlanmod.commons.Guards.checkNotNull;
+import static org.atlanmod.commons.Guards.checkPositionIndex;
 
 /**
  * A size-based {@link Iterator} that loads each value with a {@link IntFunction}.

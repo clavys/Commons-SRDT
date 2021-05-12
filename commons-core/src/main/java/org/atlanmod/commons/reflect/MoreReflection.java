@@ -14,24 +14,33 @@ import org.atlanmod.commons.annotation.Singleton;
 import org.atlanmod.commons.annotation.Static;
 
 import java.lang.reflect.*;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static org.atlanmod.commons.Preconditions.checkArgument;
-import static org.atlanmod.commons.Preconditions.checkNotNull;
+import static org.atlanmod.commons.Guards.checkArgument;
+import static org.atlanmod.commons.Guards.checkNotNull;
 
 /**
  * Static utility methods related to reflection.
  */
 @ParametersAreNonnullByDefault
 public final class MoreReflection {
+
+    private static final Map<Class<?>, Class<?>> primitiveToWrapper = new HashMap<>();
+    static {
+        primitiveToWrapper.put(Boolean.TYPE, Boolean.class);
+        primitiveToWrapper.put(Byte.TYPE, Byte.class);
+        primitiveToWrapper.put(Character.TYPE, Character.class);
+        primitiveToWrapper.put(Double.TYPE, Double.class);
+        primitiveToWrapper.put(Float.TYPE, Float.class);
+        primitiveToWrapper.put(Integer.TYPE, Integer.class);
+        primitiveToWrapper.put(Long.TYPE, Long.class);
+        primitiveToWrapper.put(Short.TYPE, Short.class);
+    }
 
     private MoreReflection() {
         throw Throwables.notInstantiableClass(getClass());
@@ -222,10 +231,40 @@ public final class MoreReflection {
             return false;
         }
         for (int i = 0; i < argumentTypes.length; i++) {
-            if (!types[i].isAssignableFrom(argumentTypes[i])) {
+            if (!isAssignable(types[i], argumentTypes[i])) {
                 return false;
             }
         }
         return true;
+    }
+
+    /**
+     * Checks whether a left operand type can be assigned from the right operand type
+     * If the operand is a primitive type, first converts it to its wrapper class.
+     *
+     * Contrary to the {@link Class#isAssignableFrom(java.lang.Class)} method,
+     * this method takes ont account the assignment between Wrappers Classes and
+     * Primitive Types.
+     *
+     * @param leftOperand  The Class or Primitive we want to assign into
+     * @param rightOperand The Class or Primitive we want to assign
+     * @return {@code true}, if assignment is possible
+     */
+    public static boolean isAssignable(final Class<?> leftOperand, final Class<?> rightOperand) {
+        return wrapperClassFor(leftOperand).isAssignableFrom(wrapperClassFor(rightOperand));
+    }
+
+    /**
+     * Returns the Wrapper class for a Primitive Type.
+     * If {@code type} is not primitive, returns itself.
+     *
+     * @param type the primitive type
+     * @return the corresponding Wrapper class
+     */
+    private static Class<?> wrapperClassFor(final Class<?> type) {
+        assert type.isPrimitive() ? primitiveToWrapper.containsKey(type) : true;
+
+        if (!type.isPrimitive()) return type;
+        return primitiveToWrapper.get(type);
     }
 }

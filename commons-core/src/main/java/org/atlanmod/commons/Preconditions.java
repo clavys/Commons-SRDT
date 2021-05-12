@@ -9,15 +9,14 @@
 package org.atlanmod.commons;
 
 import org.atlanmod.commons.annotation.Static;
-import org.jetbrains.annotations.Contract;
-
-import java.util.Collection;
-import java.util.Objects;
+import org.atlanmod.commons.predicate.BooleanPredicate;
+import org.atlanmod.commons.predicate.IntPredicate;
+import org.atlanmod.commons.predicate.PredicateContext;
 
 import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Collection;
 
 /**
  * Static convenience methods that help a method or constructor check whether it was invoked correctly (whether its
@@ -37,641 +36,298 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 @SuppressWarnings("ConstantConditions") // Preconditions ensure that these conditions are validated
 public final class Preconditions {
-
-    /**
-     * A string representing a logging without message.
-     */
-    @Nullable
-    private static final String NO_MESSAGE = null;
-
-    /**
-     * An empty array representing logging without parameters.
-     */
-    @Nonnull
-    private static final Object[] NO_PARAMS = new Object[0];
+    private final static PredicateContext CONTEXT = new PreconditionContext();
 
     private Preconditions() {
         throw Throwables.notInstantiableClass(getClass());
     }
 
-    // region Argument
+    // region Deprecated Methods
 
     /**
-     * Ensures the truth of an expression involving one or more parameters to the calling method.
-     *
-     * @param expression a boolean expression
-     *
-     * @throws IllegalArgumentException if {@code expression} is false
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkArgument(boolean) }
      */
-    @Contract(value = "false -> fail", pure = true)
+    @Deprecated
     public static void checkArgument(boolean expression) {
-        checkArgument(expression, NO_MESSAGE);
+        Guards.checkArgument(expression);
     }
 
     /**
-     * Ensures the truth of an expression involving one or more parameters to the calling method.
-     *
-     * @param expression a boolean expression
-     * @param message    the exception message to use if the check fails
-     *
-     * @throws IllegalArgumentException if {@code expression} is false
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkArgument(boolean, String)}
      */
-    @Contract(value = "false, _ -> fail", pure = true)
+    @Deprecated
     public static void checkArgument(boolean expression, String message) {
-        checkArgument(expression, message, NO_PARAMS);
+        Guards.checkArgument(expression, message);
     }
 
     /**
-     * Ensures the truth of an expression involving one or more parameters to the calling method.
-     *
-     * @param expression a boolean expression
-     * @param pattern    a template for the exception message should the check fail
-     * @param args       the arguments to be substituted into the message template
-     *
-     * @throws IllegalArgumentException if {@code expression} is false
-     * @throws NullPointerException     if the check fails and either {@code pattern} or {@code args} is null
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkArgument(boolean, String, Object...)}
      */
-    @Contract(value = "false, _, _ -> fail", pure = true)
+    @Deprecated
     public static void checkArgument(boolean expression, String pattern, Object... args) {
-        if (!expression) {
-            throw new IllegalArgumentException(format(pattern, args));
-        }
+        Guards.checkArgument(expression, pattern, args);
     }
 
-    // endregion
-
-    // region State
 
     /**
-     * Ensures the truth of an expression involving the state of the calling instance, but not involving any parameters
-     * to the calling method.
-     *
-     * @param expression a boolean expression
-     *
-     * @throws IllegalStateException if {@code expression} is false
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkState(boolean)}
      */
-    @Contract(value = "false -> fail", pure = true)
+    @Deprecated
     public static void checkState(boolean expression) {
-        checkState(expression, NO_MESSAGE);
+        Guards.checkState(expression);
     }
 
     /**
-     * Ensures the truth of an expression involving the state of the calling instance, but not involving any parameters
-     * to the calling method.
-     *
-     * @param expression a boolean expression
-     * @param message    the exception message to use if the check fails
-     *
-     * @throws IllegalStateException if {@code expression} is false
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkState(boolean, String)}
      */
-    @Contract(value = "false, _ -> fail", pure = true)
+    @Deprecated
     public static void checkState(boolean expression, String message) {
-        checkState(expression, message, NO_PARAMS);
+        Guards.checkState(expression, message);
     }
 
     /**
-     * Ensures the truth of an expression involving the state of the calling instance, but not involving any parameters
-     * to the calling method.
-     *
-     * @param expression a boolean expression
-     * @param pattern    a template for the exception message should the check fail
-     * @param args       the arguments to be substituted into the message template
-     *
-     * @throws IllegalStateException if {@code expression} is false
-     * @throws NullPointerException  if the check fails and either {@code pattern} or {@code args} is null
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkState(boolean, String, Object...)}
      */
-    @Contract(value = "false, _, _ -> fail", pure = true)
+    @Deprecated
     public static void checkState(boolean expression, String pattern, Object... args) {
-        if (!expression) {
-            throw new IllegalStateException(format(pattern, args));
-        }
+        Guards.checkState(expression, pattern, args);
     }
 
-    // endregion
-
-    // region Nullity
-
     /**
-     * Ensures that an object {@code reference} passed as a parameter to the calling method is not {@code null}.
-     *
-     * @param reference an object reference
-     *
-     * @return the non-null reference that was validated
-     *
-     * @throws NullPointerException if {@code reference} is null
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkNotNull(Object)}
      */
-    @Nonnull
-    @Contract(value = "null -> fail", pure = true)
+    @Deprecated
     public static <T> T checkNotNull(@Nullable T reference) {
-        return checkNotNull(reference, NO_MESSAGE);
+        return Guards.checkNotNull(reference);
     }
 
     /**
-     * Ensures that an object {@code reference} passed as a parameter to the calling method is not {@code null}.
-     *
-     * @param reference an object reference
-     * @param message   the exception message to use if the check fails
-     *
-     * @return the non-null reference that was validated
-     *
-     * @throws NullPointerException if {@code reference} is null
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkNotNull(Object, String)}
      */
-    @Nonnull
-    @Contract(value = "null, _ -> fail", pure = true)
+    @Deprecated
     public static <T> T checkNotNull(@Nullable T reference, String message) {
-        return checkNotNull(reference, message, NO_PARAMS);
+        return Guards.checkNotNull(reference, message);
     }
 
     /**
-     * Ensures that an object {@code reference} passed as a parameter to the calling method is not {@code null}.
-     *
-     * @param reference an object reference
-     * @param pattern   a template for the exception message should the check fail
-     * @param args      the arguments to be substituted into the message template. Arguments are converted to strings
-     *                  using {@link String#valueOf(Object)}.
-     *
-     * @return the non-null reference that was validated
-     *
-     * @throws NullPointerException if {@code reference} is null
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkNotNull(Object, String, Object...)}
      */
-    @Nonnull
-    @Contract(value = "null, _, _ -> fail", pure = true)
+    @Deprecated
     public static <T> T checkNotNull(@Nullable T reference, String pattern, Object... args) {
-        if (null == reference) {
-            throw new NullPointerException(format(pattern, args));
-        }
-        return reference;
+        return Guards.checkNotNull(reference, pattern, args);
     }
 
     /**
-     * Ensures that a {@code collection} passed as a parameter to the calling method is not {@code null} and does not
-     * contains any {@code null} element.
-     *
-     * @param collection a collection
-     *
-     * @return the non-null collection that was validated
-     *
-     * @throws NullPointerException if {@code collection} is null or contains at least one {@code null} element
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkNotContainsNull(Collection)}
      */
-    @Nonnull
+    @Deprecated
     public static <C extends Collection<? extends T>, T> C checkNotContainsNull(C collection) {
-        return checkNotContainsNull(collection, "the collection contains at least one null element");
+        return Guards.checkNotContainsNull(collection);
     }
 
     /**
-     * Ensures that a {@code collection} passed as a parameter to the calling method is not {@code null} and does not
-     * contains any {@code null} element.
-     *
-     * @param collection a collection
-     * @param message    the exception message to use if the check fails
-     *
-     * @return the non-null collection that was validated
-     *
-     * @throws NullPointerException if {@code collection} is null or contains at least one {@code null} element
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkNotContainsNull(Collection, String)}
      */
-    @Nonnull
+    @Deprecated
     public static <C extends Collection<? extends T>, T> C checkNotContainsNull(C collection, String message) {
-        return checkNotContainsNull(collection, message, NO_PARAMS);
+        return Guards.checkNotContainsNull(collection, message);
     }
 
     /**
-     * Ensures that a {@code collection} passed as a parameter to the calling method is not {@code null} and does not
-     * contains any {@code null} element.
-     *
-     * @param collection a collection
-     * @param pattern    a template for the exception message should the check fail
-     * @param args       the arguments to be substituted into the message template. Arguments are converted to strings
-     *                   using {@link String#valueOf(Object)}.
-     *
-     * @return the non-null collection that was validated
-     *
-     * @throws NullPointerException if {@code collection} is null or contains at least one {@code null} element
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkNotContainsNull(Collection, String, Object...)}
      */
-    @Nonnull
+    @Deprecated
     public static <C extends Collection<? extends T>, T> C checkNotContainsNull(C collection, String pattern, Object... args) {
-        checkNotNull(collection, "collection");
-
-        if (collection.contains(null)) {
-            throw new NullPointerException(format(pattern, args));
-        }
-        return collection;
+        return Guards.checkNotContainsNull(collection, pattern, args);
     }
 
-    // endregion
-
-    // region Instance
-
     /**
-     * Ensures that an object {@code reference} passed as a parameter to the calling method is instance of {@code
-     * type}.
-     *
-     * @param reference an object reference
-     * @param type      the expected type of {@code reference}
-     *
-     * @return the reference that was validated
-     *
-     * @throws IllegalArgumentException if {@code reference} is not instance of {@code type}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkInstanceOf(Object, Class)}
      */
-    @Nonnull
+    @Deprecated
     public static <T> T checkInstanceOf(T reference, Class<?> type) {
-        return checkInstanceOf(reference, type, "object must be instance of '%s', but was '%s'", type.getName(), reference.getClass());
+        return Guards.checkInstanceOf(reference, type);
     }
 
     /**
-     * Ensures that an object {@code reference} passed as a parameter to the calling method is instance of {@code
-     * type}.
-     *
-     * @param reference an object reference
-     * @param type      the expected type of {@code reference}
-     * @param message   the exception message to use if the check fails
-     *
-     * @return the reference that was validated
-     *
-     * @throws IllegalArgumentException if {@code reference} is not instance of {@code type}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkInstanceOf(Object, Class, String)}
      */
-    @Nonnull
+    @Deprecated
     public static <T> T checkInstanceOf(T reference, Class<?> type, String message) {
-        return checkInstanceOf(reference, type, message, NO_PARAMS);
+        return Guards.checkInstanceOf(reference, type, message);
     }
 
     /**
-     * Ensures that an object {@code reference} passed as a parameter to the calling method is instance of {@code
-     * type}.
-     *
-     * @param reference an object reference
-     * @param type      the expected type of {@code reference}
-     * @param pattern   a template for the exception message should the check fail
-     * @param args      the arguments to be substituted into the message template. Arguments are converted to strings
-     *                  using {@link String#valueOf(Object)}.
-     *
-     * @return the reference that was validated
-     *
-     * @throws IllegalArgumentException if {@code reference} is not instance of {@code type}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkInstanceOf(Object, Class, String, Object...)}
      */
-    @Nonnull
+    @Deprecated
     public static <T> T checkInstanceOf(T reference, Class<?> type, String pattern, Object... args) {
-        checkNotNull(reference, "reference");
-        checkNotNull(type, "type");
-
-        if (!type.isInstance(reference)) {
-            throw new IllegalArgumentException(format(pattern, args));
-        }
-        return reference;
+        return Guards.checkInstanceOf(reference, type, pattern, args);
     }
 
-    // endregion
-
-    // region Comparison
-
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is equal to {@code other}.
-     *
-     * @param value an object reference
-     * @param other another object reference
-     *
-     * @return the value that was validated
-     *
-     * @throws IllegalArgumentException if {@code value} is not equal to {@code other}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkEqualTo(Object, Object)}
      */
+    @Deprecated
     public static <T> T checkEqualTo(@Nullable T value, @Nullable T other) {
-        return checkEqualTo(value, other, "value (%s) must be equal to %s", value, other);
+        return Guards.checkEqualTo(value, other);
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is equal to {@code other}.
-     *
-     * @param value   an object reference
-     * @param other   another object reference
-     * @param message the exception message to use if the check fails
-     *
-     * @return the value that was validated
-     *
-     * @throws IllegalArgumentException if {@code value} is not equal to {@code other}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkEqualTo(Object, Object, String)}
      */
+    @Deprecated
     public static <T> T checkEqualTo(@Nullable T value, @Nullable T other, String message) {
-        return checkEqualTo(value, other, message, NO_PARAMS);
+        return Guards.checkEqualTo(value, other, message);
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is equal to {@code other}.
-     *
-     * @param value   an object reference
-     * @param other   another object reference
-     * @param pattern a template for the exception message should the check fail
-     * @param args    the arguments to be substituted into the message template. Arguments are converted to strings
-     *                using {@link String#valueOf(Object)}.
-     *
-     * @return the value that was validated
-     *
-     * @throws IllegalArgumentException if {@code value} is not equal to {@code other}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkEqualTo(Object, Object, String, Object...)}
      */
+    @Deprecated
     public static <T> T checkEqualTo(@Nullable T value, @Nullable T other, String pattern, Object... args) {
-        if (!Objects.equals(value, other)) {
-            throw new IllegalArgumentException(format(pattern, args));
-        }
-        return value;
+        return Guards.checkEqualTo(value, other, pattern, args);
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is strictly greater than {@code
-     * lowerBoundExclusive}.
-     *
-     * @param value               a comparable
-     * @param lowerBoundExclusive the lower bound (exclusive)
-     *
-     * @return the value that was validated
-     *
-     * @throws IllegalArgumentException if {@code value} is less than or equal to {@code lowerBoundExclusive}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkGreaterThan(Comparable, Comparable)}
      */
-    @Nonnull
+    @Deprecated
     public static <C extends Comparable<C>> C checkGreaterThan(C value, C lowerBoundExclusive) {
-        return checkGreaterThan(value, lowerBoundExclusive, "value (%s) must be greater than %s", value, lowerBoundExclusive);
+        return Guards.checkGreaterThan(value, lowerBoundExclusive);
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is strictly greater than {@code
-     * lowerBoundExclusive}.
-     *
-     * @param value               a comparable
-     * @param lowerBoundExclusive the lower bound (exclusive)
-     * @param message             the exception message to use if the check fails
-     *
-     * @return the value that was validated
-     *
-     * @throws IllegalArgumentException if {@code value} is less than or equal to {@code lowerBoundExclusive}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkGreaterThan(Comparable, Comparable, String)}
      */
-    @Nonnull
+    @Deprecated
     public static <C extends Comparable<C>> C checkGreaterThan(C value, C lowerBoundExclusive, String message) {
-        return checkGreaterThan(value, lowerBoundExclusive, message, NO_PARAMS);
+        return Guards.checkGreaterThan(value, lowerBoundExclusive, message);
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is strictly greater than {@code
-     * lowerBoundExclusive}.
-     *
-     * @param value               a comparable
-     * @param lowerBoundExclusive the lower bound (exclusive)
-     * @param pattern             a template for the exception message should the check fail
-     * @param args                the arguments to be substituted into the message template. Arguments are converted to
-     *                            strings using {@link String#valueOf(Object)}.
-     *
-     * @return the value that was validated
-     *
-     * @throws IllegalArgumentException if {@code value} is less than or equal to {@code lowerBoundExclusive}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkGreaterThan(Comparable, Comparable, String)}
      */
-    @Nonnull
+    @Deprecated
     public static <C extends Comparable<C>> C checkGreaterThan(C value, C lowerBoundExclusive, String pattern, Object... args) {
-        checkNotNull(value, "value");
-        checkNotNull(lowerBoundExclusive, "lowerBoundExclusive");
-
-        if (value.compareTo(lowerBoundExclusive) <= 0) {
-            throw new IllegalArgumentException(format(pattern, args));
-        }
-        return value;
+        return Guards.checkGreaterThan(value, lowerBoundExclusive, pattern, args);
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is greater than or equal to {@code
-     * lowerBoundInclusive}.
-     *
-     * @param value               a comparable
-     * @param lowerBoundInclusive the lower bound (inclusive)
-     *
-     * @return the value that was validated
-     *
-     * @throws IllegalArgumentException if {@code value} is less than {@code lowerBoundInclusive}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkGreaterThanOrEqualTo(Comparable, Comparable)}
      */
-    @Nonnull
+    @Deprecated
     public static <C extends Comparable<C>> C checkGreaterThanOrEqualTo(C value, C lowerBoundInclusive) {
-        return checkGreaterThanOrEqualTo(value, lowerBoundInclusive, "value (%s) must not be less than %s", value, lowerBoundInclusive);
+        return Guards.checkGreaterThanOrEqualTo(value, lowerBoundInclusive);
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is greater than or equal to {@code
-     * lowerBoundInclusive}.
-     *
-     * @param value               a comparable
-     * @param lowerBoundInclusive the lower bound (inclusive)
-     * @param message             the exception message to use if the check fails
-     *
-     * @return the value that was validated
-     *
-     * @throws IllegalArgumentException if {@code value} is less than {@code lowerBoundInclusive}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkGreaterThanOrEqualTo(Comparable, Comparable, String)}
      */
-    @Nonnull
+    @Deprecated
     public static <C extends Comparable<C>> C checkGreaterThanOrEqualTo(C value, C lowerBoundInclusive, String message) {
-        return checkGreaterThanOrEqualTo(value, lowerBoundInclusive, message, NO_PARAMS);
+        return Guards.checkGreaterThanOrEqualTo(value, lowerBoundInclusive, message);
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is greater than or equal to {@code
-     * lowerBoundInclusive}.
-     *
-     * @param value               a comparable
-     * @param lowerBoundInclusive the lower bound (inclusive)
-     * @param pattern             a template for the exception message should the check fail
-     * @param args                the arguments to be substituted into the message template. Arguments are converted to
-     *                            strings using {@link String#valueOf(Object)}.
-     *
-     * @return the value that was validated
-     *
-     * @throws IllegalArgumentException if {@code value} is less than {@code lowerBoundInclusive}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkGreaterThanOrEqualTo(Comparable, Comparable, String, Object...)}
      */
-    @Nonnull
+    @Deprecated
     public static <C extends Comparable<C>> C checkGreaterThanOrEqualTo(C value, C lowerBoundInclusive, String pattern, Object... args) {
-        checkNotNull(value, "value");
-        checkNotNull(lowerBoundInclusive, "lowerBoundInclusive");
-
-        if (value.compareTo(lowerBoundInclusive) < 0) {
-            throw new IllegalArgumentException(format(pattern, args));
-        }
-        return value;
+        return Guards.checkGreaterThanOrEqualTo(value, lowerBoundInclusive, pattern, args);
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is strictly less than {@code
-     * upperBoundExclusive}.
-     *
-     * @param value               a comparable
-     * @param upperBoundExclusive the upper bound (exclusive)
-     *
-     * @return the value that was validated
-     *
-     * @throws IllegalArgumentException if {@code value} is greater than or equal to {@code upperBoundExclusive}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkLessThan(Comparable, Comparable)}
      */
-    @Nonnull
+    @Deprecated
     public static <C extends Comparable<C>> C checkLessThan(C value, C upperBoundExclusive) {
-        return checkLessThan(value, upperBoundExclusive, "value (%s) must be less than %s", value, upperBoundExclusive);
+        return Guards.checkLessThan(value, upperBoundExclusive);
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is strictly less than {@code
-     * upperBoundExclusive}.
-     *
-     * @param value               a comparable
-     * @param upperBoundExclusive the upper bound (exclusive)
-     * @param message             the exception message to use if the check fails
-     *
-     * @return the value that was validated
-     *
-     * @throws IllegalArgumentException if {@code value} is greater than or equal to {@code upperBoundExclusive}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkLessThan(Comparable, Comparable, String)}
      */
-    @Nonnull
+    @Deprecated
     public static <C extends Comparable<C>> C checkLessThan(C value, C upperBoundExclusive, String message) {
-        return checkLessThan(value, upperBoundExclusive, message, NO_PARAMS);
+        return Guards.checkLessThan(value, upperBoundExclusive, message);
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is strictly less than {@code
-     * upperBoundExclusive}.
-     *
-     * @param value               a comparable
-     * @param upperBoundExclusive the upper bound (exclusive)
-     * @param pattern             a template for the exception message should the check fail
-     * @param args                the arguments to be substituted into the message template. Arguments are converted to
-     *                            strings using {@link String#valueOf(Object)}.
-     *
-     * @return the value that was validated
-     *
-     * @throws IllegalArgumentException if {@code value} is greater than or equal to {@code upperBoundExclusive}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkLessThan(Comparable, Comparable, String, Object...)}
      */
-    @Nonnull
+    @Deprecated
     public static <C extends Comparable<C>> C checkLessThan(C value, C upperBoundExclusive, String pattern, Object... args) {
-        checkNotNull(value, "value");
-        checkNotNull(upperBoundExclusive, "upperBoundExclusive");
-
-        if (value.compareTo(upperBoundExclusive) >= 0) {
-            throw new IllegalArgumentException(format(pattern, args));
-        }
-        return value;
+        return Guards.checkLessThan(value, upperBoundExclusive, pattern, args);
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is less than or equal to {@code
-     * upperBoundInclusive}.
-     *
-     * @param value               a comparable
-     * @param upperBoundInclusive the upper bound (inclusive)
-     *
-     * @return the value that was validated
-     *
-     * @throws IllegalArgumentException if {@code value} is greater than {@code upperBoundInclusive}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkLessThanOrEqualTo(Comparable, Comparable)}
      */
-    @Nonnull
+    @Deprecated
     public static <C extends Comparable<C>> C checkLessThanOrEqualTo(C value, C upperBoundInclusive) {
-        return checkLessThanOrEqualTo(value, upperBoundInclusive, "value (%s) must not be greater than %s", value, upperBoundInclusive);
+        return Guards.checkLessThanOrEqualTo(value, upperBoundInclusive);
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is less than or equal to {@code
-     * upperBoundInclusive}.
-     *
-     * @param value               a comparable
-     * @param upperBoundInclusive the upper bound (inclusive)
-     * @param message             the exception message to use if the check fails
-     *
-     * @return the value that was validated
-     *
-     * @throws IllegalArgumentException if {@code value} is greater than {@code upperBoundInclusive}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkLessThanOrEqualTo(Comparable, Comparable)}
      */
-    @Nonnull
+    @Deprecated
     public static <C extends Comparable<C>> C checkLessThanOrEqualTo(C value, C upperBoundInclusive, String message) {
-        return checkLessThanOrEqualTo(value, upperBoundInclusive, message, NO_PARAMS);
+        return checkLessThanOrEqualTo(value, upperBoundInclusive, message);
     }
 
     /**
-     * Ensures that a {@code value} passed as a parameter to the calling method is less than or equal to {@code
-     * upperBoundInclusive}.
-     *
-     * @param value               a comparable
-     * @param upperBoundInclusive the upper bound (inclusive)
-     * @param pattern             a template for the exception message should the check fail
-     * @param args                the arguments to be substituted into the message template. Arguments are converted to
-     *                            strings using {@link String#valueOf(Object)}.
-     *
-     * @return the value that was validated
-     *
-     * @throws IllegalArgumentException if {@code value} is greater than {@code upperBoundInclusive}
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkLessThanOrEqualTo(Comparable, Comparable, String, Object...)}
      */
-    @Nonnull
+    @Deprecated
     public static <C extends Comparable<C>> C checkLessThanOrEqualTo(C value, C upperBoundInclusive, String pattern, Object... args) {
-        checkNotNull(value, "value");
-        checkNotNull(upperBoundInclusive, "upperBoundInclusive");
-
-        if (value.compareTo(upperBoundInclusive) > 0) {
-            throw new IllegalArgumentException(format(pattern, args));
-        }
-        return value;
+        return Guards.checkLessThanOrEqualTo(value, upperBoundInclusive, pattern, args);
     }
 
-    // endregion
-
-    // region Array/Collection
-
     /**
-     * Ensures that {@code index} specifies a valid <i>element</i> in an array, list or string of {@code size}. An
-     * element index may range from zero, inclusive, to {@code size}, exclusive.
-     *
-     * @param index a user-supplied index identifying an element of an array, list or string
-     * @param size  the size of that array, list or string
-     *
-     * @return the index that was validated
-     *
-     * @throws IndexOutOfBoundsException if {@code index} is negative or is not less than {@code size}
-     * @throws IllegalArgumentException  if {@code size} is negative
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkElementIndex(int, int)}
      */
-    @Nonnegative
+    @Deprecated
     public static int checkElementIndex(@Nonnegative int index, @Nonnegative int size) {
-        if (index < 0) {
-            throw new IndexOutOfBoundsException(format("index (%d) must not be negative", index));
-        }
-        else if (size < 0) {
-            throw new IllegalArgumentException(format("size (%d) must not be negative", size));
-        }
-        else if (index >= size) {
-            throw new IndexOutOfBoundsException(format("index (%d) must be less than size (%d)", index, size));
-        }
-        return index;
+        return Guards.checkElementIndex(index, size);
     }
 
     /**
-     * Ensures that {@code index} specifies a valid <i>position</i> in an array, list or string of {@code size}. A
-     * position index may range from zero to {@code size}, inclusive.
-     *
-     * @param index a user-supplied index identifying a position in an array, list or string
-     * @param size  the size of that array, list or string
-     *
-     * @return the index that was validated
-     *
-     * @throws IndexOutOfBoundsException if {@code index} is negative or is greater than {@code size}
-     * @throws IllegalArgumentException  if {@code size} is negative
+     * @deprecated As of release 1.1, replaced by {@link Guards#checkPositionIndex(int, int)}
      */
-    @Nonnegative
+    @Deprecated
     public static int checkPositionIndex(@Nonnegative int index, @Nonnegative int size) {
-        if (index < 0) {
-            throw new IndexOutOfBoundsException(format("index (%d) must not be negative", index));
-        }
-        else if (size < 0) {
-            throw new IllegalArgumentException(format("size (%d) must not be negative", size));
-        }
-        else if (index > size) {
-            throw new IndexOutOfBoundsException(format("index (%d) must not be greater than size (%d)", index, size));
-        }
-        return index;
+        return Guards.checkPositionIndex(index, size);
     }
 
     // endregion
 
-    /**
-     * Returns a formatted string using the specified format string and arguments.
-     *
-     * @param pattern a format string
-     * @param args    the arguments referenced by the format specifiers in the format string
-     *
-     * @return a formatted string
-     */
-    @Nullable
-    private static String format(String pattern, Object... args) {
-        return null != pattern ? String.format(pattern, args) : null;
+    // region Preconditions
+
+    public static IntPredicate requireThat(int expression) {
+        return new IntPredicate(CONTEXT, expression);
+    }
+
+    public static BooleanPredicate requireThat(boolean expression) {
+        return new BooleanPredicate(CONTEXT, expression);
+    }
+
+    // endregion
+
+    static class PreconditionContext implements PredicateContext {
+        private PreconditionContext() {
+        }
+
+        @Override
+        public void send(String pattern, Object... args) {
+            throw new PreconditionError(String.format(pattern, args));
+        }
+    }
+
+    public static class PreconditionError extends AssertionError {
+        public PreconditionError(String message) {
+            super(message);
+        }
     }
 }

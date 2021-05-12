@@ -1,9 +1,11 @@
 ## 1.1.0
 
-- __\[UPD\]__  Require JDK 11
-- __[ADD\]__ Require Maven 3.6.0
-- __\[ADD\]__  New class, `MutableInt` for representing mutable integers
-
+- __\[UPD\]__ New class `Guards` for distinguishing method *Guards* from real pre-condition.
+- __\[ADD\]__ New data structure, `Tree` for representing trees of values
+- __\[UPD\]__ Require JDK 11
+- __\[ADD\]__ Require Maven 3.6.0
+- __\[ADD\]__ New class, `MutableInt` for representing mutable integers
+- __\[UPD\]__ Caffeine to 3.0.1
 
 ## 1.0.5
 

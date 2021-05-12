@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static org.atlanmod.commons.Preconditions.checkGreaterThanOrEqualTo;
+import static org.atlanmod.commons.Guards.checkGreaterThanOrEqualTo;
 import static java.util.Objects.nonNull;
 
 /**

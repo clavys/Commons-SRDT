@@ -22,14 +22,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
 /**
- * A test-case that checks the behavior of {@link Preconditions}.
+ * A test-case that checks the behavior of {@link Guards}.
  */
 @ParametersAreNonnullByDefault
-class PreconditionsTest extends AbstractTest {
+class GuardsTest extends AbstractTest {
 
     @Test
     void testConstructor() throws Exception {
-        Constructor<?> constructor = Preconditions.class.getDeclaredConstructor();
+        Constructor<?> constructor = Guards.class.getDeclaredConstructor();
         assertThat(Modifier.isPrivate(constructor.getModifiers())).isTrue();
 
         constructor.setAccessible(true);
@@ -41,10 +41,10 @@ class PreconditionsTest extends AbstractTest {
 
     @Test
     void testCheckArgument() {
-        assertThat(catchThrowable(() -> Preconditions.checkArgument(true)))
+        assertThat(catchThrowable(() -> Guards.checkArgument(true)))
                 .isNull();
 
-        assertThat(catchThrowable(() -> Preconditions.checkArgument(false)))
+        assertThat(catchThrowable(() -> Guards.checkArgument(false)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasNoCause()
                 .hasMessage(null);
@@ -52,10 +52,10 @@ class PreconditionsTest extends AbstractTest {
 
     @Test
     void testCheckArgumentWithMessage() {
-        assertThat(catchThrowable(() -> Preconditions.checkArgument(true, "Message0")))
+        assertThat(catchThrowable(() -> Guards.checkArgument(true, "Message0")))
                 .isNull();
 
-        assertThat(catchThrowable(() -> Preconditions.checkArgument(false, "Message0")))
+        assertThat(catchThrowable(() -> Guards.checkArgument(false, "Message0")))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasNoCause()
                 .hasMessage("Message0");
@@ -63,10 +63,10 @@ class PreconditionsTest extends AbstractTest {
 
     @Test
     void testCheckArgumentWithPattern() {
-        assertThat(catchThrowable(() -> Preconditions.checkArgument(true, "Message%d", 0)))
+        assertThat(catchThrowable(() -> Guards.checkArgument(true, "Message%d", 0)))
                 .isNull();
 
-        assertThat(catchThrowable(() -> Preconditions.checkArgument(false, "Message%d", 0)))
+        assertThat(catchThrowable(() -> Guards.checkArgument(false, "Message%d", 0)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasNoCause()
                 .hasMessage("Message0");
@@ -74,10 +74,10 @@ class PreconditionsTest extends AbstractTest {
 
     @Test
     void testCheckState() {
-        assertThat(catchThrowable(() -> Preconditions.checkState(true)))
+        assertThat(catchThrowable(() -> Guards.checkState(true)))
                 .isNull();
 
-        assertThat(catchThrowable(() -> Preconditions.checkState(false)))
+        assertThat(catchThrowable(() -> Guards.checkState(false)))
                 .isExactlyInstanceOf(IllegalStateException.class)
                 .hasNoCause()
                 .hasMessage(null);
@@ -85,10 +85,10 @@ class PreconditionsTest extends AbstractTest {
 
     @Test
     void testCheckStateWithMessage() {
-        assertThat(catchThrowable(() -> Preconditions.checkState(true, "Message0")))
+        assertThat(catchThrowable(() -> Guards.checkState(true, "Message0")))
                 .isNull();
 
-        assertThat(catchThrowable(() -> Preconditions.checkState(false, "Message0")))
+        assertThat(catchThrowable(() -> Guards.checkState(false, "Message0")))
                 .isExactlyInstanceOf(IllegalStateException.class)
                 .hasNoCause()
                 .hasMessage("Message0");
@@ -96,10 +96,10 @@ class PreconditionsTest extends AbstractTest {
 
     @Test
     void testCheckStateWithPattern() {
-        assertThat(catchThrowable(() -> Preconditions.checkState(true, "Message%d", 0)))
+        assertThat(catchThrowable(() -> Guards.checkState(true, "Message%d", 0)))
                 .isNull();
 
-        assertThat(catchThrowable(() -> Preconditions.checkState(false, "Message%d", 0)))
+        assertThat(catchThrowable(() -> Guards.checkState(false, "Message%d", 0)))
                 .isExactlyInstanceOf(IllegalStateException.class)
                 .hasNoCause()
                 .hasMessage("Message0");
@@ -107,10 +107,10 @@ class PreconditionsTest extends AbstractTest {
 
     @Test
     void testCheckNotNull() {
-        assertThat(catchThrowable(() -> Preconditions.checkNotNull(new Object())))
+        assertThat(catchThrowable(() -> Guards.checkNotNull(new Object())))
                 .isNull();
 
-        assertThat(catchThrowable(() -> Preconditions.checkNotNull(null)))
+        assertThat(catchThrowable(() -> Guards.checkNotNull(null)))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasNoCause()
                 .hasMessage(null);
@@ -118,10 +118,10 @@ class PreconditionsTest extends AbstractTest {
 
     @Test
     void testCheckNotNullWithMessage() {
-        assertThat(catchThrowable(() -> Preconditions.checkNotNull(new Object(), "Message0")))
+        assertThat(catchThrowable(() -> Guards.checkNotNull(new Object(), "Message0")))
                 .isNull();
 
-        assertThat(catchThrowable(() -> Preconditions.checkNotNull(null, "Message0")))
+        assertThat(catchThrowable(() -> Guards.checkNotNull(null, "Message0")))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasNoCause()
                 .hasMessage("Message0");
@@ -129,10 +129,10 @@ class PreconditionsTest extends AbstractTest {
 
     @Test
     void testCheckNotNullWithPattern() {
-        assertThat(catchThrowable(() -> Preconditions.checkNotNull(new Object(), "Message%d", 0)))
+        assertThat(catchThrowable(() -> Guards.checkNotNull(new Object(), "Message%d", 0)))
                 .isNull();
 
-        assertThat(catchThrowable(() -> Preconditions.checkNotNull(null, "Message%d", 0)))
+        assertThat(catchThrowable(() -> Guards.checkNotNull(null, "Message%d", 0)))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasNoCause()
                 .hasMessage("Message0");
@@ -140,16 +140,16 @@ class PreconditionsTest extends AbstractTest {
 
     @Test
     void testCheckNotContainsNull() {
-        assertThat(catchThrowable(() -> Preconditions.checkNotContainsNull(Collections.emptyList())))
+        assertThat(catchThrowable(() -> Guards.checkNotContainsNull(Collections.emptyList())))
                 .isNull();
 
-        assertThat(catchThrowable(() -> Preconditions.checkNotContainsNull(Collections.singletonList(0))))
+        assertThat(catchThrowable(() -> Guards.checkNotContainsNull(Collections.singletonList(0))))
                 .isNull();
 
-        assertThat(catchThrowable(() -> Preconditions.checkNotContainsNull(Arrays.asList(0, 1, 2, 3))))
+        assertThat(catchThrowable(() -> Guards.checkNotContainsNull(Arrays.asList(0, 1, 2, 3))))
                 .isNull();
 
-        assertThat(catchThrowable(() -> Preconditions.checkNotContainsNull(Arrays.asList(0, 1, null, 2))))
+        assertThat(catchThrowable(() -> Guards.checkNotContainsNull(Arrays.asList(0, 1, null, 2))))
                 .isExactlyInstanceOf(NullPointerException.class)
                 .hasNoCause()
                 .hasMessage("the collection contains at least one null element");
@@ -158,29 +158,29 @@ class PreconditionsTest extends AbstractTest {
     @Test
     void testCheckElementIndex() {
         // index < 0
-        assertThat(catchThrowable(() -> Preconditions.checkElementIndex(-1, 0)))
+        assertThat(catchThrowable(() -> Guards.checkElementIndex(-1, 0)))
                 .isExactlyInstanceOf(IndexOutOfBoundsException.class)
                 .hasNoCause()
                 .hasMessage("index (-1) must not be negative");
 
         // size < 0
-        assertThat(catchThrowable(() -> Preconditions.checkElementIndex(0, -1)))
+        assertThat(catchThrowable(() -> Guards.checkElementIndex(0, -1)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasNoCause()
                 .hasMessage("size (-1) must not be negative");
 
         // index == size
-        assertThat(catchThrowable(() -> Preconditions.checkElementIndex(0, 0)))
+        assertThat(catchThrowable(() -> Guards.checkElementIndex(0, 0)))
                 .isExactlyInstanceOf(IndexOutOfBoundsException.class)
                 .hasNoCause()
                 .hasMessage("index (0) must be less than size (0)");
 
         // index < size
-        assertThat(catchThrowable(() -> Preconditions.checkElementIndex(0, 1)))
+        assertThat(catchThrowable(() -> Guards.checkElementIndex(0, 1)))
                 .isNull();
 
         // index > size
-        assertThat(catchThrowable(() -> Preconditions.checkElementIndex(1, 0)))
+        assertThat(catchThrowable(() -> Guards.checkElementIndex(1, 0)))
                 .isExactlyInstanceOf(IndexOutOfBoundsException.class)
                 .hasNoCause()
                 .hasMessage("index (1) must be less than size (0)");
@@ -189,27 +189,27 @@ class PreconditionsTest extends AbstractTest {
     @Test
     void testCheckPositionIndex() {
         // index < 0
-        assertThat(catchThrowable(() -> Preconditions.checkPositionIndex(-1, 0)))
+        assertThat(catchThrowable(() -> Guards.checkPositionIndex(-1, 0)))
                 .isExactlyInstanceOf(IndexOutOfBoundsException.class)
                 .hasNoCause()
                 .hasMessage("index (-1) must not be negative");
 
         // size < 0
-        assertThat(catchThrowable(() -> Preconditions.checkPositionIndex(0, -1)))
+        assertThat(catchThrowable(() -> Guards.checkPositionIndex(0, -1)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasNoCause()
                 .hasMessage("size (-1) must not be negative");
 
         // index == size
-        assertThat(catchThrowable(() -> Preconditions.checkPositionIndex(0, 0)))
+        assertThat(catchThrowable(() -> Guards.checkPositionIndex(0, 0)))
                 .isNull();
 
         // index < size
-        assertThat(catchThrowable(() -> Preconditions.checkPositionIndex(0, 1)))
+        assertThat(catchThrowable(() -> Guards.checkPositionIndex(0, 1)))
                 .isNull();
 
         // index > size
-        assertThat(catchThrowable(() -> Preconditions.checkPositionIndex(1, 0)))
+        assertThat(catchThrowable(() -> Guards.checkPositionIndex(1, 0)))
                 .isExactlyInstanceOf(IndexOutOfBoundsException.class)
                 .hasNoCause()
                 .hasMessage("index (1) must not be greater than size (0)");
@@ -217,13 +217,13 @@ class PreconditionsTest extends AbstractTest {
 
     @Test
     void testCheckEqualTo() {
-        assertThat(catchThrowable(() -> Preconditions.checkEqualTo(null, null)))
+        assertThat(catchThrowable(() -> Guards.checkEqualTo(null, null)))
                 .isNull();
 
-        assertThat(catchThrowable(() -> Preconditions.checkEqualTo(10, 10)))
+        assertThat(catchThrowable(() -> Guards.checkEqualTo(10, 10)))
                 .isNull();
 
-        assertThat(catchThrowable(() -> Preconditions.checkEqualTo(10, 0)))
+        assertThat(catchThrowable(() -> Guards.checkEqualTo(10, 0)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasNoCause()
                 .hasMessage("value (10) must be equal to 0");
@@ -232,53 +232,53 @@ class PreconditionsTest extends AbstractTest {
     @Test
     void testCheckLessThan() {
         // value > upperBound
-        assertThat(catchThrowable(() -> Preconditions.checkLessThan(10, 9)))
+        assertThat(catchThrowable(() -> Guards.checkLessThan(10, 9)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasNoCause()
                 .hasMessage("value (10) must be less than 9");
 
         // value == upperBound
-        assertThat(catchThrowable(() -> Preconditions.checkLessThan(10, 10)))
+        assertThat(catchThrowable(() -> Guards.checkLessThan(10, 10)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasNoCause()
                 .hasMessage("value (10) must be less than 10");
 
         // value < upperBound
-        assertThat(catchThrowable(() -> Preconditions.checkLessThan(10, 11)))
+        assertThat(catchThrowable(() -> Guards.checkLessThan(10, 11)))
                 .isNull();
     }
 
     @Test
     void testCheckLessThanOrEqualTo() {
         // value > upperBound
-        assertThat(catchThrowable(() -> Preconditions.checkLessThanOrEqualTo(10, 9)))
+        assertThat(catchThrowable(() -> Guards.checkLessThanOrEqualTo(10, 9)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasNoCause()
                 .hasMessage("value (10) must not be greater than 9");
 
         // value == upperBound
-        assertThat(catchThrowable(() -> Preconditions.checkLessThanOrEqualTo(10, 10)))
+        assertThat(catchThrowable(() -> Guards.checkLessThanOrEqualTo(10, 10)))
                 .isNull();
 
         // value < upperBound
-        assertThat(catchThrowable(() -> Preconditions.checkLessThanOrEqualTo(10, 11)))
+        assertThat(catchThrowable(() -> Guards.checkLessThanOrEqualTo(10, 11)))
                 .isNull();
     }
 
     @Test
     void testCheckGreaterThan() {
         // value > upperBound
-        assertThat(catchThrowable(() -> Preconditions.checkGreaterThan(10, 9)))
+        assertThat(catchThrowable(() -> Guards.checkGreaterThan(10, 9)))
                 .isNull();
 
         // value == upperBound
-        assertThat(catchThrowable(() -> Preconditions.checkGreaterThan(10, 10)))
+        assertThat(catchThrowable(() -> Guards.checkGreaterThan(10, 10)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasNoCause()
                 .hasMessage("value (10) must be greater than 10");
 
         // value < upperBound
-        assertThat(catchThrowable(() -> Preconditions.checkGreaterThan(10, 11)))
+        assertThat(catchThrowable(() -> Guards.checkGreaterThan(10, 11)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasNoCause()
                 .hasMessage("value (10) must be greater than 11");
@@ -287,15 +287,15 @@ class PreconditionsTest extends AbstractTest {
     @Test
     void testCheckGreaterThanOrEqualTo() {
         // value > upperBound
-        assertThat(catchThrowable(() -> Preconditions.checkGreaterThanOrEqualTo(10, 9)))
+        assertThat(catchThrowable(() -> Guards.checkGreaterThanOrEqualTo(10, 9)))
                 .isNull();
 
         // value == upperBound
-        assertThat(catchThrowable(() -> Preconditions.checkGreaterThanOrEqualTo(10, 10)))
+        assertThat(catchThrowable(() -> Guards.checkGreaterThanOrEqualTo(10, 10)))
                 .isNull();
 
         // value < upperBound
-        assertThat(catchThrowable(() -> Preconditions.checkGreaterThanOrEqualTo(10, 11)))
+        assertThat(catchThrowable(() -> Guards.checkGreaterThanOrEqualTo(10, 11)))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasNoCause()
                 .hasMessage("value (10) must not be less than 11");
