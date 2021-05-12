@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.atlanmod.commons.Guards.requireThat;
+import static org.atlanmod.commons.Preconditions.requireThat;
 import static org.atlanmod.commons.predicate.Utility.throwsPreconditionError;
 
 class IntPredicateTest {

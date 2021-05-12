@@ -2,7 +2,7 @@ package org.atlanmod.commons.predicate;
 
 import org.junit.jupiter.api.Test;
 
-import static org.atlanmod.commons.Guards.requireThat;
+import static org.atlanmod.commons.Preconditions.requireThat;
 import static org.atlanmod.commons.predicate.Utility.throwsPreconditionError;
 
 class BooleanPredicateTest {
