@@ -57,6 +57,11 @@ public class Tree<T> implements Iterable<T> {
         root.add(path);
     }
 
+    /**
+     * Returns {@code true} if this tree contains no elements, {@code false} otherwise
+     *
+     * @return {@code true} if this tree contains no elements
+     */
     public boolean isEmpty() {
         return root.size == 0;
     }
@@ -66,11 +71,20 @@ public class Tree<T> implements Iterable<T> {
         return root.toString();
     }
 
+    /**
+     * Returns a {@code List} containing the values (contents) of all leaf nodes of this tree
+     *
+     * @return a list of values
+     */
     public List<T> leaves() {
         return root.leaves();
     }
 
-    // breadth-first
+    /**
+     * Returns a breadth-first iterator over the elements in this tree
+     *
+     * @return an iterator
+     */
     public Iterator<T> iterator() {
         return new BreadthFirstTreeIterator<>(this.root);
     }
@@ -191,12 +205,9 @@ public class Tree<T> implements Iterable<T> {
             if (size == 0) return "";
 
             StringBuilder builder = new StringBuilder();
-            builder.append(": [");
-
-            builder.append(nodes[0]);
+            builder.append(": [").append(nodes[0]);
             for (int i = 1; i < size; i++) {
-                builder.append(',');
-                builder.append(nodes[i]);
+                builder.append(',').append(nodes[i]);
             }
             builder.append(']');
 
