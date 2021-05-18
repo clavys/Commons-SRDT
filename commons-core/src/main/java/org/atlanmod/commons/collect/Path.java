@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package org.atlanmod.commons.collect;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -101,4 +102,7 @@ public class Path<T> {
     public  static <E> Path<E> of(E... values) {
         return new Path<>(Arrays.copyOf(checkNotNull(values), values.length));
     }
+=======
+package org.atlanmod.commons.collect;public class Path {
+>>>>>>> 517dd1dbb36d7f9c02e95b635dab489449d85be3
 }

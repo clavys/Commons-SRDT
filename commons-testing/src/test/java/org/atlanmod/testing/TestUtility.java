@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package org.atlanmod.testing;
 
 import org.junit.jupiter.api.Assertions;
@@ -11,3 +12,7 @@ public class TestUtility {
 
 
 
+=======
+package org.atlanmod.testing;public class TestUtility {
+}
+>>>>>>> 517dd1dbb36d7f9c02e95b635dab489449d85be3

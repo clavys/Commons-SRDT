@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package org.atlanmod.commons.collect;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -35,4 +36,9 @@ class TreeMapTest {
                 .contains("b")
                 .contains("c");
     }
+=======
+import static org.junit.jupiter.api.Assertions.*;
+class TreeMapTest {
+  
+>>>>>>> 517dd1dbb36d7f9c02e95b635dab489449d85be3
 }

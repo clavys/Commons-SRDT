@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package org.atlanmod.commons.collect;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -140,4 +141,7 @@ public class TreeMap<K,V> {
             return  builder.toString();
         }
     }
+=======
+package org.atlanmod.commons.collect;public class TreeMap {
+>>>>>>> 517dd1dbb36d7f9c02e95b635dab489449d85be3
 }

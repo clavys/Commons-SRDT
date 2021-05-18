@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package org.atlanmod.commons.predicate;
 
 import org.junit.jupiter.api.Test;
@@ -42,4 +43,9 @@ class ObjectPredicateTest {
         requireThat(neo).isEqualTo(neo);
         requireThat(neo).isDifferentFrom(new Object());
     }
+=======
+import static org.junit.jupiter.api.Assertions.*;
+class ObjectPredicateTest {
+  
+>>>>>>> 517dd1dbb36d7f9c02e95b635dab489449d85be3
 }
