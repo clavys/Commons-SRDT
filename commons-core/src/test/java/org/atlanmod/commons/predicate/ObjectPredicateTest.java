@@ -1,11 +1,9 @@
-<<<<<<< HEAD
 package org.atlanmod.commons.predicate;
 
 import org.junit.jupiter.api.Test;
 
 import static org.atlanmod.commons.Preconditions.requireThat;
 import static org.atlanmod.commons.predicate.TestUtility.throwsPreconditionError;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ObjectPredicateTest {
 
@@ -43,9 +41,4 @@ class ObjectPredicateTest {
         requireThat(neo).isEqualTo(neo);
         requireThat(neo).isDifferentFrom(new Object());
     }
-=======
-import static org.junit.jupiter.api.Assertions.*;
-class ObjectPredicateTest {
-  
->>>>>>> 517dd1dbb36d7f9c02e95b635dab489449d85be3
 }

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package org.atlanmod.commons.collect;
 
 import org.junit.jupiter.api.Test;
@@ -73,9 +72,4 @@ class PathTest {
 
         assertThat(address.tail()).isEqualTo(expected);
     }
-=======
-import static org.junit.jupiter.api.Assertions.*;
-class PathTest {
-  
->>>>>>> 517dd1dbb36d7f9c02e95b635dab489449d85be3
 }

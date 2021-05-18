@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package org.atlanmod.commons.collect;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -8,7 +7,7 @@ import static java.util.Collections.emptyList;
 import static org.atlanmod.commons.Guards.checkNotNull;
 
 @ParametersAreNonnullByDefault
-public class TreeMap<K,V> {
+public class TreeMap<K, V> {
     private final Node root = new RootNode();
 
     public V put(Path<K> keys, V value) {
@@ -138,10 +137,7 @@ public class TreeMap<K,V> {
                     .append(value)
                     .append(super.toString());
 
-            return  builder.toString();
+            return builder.toString();
         }
     }
-=======
-package org.atlanmod.commons.collect;public class TreeMap {
->>>>>>> 517dd1dbb36d7f9c02e95b635dab489449d85be3
 }

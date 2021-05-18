@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package org.atlanmod.commons.predicate;
 
 import org.junit.jupiter.api.Test;
@@ -14,16 +13,10 @@ class StringPredicateTest {
                 requireThat("atlanmod-commons").contains("other"));
     }
 
-
     @Test
     void correctPreconditions() {
         requireThat("atlanmod-commons")
                 .contains("atlanmod")
                 .isNotNull();
     }
-=======
-import static org.junit.jupiter.api.Assertions.*;
-class StringPredicateTest {
-  
->>>>>>> 517dd1dbb36d7f9c02e95b635dab489449d85be3
 }
