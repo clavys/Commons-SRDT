@@ -14,8 +14,8 @@ package org.atlanmod.commons.predicate;
  */
 public class IntPredicate extends Predicate {
 
-    private static String PATTERN = "\nExpecting value (%d) to be %s (%d)";
-    private int value;
+    private static final String PATTERN = "\nExpecting value (%d) to be %s (%d)";
+    private final int value;
 
     public IntPredicate(PredicateContext context, int value) {
         super(context);
@@ -60,6 +60,20 @@ public class IntPredicate extends Predicate {
     public IntPredicate isBetween(int first, int last) {
         if ((value < first || value > last)) {
             context.send(PATTERN + " and (%d)", value, "between", first, last);
+        }
+        return this;
+    }
+
+    public IntPredicate isEqualTo(int other) {
+        if (value != other) {
+            context.send(PATTERN, value, "equal to", other);
+        }
+        return this;
+    }
+
+    public IntPredicate isDifferentFrom(int other) {
+        if (value == other) {
+            context.send(PATTERN, value, "different from", other);
         }
         return this;
     }

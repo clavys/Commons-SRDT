@@ -1,7 +1,8 @@
 ## 1.1.0
 
+- __\[ADD\]__ String and Object predicates for Preconditions and Assertions
 - __\[UPD\]__ New class `Guards` for distinguishing method *Guards* from real pre-condition.
-- __\[ADD\]__ New data structure, `Tree` for representing trees of values
+- __\[ADD\]__ New data structures, `Tree`, `TreeMap` and `Path` for representing trees of values
 - __\[UPD\]__ Require JDK 11
 - __\[ADD\]__ Require Maven 3.6.0
 - __\[ADD\]__ New class, `MutableInt` for representing mutable integers

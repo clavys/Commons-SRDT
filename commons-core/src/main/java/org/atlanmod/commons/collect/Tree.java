@@ -7,6 +7,7 @@
  */
 package org.atlanmod.commons.collect;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
 
 import static org.atlanmod.commons.Guards.checkNotNull;
@@ -27,7 +28,7 @@ import static org.atlanmod.commons.collect.MoreArrays.newArray;
  *
  * For instance:
  * <pre>
- * @{code
+ * {@code
  *               r
  *             / | \
  *            a  b  c
@@ -47,11 +48,13 @@ import static org.atlanmod.commons.collect.MoreArrays.newArray;
  * @author sunye
  * @since 1.1.0
  */
+@ParametersAreNonnullByDefault
 public class Tree<T> implements Iterable<T> {
 
-    private final Node<T> root = new RootNode<>();
+    private final Node root = new RootNode();
 
-    public void add(T... path) {
+    @SafeVarargs
+    public final void add(T... path) {
         checkNotNull(path, "path");
 
         root.add(path);
@@ -90,14 +93,14 @@ public class Tree<T> implements Iterable<T> {
     }
 
     // region Node
-    static class RootNode<T> extends Node<T> {
+    class RootNode extends Node {
 
         @Override
         public String toString() {
             return "ROOT" + super.toString();
         }
 
-        void collectLeaves(List collectedLeaves) {
+        void collectLeaves(List<T> collectedLeaves) {
             if (this.isLeaf()) return;
 
             for (int i = 0; i < size; i++) {
@@ -106,26 +109,27 @@ public class Tree<T> implements Iterable<T> {
         }
 
         @Override
-        public List<Node<T>> path() {
+        public List<Node> path() {
             return new LinkedList<>();
         }
     }
 
-    static class ContentNode<T> extends Node<T> {
-        private final Node<T> parent;
-        private T content;
+     class ContentNode extends Node {
+        private final Node parent;
+        private final T content;
 
-        public ContentNode(Node<T> parent, T content) {
+        public ContentNode(Node parent, T content) {
             this.parent = parent;
             this.content = content;
         }
 
         @Override
         public String toString() {
-            return content.toString() + super.toString();
+            return content + super.toString();
         }
 
-        void collectLeaves(List collectedLeaves) {
+        void collectLeaves(List<T> collectedLeaves) {
+
             if (this.isLeaf()) {
                 collectedLeaves.add(this.content);
             } else {
@@ -136,18 +140,20 @@ public class Tree<T> implements Iterable<T> {
         }
 
         @Override
-        public List<Node<T>> path() {
-            List<Node<T>>  ancestors = parent.path();
+        public List<Node> path() {
+
+            List<Node>  ancestors = parent.path();
             ancestors.add(this);
             return ancestors;
         }
     }
 
-    abstract static class Node<T> {
-        ContentNode<T>[] nodes = newArray(ContentNode.class, 0);
+    abstract class Node {
+        ContentNode[] nodes = newArray(ContentNode.class, 0);
         int size = 0;
 
         private int indexOf(T value) {
+
             for (int i = 0; i < size; i++) {
                 if (value.equals(nodes[i].content)) {
                     return i;
@@ -156,11 +162,12 @@ public class Tree<T> implements Iterable<T> {
             return -1;
         }
 
-        public void add(T... path) {
+        @SafeVarargs
+        public final void add(T... path) {
             checkNotNull(path, "path");
 
             if (path.length == 0) return;
-            Node<T> child;
+            Node child;
 
             int position = indexOf(MoreArrays.head(path));
             if (position < 0) {
@@ -169,21 +176,19 @@ public class Tree<T> implements Iterable<T> {
                 child = getChild(position);
             }
 
-            if (path.length > 0) {
-                child.add(MoreArrays.tail(path));
-            }
+            child.add(MoreArrays.tail(path));
         }
 
-        private Node<T> addChild(T childContent) {
+        private Node addChild(T childContent) {
             ensureCapacity(size + 1);
 
-            ContentNode<T> newNode = new ContentNode<>(this, childContent);
+            ContentNode newNode = new ContentNode(this, childContent);
             nodes[size++] = newNode;
 
             return newNode;
         }
 
-        private Node<T> getChild(int position) {
+        private Node getChild(int position) {
             assert position < nodes.length;
 
             return nodes[position];
@@ -219,7 +224,7 @@ public class Tree<T> implements Iterable<T> {
         }
 
 
-        abstract void collectLeaves(List collectedLeaves);
+        abstract void collectLeaves(List<T> collectedLeaves);
 
         public List<T> leaves() {
             List<T> leaves = new LinkedList<>();
@@ -227,23 +232,20 @@ public class Tree<T> implements Iterable<T> {
             return leaves;
         }
 
-        public abstract List<Node<T>> path();
+        public abstract List<Node> path();
     }
 
     // endregion
 
     // region Iterator
-    class BreadthFirstTreeIterator<T> implements Iterator<T> {
+    static class  BreadthFirstTreeIterator<T> implements Iterator<T> {
 
-        private ArrayDeque<Node> stack = new ArrayDeque<>();
-        private Node<T> current;
+        private final ArrayDeque<Tree<T>.Node> stack = new ArrayDeque<>();
+        private Tree<T>.Node current;
         private int cursor = 0;
 
-        public BreadthFirstTreeIterator(Node<T> tree) {
+        public BreadthFirstTreeIterator(Tree<T>.Node tree) {
             current = tree;
-            if (current.size > 0) {
-                //stack.addFirst(current);
-            }
         }
 
         @Override
@@ -261,7 +263,7 @@ public class Tree<T> implements Iterable<T> {
                 cursor = 0;
             }
 
-            ContentNode<T> node = (ContentNode<T>) current.getChild(cursor);
+            Tree<T>.ContentNode node = (Tree<T>.ContentNode) current.getChild(cursor);
             if (!node.isLeaf()) {
                 stack.addFirst(node);
             }

@@ -5,7 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.atlanmod.commons.Preconditions.requireThat;
-import static org.atlanmod.commons.predicate.Utility.throwsPreconditionError;
+import static org.atlanmod.commons.predicate.TestUtility.throwsPreconditionError;
 
 class IntPredicateTest {
 
@@ -14,53 +14,51 @@ class IntPredicateTest {
     @Test
     void is_Not_Zero() {
         throwsPreconditionError(
-                () -> {
-                    requireThat(12).isZero();
-                }
+                () -> requireThat(12).isZero()
         );
     }
 
     @Test
     void is_Not_GreaterThan() {
         throwsPreconditionError(
-                () -> {
-                    requireThat(12).isGreaterThan(12);
-                }
+                () -> requireThat(12).isGreaterThan(12)
         );
     }
 
     @Test
     void is_Not_GreaterThanOrEqualTo() {
         throwsPreconditionError(
-                () -> {
-                    requireThat(12).isGreaterThanOrEqualTo(13);
-                }
+                () -> requireThat(12).isGreaterThanOrEqualTo(13)
         );
     }
 
     @Test
     void is_Not_LessThan() {
         throwsPreconditionError(
-                () -> {
-                    requireThat(12).isLessThan(12);
-                }
+                () -> requireThat(12).isLessThan(12)
         );
     }
 
     @Test
     void is_Not_LessThanOrEqualTo() {
         throwsPreconditionError(
-                () -> {
-                    requireThat(12).isLessThanOrEqualTo(11);
-                }
+                () -> requireThat(12).isLessThanOrEqualTo(11)
         );
     }
 
     @Test
     void is_Not_Between() {
-        throwsPreconditionError(() -> {
-            requireThat(0).isBetween(1, 10);
-        });
+        throwsPreconditionError(() -> requireThat(0).isBetween(1, 10));
+    }
+
+    @Test
+    void is_Not_EqualTo() {
+        throwsPreconditionError(() -> requireThat(0).isEqualTo(1));
+    }
+
+    @Test
+    void is_Not_DifferentFrom() {
+        throwsPreconditionError(() -> requireThat(0).isDifferentFrom(0));
     }
 
     // endregion
@@ -105,6 +103,15 @@ class IntPredicateTest {
         requireThat(value).isBetween(1, 10);
     }
 
+    @Test
+    void isEqualTo() {
+        requireThat(10).isEqualTo(10);
+    }
+
+    @Test
+    void isDifferentFrom() {
+        requireThat(10).isDifferentFrom(0);
+    }
     // endregion
 
 }

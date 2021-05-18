@@ -37,8 +37,8 @@ public class Verifier {
      * @param <T> the actual class of the class {@type}.
      * @return an instance of {@link EqualsVerifier}.
      */
-    public static <T> EqualsVerifier verifyEqualsOf(Class<T> type) {
-        return new EqualsVerifier<T>(type);
+    public static <T> EqualsVerifier<T> verifyEqualsOf(Class<T> type) {
+        return new EqualsVerifier<>(type);
     }
 
 }

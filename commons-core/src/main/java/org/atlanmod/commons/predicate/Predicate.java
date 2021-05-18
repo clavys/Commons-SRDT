@@ -16,6 +16,7 @@ package org.atlanmod.commons.predicate;
 public class Predicate {
     final PredicateContext context;
 
+
     public Predicate(PredicateContext context) {
         this.context = context;
     }

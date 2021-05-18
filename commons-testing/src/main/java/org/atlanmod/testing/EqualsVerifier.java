@@ -23,7 +23,7 @@ import org.atlanmod.commons.reflect.MoreReflection;
  * @param <T>
  */
 public class EqualsVerifier<T> {
-    private Class<T> type;
+    private final Class<T> type;
     private Object[] arguments;
     private Object[] variants;
 
@@ -47,7 +47,7 @@ public class EqualsVerifier<T> {
      * @param arguments an array of instances of {@link Object}.
      * @return the current verifier.
      */
-    public EqualsVerifier withArguments(Object... arguments) {
+    public EqualsVerifier<T> withArguments(Object... arguments) {
         this.arguments = arguments;
         return this;
     }
@@ -69,7 +69,7 @@ public class EqualsVerifier<T> {
      * @param variants
      * @return
      */
-    public EqualsVerifier andVariants(Object... variants) {
+    public EqualsVerifier<T> andVariants(Object... variants) {
         this.variants = variants;
         return this;
     }
@@ -142,6 +142,7 @@ public class EqualsVerifier<T> {
         }
     }
 
+    @SuppressWarnings("EqualsWithItself")
     public static void assertIsEqualsToSelf(Object one) {
         if (!one.equals(one)) {
             throw new AssertionError("Object should be equal to itself");

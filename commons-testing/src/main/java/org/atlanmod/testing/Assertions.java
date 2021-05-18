@@ -1,6 +1,5 @@
 package org.atlanmod.testing;
 
-import org.atlanmod.commons.Preconditions;
 import org.atlanmod.commons.Throwables;
 import org.atlanmod.commons.annotation.Static;
 import org.atlanmod.commons.predicate.BooleanPredicate;

@@ -26,77 +26,63 @@ class EqualsVerifierTest {
 
     @Test
     void incompatibleArgumentsLength() {
-        assertThatThrownBy(() -> {
-            Verifier.verifyEqualsOf(String.class)
-                    .withArguments(1, "value")
-                    .andVariants(2, "other")
-                    .check();
-        }).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> Verifier.verifyEqualsOf(String.class)
+                .withArguments(1, "value")
+                .andVariants(2, "other")
+                .check()).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Could not find compatible constructor or factory method");
     }
 
     @Test
     void differentArgumentLengths() {
-        assertThatThrownBy(() -> {
-            Verifier.verifyEqualsOf(String.class)
-                    .withArguments(1, "string")
-                    .andVariants("Longer string")
-                    .check();
-        }).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> Verifier.verifyEqualsOf(String.class)
+                .withArguments(1, "string")
+                .andVariants("Longer string")
+                .check()).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("must have the same length");
     }
 
     @Test
     void sameArguments() {
-        assertThatThrownBy(() -> {
-            Verifier.verifyEqualsOf(String.class)
-                    .withArguments("same")
-                    .andVariants("same")
-                    .check();
-        }).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> Verifier.verifyEqualsOf(String.class)
+                .withArguments("same")
+                .andVariants("same")
+                .check()).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("different elements");
     }
 
     @Test
     void alwaysEqualClass() {
-        assertThatThrownBy(() -> {
-            Verifier.verifyEqualsOf(AlwaysEqualTestData.class)
-                    .withArguments(1)
-                    .andVariants(2)
-                    .check();
-        }).isInstanceOf(AssertionError.class);
+        assertThatThrownBy(() -> Verifier.verifyEqualsOf(AlwaysEqualTestData.class)
+                .withArguments(1)
+                .andVariants(2)
+                .check()).isInstanceOf(AssertionError.class);
 
     }
 
     @Test
     void alwaysNotEqualClass() {
-        assertThatThrownBy(() -> {
-            Verifier.verifyEqualsOf(AlwaysDifferentTestData.class)
-                    .withArguments(1)
-                    .andVariants(2)
-                    .check();
-        }).isInstanceOf(AssertionError.class);
+        assertThatThrownBy(() -> Verifier.verifyEqualsOf(AlwaysDifferentTestData.class)
+                .withArguments(1)
+                .andVariants(2)
+                .check()).isInstanceOf(AssertionError.class);
     }
 
     @Test
     void asymmetricEquals() {
-        assertThatThrownBy(() -> {
-            Verifier.verifyEqualsOf(AsymmetricEqualsTestData.class)
-                    .withArguments(1)
-                    .andVariants(4)
-                    .check();
-        }).isInstanceOf(AssertionError.class)
+        assertThatThrownBy(() -> Verifier.verifyEqualsOf(AsymmetricEqualsTestData.class)
+                .withArguments(1)
+                .andVariants(4)
+                .check()).isInstanceOf(AssertionError.class)
                 .hasMessageContaining("symmetric");
     }
 
     @Test
     void equalsToNull() {
-        assertThatThrownBy(() -> {
-            Verifier.verifyEqualsOf(EqualsToNullTestData.class)
-                    .withArguments(1)
-                    .andVariants(4)
-                    .check();
-        }).isInstanceOf(AssertionError.class)
+        assertThatThrownBy(() -> Verifier.verifyEqualsOf(EqualsToNullTestData.class)
+                .withArguments(1)
+                .andVariants(4)
+                .check()).isInstanceOf(AssertionError.class)
                 .hasMessageContaining("null");
     }
 
@@ -127,7 +113,7 @@ class EqualsVerifierTest {
     public static class AsymmetricEqualsTestData {
         static int lastId = 0;
 
-        private int i;
+        private final int i;
         public AsymmetricEqualsTestData(Integer i) {
             lastId++;
             this.i = i + lastId;
@@ -145,7 +131,7 @@ class EqualsVerifierTest {
     }
 
     public static class EqualsToNullTestData {
-        private int i;
+        private final int i;
 
         public EqualsToNullTestData(Integer i) {
             this.i = i;
@@ -170,8 +156,8 @@ class EqualsVerifierTest {
 
 class TestDataPerson {
 
-    private String name;
-    private int age;
+    private final String name;
+    private final int age;
 
     public TestDataPerson(String name, int age) {
         this.name = name;

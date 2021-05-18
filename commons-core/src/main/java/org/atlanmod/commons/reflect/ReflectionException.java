@@ -16,7 +16,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public class ReflectionException extends RuntimeException {
 
-    @SuppressWarnings("JavaDoc")
     private static final long serialVersionUID = 408359593875469468L;
 
     /**

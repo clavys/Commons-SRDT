@@ -38,7 +38,7 @@ public interface Converter<T, R> extends Function<T, R> {
      */
     @Nonnull
     static <T> Converter<T, T> identity() {
-        return new Converter<T, T>() {
+        return new Converter<>() {
             @Override
             public T convert(T t) {
                 return t;
@@ -66,7 +66,7 @@ public interface Converter<T, R> extends Function<T, R> {
         checkNotNull(convertFunc, "convertFunc");
         checkNotNull(revertFunc, "revertFunc");
 
-        return new Converter<T, R>() {
+        return new Converter<>() {
             @Override
             public R convert(T t) {
                 return convertFunc.apply(t);
@@ -96,7 +96,7 @@ public interface Converter<T, R> extends Function<T, R> {
         checkNotNull(before, "before");
         checkNotNull(after, "after");
 
-        return new Converter<T, R>() {
+        return new Converter<>() {
             @Override
             public R convert(T t) {
                 return after.convert(before.convert(t));

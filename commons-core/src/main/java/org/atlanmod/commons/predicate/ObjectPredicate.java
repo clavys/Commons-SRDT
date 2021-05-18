@@ -8,14 +8,49 @@
 
 package org.atlanmod.commons.predicate;
 
+import java.util.Objects;
+
 /**
  *
  * @author sunye
  * @since 1.1.0
  */
-public class ObjectPredicate extends Predicate {
-    public ObjectPredicate(PredicateContext context) {
+public class ObjectPredicate<Yourself extends ObjectPredicate, T> extends Predicate {
+    private static final String PATTERN = "\nExpecting value (%s) to be %s (%s)";
+
+    final T value;
+    Yourself y;
+
+    public ObjectPredicate(PredicateContext context, T value) {
         super(context);
+        this.value = value;
     }
 
+    public Yourself isNull() {
+        if (!Objects.isNull(value)) {
+            context.send(PATTERN,value, "null", "");
+        }
+        return (Yourself) this;
+    }
+
+    public Yourself isNotNull() {
+        if (Objects.isNull(value)) {
+            context.send(PATTERN, value, "non null", "");
+        }
+        return (Yourself) this;
+    }
+
+    public Yourself isEqualTo(T other) {
+        if(!value.equals(other)) {
+            context.send(PATTERN, value, "equal to", other);
+        }
+        return (Yourself) this;
+    }
+
+    public Yourself isDifferentFrom(T other) {
+        if(value.equals(other)) {
+            context.send(PATTERN, value, "different from", other);
+        }
+        return (Yourself) this;
+    }
 }

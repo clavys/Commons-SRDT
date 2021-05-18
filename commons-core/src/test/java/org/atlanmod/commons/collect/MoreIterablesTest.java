@@ -43,7 +43,7 @@ class MoreIterablesTest extends AbstractTest {
 
     @Test
     void testIsEmptyWithIterator() {
-        Iterable<Integer> iterable0 = () -> Collections.<Integer>emptyList().iterator();
+        Iterable<Integer> iterable0 = () -> Collections.<Integer>emptyIterator();
         assertThat(MoreIterables.isEmpty(iterable0)).isTrue();
 
         Iterable<Integer> iterable1 = () -> Collections.singletonList(0).iterator();
@@ -55,7 +55,7 @@ class MoreIterablesTest extends AbstractTest {
 
     @Test
     void testIsNotEmptyWithIterator() {
-        Iterable<Integer> iterable0 = () -> Collections.<Integer>emptyList().iterator();
+        Iterable<Integer> iterable0 = () -> Collections.<Integer>emptyIterator();
         assertThat(MoreIterables.notEmpty(iterable0)).isFalse();
 
         Iterable<Integer> iterable1 = () -> Collections.singletonList(0).iterator();

@@ -27,7 +27,6 @@ public class BooleanPredicate extends Predicate {
             context.send(PATTERN, true, false);
         }
         return this;
-
     }
 
     public BooleanPredicate isFalse() {

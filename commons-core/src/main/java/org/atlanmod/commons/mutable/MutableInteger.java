@@ -125,12 +125,12 @@ public class MutableInteger extends Number implements Comparable<MutableInteger>
 
     @Override
     public Integer getValue() {
-        return Integer.valueOf(this.value);
+        return this.value;
     }
 
     @Override
     public void setValue(Integer newValue) {
-        this.value = newValue.intValue();
+        this.value = newValue;
     }
 
     @Override

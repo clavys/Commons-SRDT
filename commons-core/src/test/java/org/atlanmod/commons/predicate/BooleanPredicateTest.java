@@ -3,7 +3,7 @@ package org.atlanmod.commons.predicate;
 import org.junit.jupiter.api.Test;
 
 import static org.atlanmod.commons.Preconditions.requireThat;
-import static org.atlanmod.commons.predicate.Utility.throwsPreconditionError;
+import static org.atlanmod.commons.predicate.TestUtility.throwsPreconditionError;
 
 class BooleanPredicateTest {
 
@@ -22,16 +22,12 @@ class BooleanPredicateTest {
     // region Invalid Predicate
     @Test
     void invalid_isTrue() {
-        throwsPreconditionError(() -> {
-            requireThat(false).isTrue();
-        });
+        throwsPreconditionError(() -> requireThat(false).isTrue());
     }
 
     @Test
     void invalid_isFalse() {
-        throwsPreconditionError(() -> {
-            requireThat(true).isFalse();
-        });
+        throwsPreconditionError(() -> requireThat(true).isFalse());
     }
     // end region
 }

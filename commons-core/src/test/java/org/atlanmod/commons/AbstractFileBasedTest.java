@@ -50,7 +50,7 @@ public abstract class AbstractFileBasedTest extends AbstractTest {
      */
     private static void deleteDirectory(Path directory) {
         try {
-            Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
+            Files.walkFileTree(directory, new SimpleFileVisitor<>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     Files.deleteIfExists(file);

@@ -130,7 +130,7 @@ class MoreReflectionTest extends AbstractTest {
 
 class MoreReflectionTestData {
 
-    private String name;
+    private final String name;
 
     public MoreReflectionTestData(String str) {
         name = str;

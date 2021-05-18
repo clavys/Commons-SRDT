@@ -19,11 +19,11 @@ This library is a set of common classes and methods, including:
 It was created to regroup and share classes, methods and dependencies between the different projects of the Atlanmod 
 team, and was designed to ease updating without interfering with other projects.
 
-Some of methods are inspired by [Guava][guava-home].
+Some methods are inspired by [Guava][guava-home].
 
 ## Latest release
 
-The most recent release is Atlanmod Commons 1.0.4, released March 21, 2019.
+The most recent release is Atlanmod Commons 1.1.0, released on May 21, 2021.
 -   Javadoc: [commons][release-doc]
 
 To add a dependency on this library using Maven, use the following:
@@ -32,7 +32,7 @@ To add a dependency on this library using Maven, use the following:
   <dependency>
     <groupId>org.atlanmod.commons</groupId>
     <artifactId>commons-core</artifactId>
-    <version>1.0.5</version>
+    <version>1.1.0</version>
   </dependency>
 </dependencies>
 ```

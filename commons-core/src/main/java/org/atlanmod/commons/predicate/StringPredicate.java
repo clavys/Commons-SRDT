@@ -15,32 +15,15 @@ import java.util.Objects;
  * @author sunye
  * @since 1.1.0
  */
-public class StringPredicate extends Predicate {
-    private final String value;
-
+public class StringPredicate extends ObjectPredicate<StringPredicate, String> {
 
     public StringPredicate(PredicateContext context, String value) {
-        super(context);
-        this.value = value;
-    }
-
-    public StringPredicate isNull() {
-        if (!Objects.isNull(value)) {
-            context.send("\nExpecting value to be null");
-        }
-        return this;
-    }
-
-    public StringPredicate isNotNull() {
-        if (!Objects.isNull(value)) {
-            context.send("\nExpecting value to be non null");
-        }
-        return this;
+        super(context, value);
     }
 
     public StringPredicate contains(String substr) {
         if (!value.contains(substr)) {
-            context.send("");
+            context.send("\nExpecting value to contain");
         }
         return this;
     }

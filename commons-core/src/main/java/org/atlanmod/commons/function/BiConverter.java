@@ -40,7 +40,7 @@ public interface BiConverter<T, U, R> extends BiFunction<T, U, R> {
      */
     @Nonnull
     static <T, U> BiConverter<T, U, T> identity() {
-        return new BiConverter<T, U, T>() {
+        return new BiConverter<>() {
             @Nonnull
             @Override
             public T convert(T t, U u) {
@@ -71,7 +71,7 @@ public interface BiConverter<T, U, R> extends BiFunction<T, U, R> {
         checkNotNull(convertFunc, "convertFunc");
         checkNotNull(revertFunc, "revertFunc");
 
-        return new BiConverter<T, U, R>() {
+        return new BiConverter<>() {
             @Nonnull
             @Override
             public R convert(T t, U u) {

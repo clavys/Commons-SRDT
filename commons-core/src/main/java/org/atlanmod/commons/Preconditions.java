@@ -9,9 +9,7 @@
 package org.atlanmod.commons;
 
 import org.atlanmod.commons.annotation.Static;
-import org.atlanmod.commons.predicate.BooleanPredicate;
-import org.atlanmod.commons.predicate.IntPredicate;
-import org.atlanmod.commons.predicate.PredicateContext;
+import org.atlanmod.commons.predicate.*;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
@@ -34,7 +32,7 @@ import java.util.Collection;
  */
 @Static
 @ParametersAreNonnullByDefault
-@SuppressWarnings("ConstantConditions") // Preconditions ensure that these conditions are validated
+// Preconditions ensure that these conditions are validated
 public final class Preconditions {
     private final static PredicateContext CONTEXT = new PreconditionContext();
 
@@ -274,7 +272,7 @@ public final class Preconditions {
      */
     @Deprecated
     public static <C extends Comparable<C>> C checkLessThanOrEqualTo(C value, C upperBoundInclusive, String message) {
-        return checkLessThanOrEqualTo(value, upperBoundInclusive, message);
+        return Guards.checkLessThanOrEqualTo(value, upperBoundInclusive, message);
     }
 
     /**
@@ -313,6 +311,13 @@ public final class Preconditions {
         return new BooleanPredicate(CONTEXT, expression);
     }
 
+    public static StringPredicate requireThat(String expression) {
+        return new StringPredicate(CONTEXT, expression);
+    }
+
+    public static ObjectPredicate<ObjectPredicate, Object> requireThat(Object expression) {
+        return new ObjectPredicate(CONTEXT, expression);
+    }
     // endregion
 
     static class PreconditionContext implements PredicateContext {

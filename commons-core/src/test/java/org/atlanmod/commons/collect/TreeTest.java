@@ -27,7 +27,7 @@ class TreeTest {
     void init() {
         pathTree = new Tree<>();
         String[] paths = {
-                "org.atlanmod.commons.Throwables",
+                "org.atlanmod.commons.Throwable",
                 "org.atlanmod.commons.annotation.Static",
                 "java.util.Objects",
                 "java.util.Optional",
@@ -60,7 +60,7 @@ class TreeTest {
 
     @Test
     void testLeaves() {
-        List<String> expected = List.of("Throwables", "Static", "Objects", "Optional", "AtomicInteger",
+        List<String> expected = List.of("Throwable", "Static", "Objects", "Optional", "AtomicInteger",
                 "IntUnaryOperator", "LongUnaryOperator", "Stream", "Nonnull", "ParametersAreNonnullByDefault",
                 "Core");
 
@@ -77,9 +77,8 @@ class TreeTest {
 
         List<String> expected = List.of("aaa", "eee", "ggg", "bbb", "fff", "ccc", "ddd");
         List<String> actual = new LinkedList<>();
-        Iterator<String> it = tree.iterator();
-        while (it.hasNext()) {
-            actual.add(it.next());
+        for (String each: tree) {
+            actual.add(each);
         }
 
         assertThat(actual).isEqualTo(expected);
@@ -88,12 +87,8 @@ class TreeTest {
     @Test
     void emptyIteratorShouldRaiseException() {
         Tree<Integer> empty = new Tree<>();
-        Iterator it = empty.iterator();
+        Iterator<Integer> it = empty.iterator();
 
-        assertThatThrownBy(
-                () -> {
-                    it.next();
-                }
-        ).isInstanceOf(NoSuchElementException.class);
+        assertThatThrownBy(it::next).isInstanceOf(NoSuchElementException.class);
     }
 }

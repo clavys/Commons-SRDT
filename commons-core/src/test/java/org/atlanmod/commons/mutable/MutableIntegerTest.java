@@ -25,15 +25,15 @@ class MutableIntegerTest {
 
     @Test
     void getValue() {
-        Integer expected = Integer.valueOf(99);
-        MutableInteger value = new MutableInteger(expected.intValue());
+        Integer expected = 99;
+        MutableInteger value = new MutableInteger(expected);
 
         assertThat(value.getValue()).isEqualTo(expected);
     }
 
     @Test
     void setValue() {
-        Integer expected = Integer.valueOf(99);
+        Integer expected = 99;
         MutableInteger value = new MutableInteger(42);
         value.setValue(expected);
 

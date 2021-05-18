@@ -262,7 +262,7 @@ public final class MoreReflection {
      * @return the corresponding Wrapper class
      */
     private static Class<?> wrapperClassFor(final Class<?> type) {
-        assert type.isPrimitive() ? primitiveToWrapper.containsKey(type) : true;
+        assert !type.isPrimitive() || primitiveToWrapper.containsKey(type);
 
         if (!type.isPrimitive()) return type;
         return primitiveToWrapper.get(type);
