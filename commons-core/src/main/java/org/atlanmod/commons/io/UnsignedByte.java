@@ -1,17 +1,34 @@
-package org.atlanmod.salut.io;
+/*
+ * Copyright (c) 2021 Naomod.
+ *
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v2.0 which accompanies
+ * this distribution, and is available at https://www.eclipse.org/legal/epl-2.0/
+ */
+package org.atlanmod.commons.io;
 
+import org.atlanmod.commons.Guards;
+
+import javax.annotation.Nonnull;
 import java.util.Objects;
-import org.atlanmod.commons.Preconditions;
+
+import static org.atlanmod.commons.Guards.checkEqualTo;
+import static org.atlanmod.commons.Guards.checkNotNull;
 
 /**
  * The `UnsignedByte` class allows the representation of unsigned 8-bit values.
  * It wraps a value of the primitive getType `short` in an object.
  * An object of getType `UnsignedByte` contains a single field whose getType is `short`.
+ *
+ *  @author sunye
+ *  @since 1.1.0
  */
-public class UnsignedByte extends Number implements Comparable<UnsignedByte> {
+public class UnsignedByte extends UnsignedNumber implements Comparable<UnsignedByte> {
 
     public static final short MIN_VALUE = 0;
     public static final short MAX_VALUE = 255;
+    public  static final int SIZE = 8;
+    public  static final int BYTES = SIZE / Byte.SIZE;
     public static final int UNSIGNED_BYTE_MASK = 0xFF;
 
     private static final UnsignedByte[] cache = new UnsignedByte[MAX_VALUE + 1];
@@ -19,8 +36,8 @@ public class UnsignedByte extends Number implements Comparable<UnsignedByte> {
     protected final short value;
 
     protected UnsignedByte(short value) {
-        Preconditions.checkGreaterThanOrEqualTo(value, MIN_VALUE);
-        Preconditions.checkLessThanOrEqualTo(value, MAX_VALUE);
+        Guards.checkGreaterThanOrEqualTo(value, MIN_VALUE);
+        Guards.checkLessThanOrEqualTo(value, MAX_VALUE);
 
         this.value = value;
     }
@@ -49,14 +66,21 @@ public class UnsignedByte extends Number implements Comparable<UnsignedByte> {
     }
 
     public static UnsignedByte fromShort(short value) {
-        Preconditions.checkArgument(value >= MIN_VALUE && value <= MAX_VALUE);
+        Guards.checkArgument(value >= MIN_VALUE && value <= MAX_VALUE);
         short unsigned = (short) (value & UNSIGNED_BYTE_MASK);
 
         return valueOf(unsigned);
     }
 
     public static UnsignedByte fromInt(int value) {
-        Preconditions.checkArgument(value >= MIN_VALUE && value <= MAX_VALUE);
+        Guards.checkArgument(value >= MIN_VALUE && value <= MAX_VALUE);
+        short unsigned = (short) (value & UNSIGNED_BYTE_MASK);
+
+        return valueOf(unsigned);
+    }
+
+    public static UnsignedByte fromLong(long value) {
+        Guards.checkArgument(value >= MIN_VALUE && value <= MAX_VALUE);
         short unsigned = (short) (value & UNSIGNED_BYTE_MASK);
 
         return valueOf(unsigned);
@@ -160,5 +184,24 @@ public class UnsignedByte extends Number implements Comparable<UnsignedByte> {
     @Override
     public int compareTo(UnsignedByte other) {
         return Short.compare(this.value, other.value);
+    }
+
+    /**
+     * Encodes a {@code UnsignedShort} to a {@code byte} array, following the big endian order.
+     *
+     * @return a {@code byte} array
+     */
+    @Nonnull
+    public byte[] toBytes() {
+        byte[] bytes = {this.byteValue()};
+        return bytes;
+    }
+
+    public static UnsignedByte fromBytes(byte[] bytes) {
+        checkNotNull(bytes, "bytes");
+        checkEqualTo(bytes.length, UnsignedByte.BYTES, "bytes has wrong size: %d", bytes.length);
+
+        byte value = bytes[0];
+        return UnsignedByte.fromByte(value);
     }
 }

@@ -1,20 +1,12 @@
-package org.atlanmod.salut.io;
-
-import static com.google.common.truth.Truth.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+package org.atlanmod.commons.io;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-/*
-Classe de test pour la classe UnsignedInt
-Cette classe a pour but de faire l'ensemble des tests unitaires de UnsignedInt
- */
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+
 public class UnsignedIntTest {
 
     @ParameterizedTest
@@ -182,4 +174,19 @@ public class UnsignedIntTest {
         assertThrows(IllegalArgumentException.class , () -> UnsignedInt.fromLong(value));
     }
 
+    /**
+     * Given a UnsignedInt number, when translating it to a byte array,
+     * then the new UnsignedInt number obtained from the byte array is equal to the initial one.
+     *
+     * @param value values used as test data.
+     */
+    @ParameterizedTest(name = "[{index}] source = {0}")
+    @ValueSource(longs = {UnsignedInt.MIN_VALUE, UnsignedInt.MAX_VALUE, 1, UnsignedInt.MAX_VALUE - 1, 42})
+    void testToBytesAndFromBytes(long value) {
+        UnsignedInt expected = UnsignedInt.fromLong(value);
+        byte[] bytes = expected.toBytes();
+        UnsignedInt actual = UnsignedInt.fromBytes(bytes);
+
+        assertThat(actual).isEqualTo(expected);
+    }
 }

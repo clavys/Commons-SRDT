@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2021 Naomod.
+ *
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v2.0 which accompanies
+ * this distribution, and is available at https://www.eclipse.org/legal/epl-2.0/
+ */
 package org.atlanmod.commons.io;
 
 import javax.annotation.Nonnull;
@@ -5,50 +12,81 @@ import java.nio.ByteBuffer;
 import java.util.Objects;
 
 import static org.atlanmod.commons.Guards.*;
+import static org.atlanmod.commons.Preconditions.requireThat;
 
 /**
- * The `CompressedInt` class allows the representation
+ * The `UnsignedVarInt` class allows the representation of up to 7-Bytes positive integers.
+ * The main difference with {@code UnsignedInt} is that when serialized, it uses between 1
+ * and 8 bytes, where each byte uses 7 bits to represent data and 1 bit to signify if the
+ * reading/parsing must continue or stop:
+ *
+ *    1  2  3  4  5  6  7  8
+ *  +--+--+--+--+--+--+--+---+
+ *  |       Data         | c |
+ *  +--+--+--+--+--+--+--+---+
+ *
+ *  If c is set to 0, the serialized number is lesser or equal to {@0x7F} and the reading
+ *  stops. If the c is set to one, the next byte will be considered part of the current
+ *  read integer.
+ *
+ * For instance, the 1-byte int {@code 0xFF }, in binaries {@code [1111 1111]}, is
+ * serialized using a 2-bytes array: {@code [1111 1111], [0000 0001]}. Not that
+ * here we follow the little-endian order.
  *
  * @author sunye
  * @since 1.1.0
  */
-public class CompressedInt extends UnsignedNumber implements Comparable<CompressedInt> {
+public class UnsignedVarInt extends UnsignedNumber implements Comparable<UnsignedVarInt> {
 
     // @formatter:off
+    /**
+     * A constant holding the maximum value a {@code UnsignedVarInt} can have: 0.
+     */
     public static final long    MIN_VALUE = 0;
-    public static final long    MAX_VALUE = 0xffffffffL;
-    public static final int     SIZE = 32;
-    public static final int     BYTES = SIZE / Byte.SIZE;
-    private static final long   UNSIGNED_INT_MASK = 0xFFFFFFFFL;
+
+    /**
+     * A constant holding the maximum value a {@code UnsignedVarInt} can have, 2<sup>56</sup>-1.
+     */
+    public  static final long   MAX_VALUE = 0xfffffffffffffffL;
+    private static final long   UNSIGNED_MASK = 0xFFFFFFFFFFFFFFL;
     // @formatter: on
 
     private final long value;
 
-    private CompressedInt(long value) {
+    /**
+     * Private constructor, use {@code UnsignedVarInt::fromLong()}.
+     *
+     * @param value a positive long
+     */
+    private UnsignedVarInt(long value) {
+        requireThat(value).isLessThanOrEqualTo(MAX_VALUE);
+        requireThat(value).isGreaterThanOrEqualTo(MIN_VALUE);
+
         this.value = value;
     }
 
     /**
-     * Wraps an `int` value into a `CompressedInt`.
+     * Wraps an `int` value into a `UnsignedVarInt`.
      *
      * @param value A unsigned 32-bits unsigned int value.
      * @return un object wrapping the unsigned int value.
      */
-    public static CompressedInt fromInt(int value) {
-        return new CompressedInt(value & UNSIGNED_INT_MASK);
+    public static UnsignedVarInt fromInt(int value) {
+        return fromLong(value);
     }
 
 
-    public static CompressedInt fromLong(long value) {
-        checkArgument(value >= MIN_VALUE && value <= MAX_VALUE);
+    public static UnsignedVarInt fromLong(long value) {
+        checkGreaterThanOrEqualTo(value, MIN_VALUE, "value");
+        checkLessThanOrEqualTo(value, MAX_VALUE, "value");
 
-        long unsigned = value & UNSIGNED_INT_MASK;
-        return new CompressedInt(unsigned);
+        long unsigned = value & UNSIGNED_MASK;
+        return new UnsignedVarInt(unsigned);
     }
 
     /**
      * Compares this object to the specified object.
-     * The result is `true` if and only if the argument is not null and is an `UnsignedInt` object that contains
+     * The result is `true` if and only if the argument is not null and is an `UnsignedVarInt` object that contains
      * the same `long` value as this object.
      *
      * @param obj the object to compare with.
@@ -62,12 +100,12 @@ public class CompressedInt extends UnsignedNumber implements Comparable<Compress
         if (obj == null || getClass() != obj.getClass()) {return false;}
         //@formatter:on
 
-        CompressedInt that = (CompressedInt) obj;
+        UnsignedVarInt that = (UnsignedVarInt) obj;
         return value == that.value;
     }
 
     /**
-     * Returns a hash code for this `UnsignedInt`.
+     * Returns a hash code for this `UnsignedVarInt`.
      * @return a hash code.
      */
     @Override
@@ -101,97 +139,84 @@ public class CompressedInt extends UnsignedNumber implements Comparable<Compress
     }
 
     @Override
-    public int compareTo(CompressedInt other) {
+    public int compareTo(UnsignedVarInt other) {
         return Long.compare(this.value, other.value);
     }
 
     /**
-     * Encodes a {@code UnsignedInt} to a {@code byte} array, following the big endian order.
+     * Encodes a {@code UnsignedInt} to a {@code byte} array, following the little-endian order.
      *
      * @return a {@code byte} array
      */
     @Nonnull
     public byte[] toBytes() {
-        final int length = UnsignedInt.BYTES;
-        final int value = this.intValue();
+        if (value == 0) return new byte[] {0};
+        int length = 0;
+        while ((value >> (7 * length++)) > 0x7F);
 
         byte[] bytes = new byte[length];
 
         for (int i = 0; i < length; i++) {
-            int shift = Byte.SIZE * (length - i - 1);
-            bytes[i] = (byte) (value >> shift);
+            int shift = 7 * i;
+            bytes[i] = (byte) (0x80 | (value >> shift));
         }
+
+        bytes[length -1] &= 0x7F; // Unset the continuation bit
 
         return bytes;
     }
 
-    public static byte[] toBytes(int value) {
-        if (value <= 0x3F) {
-            return new byte[]{(byte) value};
-        } else if (value <= 0x3FFF) {
-            return new byte[]{(byte) (value >> 8 | 0x40), (byte) (value & 0xFF)};
-        } else if (value <= 0x3FFFFF) {
-            return new byte[]{(byte) (value >> 16 | 0x80), (byte) (value >> 8 & 0xFF), (byte) (value & 0xFF)};
-        } else if (value <= 0x3FFFFFFF) {
-            return new byte[]{(byte) (value >> 24 | 0xC0),
-                    (byte) (value >> 16 & 0xFF),
-                    (byte) (value >> 8 & 0xFF),
-                    (byte) (value & 0xFF)};
-        }
-        else return new byte[0];
-    }
 
     /**
-     * Encode the specified long as a variable length integer into the supplied {@link ByteBuffer}
+     * Creates an instance of {@code UnsignedVarInt} from a by array.
+     * The length of the byte array must be between 1 and 8.
      *
-     * @param buf the buffer to write to
-     * @param value the long value
+     * @param bytes the byte array.
+     * @return an instance of {@code UnsignedVarInt}.
      */
-    public static void writeVLong(ByteBuffer buf, long value) {
-        if(value < 0)                                buf.put((byte)0x81);
-        if(value > 0xFFFFFFFFFFFFFFL || value < 0)   buf.put((byte)(0x80 | ((value >>> 56) & 0x7FL)));
-        if(value > 0x1FFFFFFFFFFFFL || value < 0)    buf.put((byte)(0x80 | ((value >>> 49) & 0x7FL)));
-        if(value > 0x3FFFFFFFFFFL || value < 0)      buf.put((byte)(0x80 | ((value >>> 42) & 0x7FL)));
-        if(value > 0x7FFFFFFFFL || value < 0)        buf.put((byte)(0x80 | ((value >>> 35) & 0x7FL)));
-        if(value > 0xFFFFFFFL || value < 0)          buf.put((byte)(0x80 | ((value >>> 28) & 0x7FL)));
-        if(value > 0x1FFFFFL || value < 0)           buf.put((byte)(0x80 | ((value >>> 21) & 0x7FL)));
-        if(value > 0x3FFFL || value < 0)             buf.put((byte)(0x80 | ((value >>> 14) & 0x7FL)));
-        if(value > 0x7FL || value < 0)               buf.put((byte)(0x80 | ((value >>>  7) & 0x7FL)));
+    public static UnsignedVarInt fromBytes(byte[] bytes) {
+        checkNotNull(bytes, "bytes");
 
-        buf.put((byte)(value & 0x7FL));
+        long value = 0;
+        int i = 0;
+
+        // While continuation bit is set:
+        while (((bytes[i] & 0x80) > 0) && i < bytes.length) {
+            long cleanValue = (bytes[i] & 0x7F);
+            cleanValue = cleanValue << (7 * i);
+            value |= (cleanValue);
+            i++;
+        }
+
+        value |= ((long) bytes[i] << (7 * i));
+
+        return UnsignedVarInt.fromLong(value);
     }
 
     /**
-     * Read a variable length long from the supplied {@link ByteBuffer} starting at the specified position.
-     * @param arr the byte data to read from
-     * @return the long value
+     * Creates an instance of {@code UnsignedVarInt} from a by array.
+     * The length of the byte array must be between 1 and 8.
+     *
+     * @param buffer the byte array.
+     * @return an instance of {@code UnsignedVarInt}.
      */
-    public static long readVLong(ByteBuffer arr) {
-        byte b = arr.get();
+    public static UnsignedVarInt fromByteBuffer(ByteBuffer buffer) {
+        checkNotNull(buffer, "buffer");
 
-        if(b == (byte) 0x80)
-            throw new RuntimeException("Attempting to read null value as long");
+        long value = 0;
+        int i = 0;
+        byte current;
 
-        long value = b & 0x7F;
-        while ((b & 0x80) != 0) {
-            b = arr.get();
-            value <<= 7;
-            value |= (b & 0x7F);
+        // While continuation bit is set:
+        while ((((current = buffer.get()) & 0x80) > 0) && i < 8 && buffer.hasRemaining()) {
+            long cleanValue = (current & 0x7F);
+            cleanValue = cleanValue << (7 * i);
+            value |= (cleanValue);
+            i++;
         }
 
-        return value;
-    }
+        value |= ((long) current << (7 * i));
 
-    public static UnsignedInt fromBytes(byte[] bytes) {
-        checkNotNull(bytes, "bytes");
-        checkEqualTo(bytes.length, UnsignedInt.BYTES, "bytes has wrong size: %d", bytes.length);
-
-        int value = 0;
-        final int length = UnsignedInt.BYTES - 1;
-        for (int i = length; i >= 0; i--) {
-            value |= (bytes[i]) << Byte.SIZE * (length - i);
-        }
-
-        return UnsignedInt.fromInt(value);
+        return UnsignedVarInt.fromLong(value);
     }
 }

@@ -1,17 +1,33 @@
-package org.atlanmod.salut.io;
+/*
+ * Copyright (c) 2021 Naomod.
+ *
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v2.0 which accompanies
+ * this distribution, and is available at https://www.eclipse.org/legal/epl-2.0/
+ */
+package org.atlanmod.commons.io;
 
-import org.atlanmod.commons.Preconditions;
+import org.atlanmod.commons.Guards;
+
+import javax.annotation.Nonnull;
+
+import static org.atlanmod.commons.Guards.*;
 
 /**
  * The `UnsignedShort` class allows the representation of unsigned 16-bit values.
  * It wraps a value of the primitive getType `int` in an object.
  * An object of getType `UnsignedShort` contains a single field whose getType is `int`.
+ *
+ *  @author sunye
+ *  @since 1.1.0
  */
-public class UnsignedShort extends Number implements Comparable<UnsignedShort> {
+public class UnsignedShort extends UnsignedNumber implements Comparable<UnsignedShort> {
 
-    public  static final  int MIN_VALUE = 0;
-    public  static final  int MAX_VALUE = 0xFFFF;
-    private static final  int UNSIGNED_SHORT_MASK = 0xFFFF;
+    public  static final int MIN_VALUE = 0;
+    public  static final int MAX_VALUE = 0xFFFF;
+    public  static final int SIZE = 16;
+    public  static final int BYTES = SIZE / Byte.SIZE;
+    private static final int UNSIGNED_SHORT_MASK = 0xFFFF;
 
     private final int value;
 
@@ -24,11 +40,12 @@ public class UnsignedShort extends Number implements Comparable<UnsignedShort> {
      *
      */
     protected UnsignedShort(int value) {
-        Preconditions.checkLessThanOrEqualTo(value, UnsignedShort.MAX_VALUE);
-        Preconditions.checkGreaterThanOrEqualTo(value, UnsignedShort.MIN_VALUE);
+        Guards.checkLessThanOrEqualTo(value, UnsignedShort.MAX_VALUE);
+        Guards.checkGreaterThanOrEqualTo(value, UnsignedShort.MIN_VALUE);
 
         this.value = value;
     }
+
 
     /**
      * Returns the value of this {@code UnsignedShort} as an {@code int}.
@@ -148,10 +165,19 @@ public class UnsignedShort extends Number implements Comparable<UnsignedShort> {
      * @return an instance of {@code UnsignedShort} representing the value.
      */
     public static UnsignedShort fromInt(int value) {
-        Preconditions.checkLessThanOrEqualTo(value, UnsignedShort.MAX_VALUE);
-        Preconditions.checkGreaterThanOrEqualTo(value, UnsignedShort.MIN_VALUE);
+        Guards.checkLessThanOrEqualTo(value, UnsignedShort.MAX_VALUE);
+        Guards.checkGreaterThanOrEqualTo(value, UnsignedShort.MIN_VALUE);
 
         int unsigned = value & UNSIGNED_SHORT_MASK;
+        return new UnsignedShort(unsigned);
+    }
+
+
+    public static UnsignedShort fromLong(long value) {
+        checkArgument(value <= UnsignedShort.MAX_VALUE, "value");
+        checkArgument(value >= UnsignedShort.MIN_VALUE, "value");
+
+        int unsigned = (int) value & UNSIGNED_SHORT_MASK;
         return new UnsignedShort(unsigned);
     }
 
@@ -189,5 +215,34 @@ public class UnsignedShort extends Number implements Comparable<UnsignedShort> {
      */
     public boolean isZero() {
         return value == 0;
+    }
+
+    /**
+     * Encodes a {@code UnsignedShort} to a {@code byte} array, following the big endian order.
+     *
+     * @return a {@code byte} array
+     */
+    @Nonnull
+    public byte[] toBytes() {
+        byte[] bytes = new byte[UnsignedShort.BYTES];
+        final int length = UnsignedShort.BYTES - 1;
+        for (int i = length; i >= 0; i--) {
+            bytes[i] = (byte) (this.shortValue() >> UnsignedShort.SIZE * (length - i));
+        }
+
+        return bytes;
+    }
+
+    public static UnsignedShort fromBytes(byte[] bytes) {
+        checkNotNull(bytes, "bytes");
+        checkEqualTo(bytes.length, UnsignedShort.BYTES, "bytes has wrong size: %d", bytes.length);
+
+        short value = 0;
+        final int length = Short.BYTES - 1;
+        for (int i = length; i >= 0; i--) {
+            value |= (bytes[i]) << Byte.SIZE * (length - i);
+        }
+
+        return UnsignedShort.fromShort(value);
     }
 }

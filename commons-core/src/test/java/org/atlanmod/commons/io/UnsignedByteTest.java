@@ -1,15 +1,16 @@
-package org.atlanmod.salut.io;
+package org.atlanmod.commons.io;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
-import java.util.Objects;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.Objects;
+import java.util.stream.Stream;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class UnsignedByteTest {
 
@@ -232,4 +233,20 @@ class UnsignedByteTest {
         assertThat(ub.hashCode()).isEqualTo(Objects.hash(value));
     }
 
+    /**
+     * Given a UnsignedShort number, when translating it to a byte array,
+     * then the new UnsignedShort number obtained from the byte array is equal to the initial one.
+     *
+     * @param value values used as test data.
+     */
+    @ParameterizedTest
+    @ValueSource(shorts = {1, 100, UnsignedByte.MIN_VALUE, UnsignedByte.MAX_VALUE})
+    void testToBytesAndFromBytes(short value) {
+        UnsignedByte expected = UnsignedByte.fromInt(value);
+        byte[] bytes = expected.toBytes();
+
+        UnsignedByte actual = UnsignedByte.fromBytes(bytes);
+        assertThat(actual).isEqualTo(expected);
+
+    }
 }
