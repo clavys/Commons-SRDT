@@ -38,9 +38,9 @@ public final class Ints {
     public static byte[] toBytes(final int value) {
         byte[] bytes = new byte[Integer.BYTES];
 
-        final int lenght = Integer.BYTES - 1;
-        for (int i = lenght; i >= 0; i--) {
-            bytes[i] = (byte) (value >> Byte.SIZE * (lenght - i));
+        final int length = Integer.BYTES - 1;
+        for (int i = length; i >= 0; i--) {
+            bytes[i] = (byte) (value >> Byte.SIZE * (length - i));
         }
 
         return bytes;
