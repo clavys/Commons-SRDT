@@ -7,7 +7,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.atlanmod.commons.Preconditions.requireThat;
 import static org.atlanmod.commons.predicate.TestUtility.throwsPreconditionError;
 
-class IntPredicateTest {
+class LongPredicateTest {
 
     // region False Predicates
 
@@ -97,9 +97,9 @@ class IntPredicateTest {
                 .isLessThanOrEqualTo(13);
     }
 
-    @ValueSource(ints = {1, 10, 2, 9})
+    @ValueSource(longs = {1, 10, 2, 9})
     @ParameterizedTest
-    void isBetween(int value) {
+    void isBetween(long value) {
         requireThat(value).isBetween(1, 10);
     }
 

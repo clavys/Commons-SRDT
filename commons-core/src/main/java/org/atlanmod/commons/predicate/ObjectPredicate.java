@@ -30,27 +30,31 @@ public class ObjectPredicate<Yourself extends ObjectPredicate, T> extends Predic
         if (!Objects.isNull(value)) {
             context.send(PATTERN,value, "null", "");
         }
-        return (Yourself) this;
+        return me();
     }
 
     public Yourself isNotNull() {
         if (Objects.isNull(value)) {
             context.send(PATTERN, value, "non null", "");
         }
-        return (Yourself) this;
+        return me();
     }
 
     public Yourself isEqualTo(T other) {
         if(!value.equals(other)) {
             context.send(PATTERN, value, "equal to", other);
         }
-        return (Yourself) this;
+        return me();
     }
 
     public Yourself isDifferentFrom(T other) {
         if(value.equals(other)) {
             context.send(PATTERN, value, "different from", other);
         }
+        return me();
+    }
+
+    public Yourself me() {
         return (Yourself) this;
     }
 }

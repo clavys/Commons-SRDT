@@ -307,6 +307,10 @@ public final class Preconditions {
         return new IntPredicate(CONTEXT, expression);
     }
 
+    public static LongPredicate requireThat(long expression) {
+        return new LongPredicate(CONTEXT, expression);
+    }
+
     public static BooleanPredicate requireThat(boolean expression) {
         return new BooleanPredicate(CONTEXT, expression);
     }
