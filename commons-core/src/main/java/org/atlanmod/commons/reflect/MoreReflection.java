@@ -12,6 +12,7 @@ import org.atlanmod.commons.Throwables;
 import org.atlanmod.commons.annotation.Builder;
 import org.atlanmod.commons.annotation.Singleton;
 import org.atlanmod.commons.annotation.Static;
+import sun.reflect.ReflectionFactory;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -31,6 +32,7 @@ import static org.atlanmod.commons.Guards.checkNotNull;
 public final class MoreReflection {
 
     private static final Map<Class<?>, Class<?>> primitiveToWrapper = new HashMap<>();
+
     static {
         primitiveToWrapper.put(Boolean.TYPE, Boolean.class);
         primitiveToWrapper.put(Byte.TYPE, Byte.class);
@@ -54,9 +56,7 @@ public final class MoreReflection {
      *
      * @param type the class to look for
      * @param <T>  the type of the instance
-     *
      * @return the single instance if the {@code type} is a singleton, or a new instance
-     *
      * @throws ReflectionException if an error occurs during the instantiation
      */
     @Nonnull
@@ -72,12 +72,10 @@ public final class MoreReflection {
                 Method method = type.getMethod(methodName.get());
                 method.setAccessible(true);
                 instance = (T) method.invoke(null);
-            }
-            else {
+            } else {
                 instance = type.getConstructor().newInstance();
             }
-        }
-        catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
             throw new ReflectionException(e);
         }
 
@@ -88,7 +86,6 @@ public final class MoreReflection {
      * Returns the name of the method to use for creating a new instance of {@code type}, according to its annotations.
      *
      * @param type the class to look for
-     *
      * @return an {@link Optional} containing the name of the construction method, or {@link Optional#empty()} if the
      * {@code type} is not annotated
      */
@@ -100,11 +97,9 @@ public final class MoreReflection {
 
         if (type.isAnnotationPresent(Singleton.class)) {
             methodName = Optional.of(type.getAnnotation(Singleton.class).value());
-        }
-        else if (type.isAnnotationPresent(Builder.class)) {
+        } else if (type.isAnnotationPresent(Builder.class)) {
             methodName = Optional.of(type.getAnnotation(Builder.class).value());
-        }
-        else {
+        } else {
             // Use the default constructor
             methodName = Optional.empty();
         }
@@ -120,7 +115,6 @@ public final class MoreReflection {
      * is maintained.
      *
      * @param type the class to look up
-     *
      * @return a {@link Set} of interfaces in order
      */
     @Nonnull
@@ -147,38 +141,38 @@ public final class MoreReflection {
      * Returns the constructor for creating a new instance of {@code type}, whose parameters are assignable
      * with the {@code argumentTypes}.
      *
-     * @param type the class to look for
+     * @param type          the class to look for
      * @param argumentTypes a set of types allowing to find the suitable constructor.
      * @return an {@link Optional} containing the suitable constructor, or {@link Optional#empty()} if no constructor
      * is found.
      */
     public static Optional<Constructor> findConstructor(Class type, Class[] argumentTypes) {
         return Stream.of(type.getConstructors()).filter(each -> matches(each, argumentTypes))
-            .findFirst();
+                .findFirst();
     }
 
     /**
      * Returns the static factory method for creating instances of {@code type}, whose parameters are
      * assignable with the {@code argumentTypes}.
      *
-     * @param type the class to look for.
+     * @param type          the class to look for.
      * @param argumentTypes a set of types allowing to find the suitable method.
      * @return an {@link Optional} containing the suitable factory method, or {@link Optional#empty()}
      * if no constructor is found.
      */
     public static Optional<Method> findFactoryMethod(Class type, Class[] argumentTypes) {
         return Stream.of(type.getMethods())
-            .filter(each -> Modifier.isStatic(each.getModifiers()))
-            .filter(each -> each.getReturnType().isAssignableFrom(type))
-            .filter(each -> matches(each, argumentTypes))
-            .findFirst();
+                .filter(each -> Modifier.isStatic(each.getModifiers()))
+                .filter(each -> each.getReturnType().isAssignableFrom(type))
+                .filter(each -> matches(each, argumentTypes))
+                .findFirst();
     }
 
     /**
      * Returns a {@link Function} that creates new instances of {@code type}, using as arguments instances of
      * {@code argumentTypes}, i.e., using a constructor or factory method whose signature matches {@code argumentTypes}.
      *
-     * @param type the class to look for.
+     * @param type          the class to look for.
      * @param argumentTypes the signature of the suitable constructor or method
      * @return a {@link Function} that creates new instances of {@code type}, using either a {@link Constructor} or
      * a static factory {@link Method}.
@@ -203,12 +197,12 @@ public final class MoreReflection {
                     } catch (IllegalAccessException | InvocationTargetException e) {
                         e.printStackTrace();
                         throw new RuntimeException(
-                            "Could not instantiate class with factory method");
+                                "Could not instantiate class with factory method");
                     }
                 };
             } else {
                 throw new IllegalArgumentException(
-                    "Could not find compatible constructor or factory method");
+                        "Could not find compatible constructor or factory method");
             }
         }
     }
@@ -217,11 +211,11 @@ public final class MoreReflection {
      * Checks whether an {@code Executable} ({@code Constructor} or {@code Method}) is compatible with
      * the {@code argumentTypes}, i.e., whether all parameters types are assignable from all types of
      * {@code argumentTypes}, respectively.
-     *
+     * <p>
      * The {@code argumentTypes} parameter is an array of {@code Class} objects that are assignment-compatible
      * with the executable's formal parameter types, in declared order.
      *
-     * @param executable the instance of {@code Executable} to be considered.
+     * @param executable    the instance of {@code Executable} to be considered.
      * @param argumentTypes an array of types to be compared with the executable parameters.
      * @return true, if each parameter of {@code executable} is assignable from an element of {@code argumentTypes}.
      */
@@ -241,7 +235,7 @@ public final class MoreReflection {
     /**
      * Checks whether a left operand type can be assigned from the right operand type
      * If the operand is a primitive type, first converts it to its wrapper class.
-     *
+     * <p>
      * Contrary to the {@link Class#isAssignableFrom(java.lang.Class)} method,
      * this method takes ont account the assignment between Wrappers Classes and
      * Primitive Types.
@@ -266,5 +260,38 @@ public final class MoreReflection {
 
         if (!type.isPrimitive()) return type;
         return primitiveToWrapper.get(type);
+    }
+
+    /**
+     * Instantiates a class without calling its constructor.
+     *
+     * @param type The class to be instantiated
+     * @param <T> The type of the instance
+     * @return an instance of {@code <T>}
+     */
+    public static <T> T softInstantiate(Class<T> type) {
+        return softInstantiate(type, Object.class);
+    }
+
+    /**
+     * Instantiates a class without calling its constructor.
+     *
+     * Nevertheless, the constructor of the supertype is executed.
+     *
+     * @param type The class to be instantiated
+     * @param parent The parent class whose constructor will be called
+     * @param <T> The type of the instance
+     * @return an instance of {@code <T>}
+     */
+    public static <T> T softInstantiate(Class<T> type, Class<? super T> parent) {
+        try {
+            ReflectionFactory rf = ReflectionFactory.getReflectionFactory();
+            Constructor parentConstructor = parent.getDeclaredConstructor();
+            Constructor softConstructor = rf.newConstructorForSerialization(type, parentConstructor);
+            return type.cast(softConstructor.newInstance());
+
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            throw new ReflectionException(e);
+        }
     }
 }

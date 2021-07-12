@@ -20,6 +20,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 @ParametersAreNonnullByDefault
 class MoreReflectionTest extends AbstractTest {
@@ -126,6 +127,17 @@ class MoreReflectionTest extends AbstractTest {
         assertThat(MoreReflection.isAssignable(Long.class, Long.class)).isTrue();
         assertThat(MoreReflection.isAssignable(Short.class, Short.class)).isTrue();
     }
+
+    @Test
+    void testSoftInstantiateDoesntCallConstructor() {
+        B b = MoreReflection.softInstantiate(B.class);
+    }
+
+    @Test
+    void testSoftInstantiateCallsSuperConstructor() {
+        B b = MoreReflection.softInstantiate(B.class, A.class);
+        assertThat(b.wasCalled).isTrue();
+    }
 }
 
 class MoreReflectionTestData {
@@ -145,5 +157,18 @@ class MoreReflectionTestData {
 
     public String name() {
         return name;
+    }
+}
+
+class A {
+    boolean wasCalled = false;
+    public A() {
+        wasCalled = true;
+    }
+}
+
+class B extends A {
+    public B() {
+        fail("Should not be called");
     }
 }
