@@ -16,11 +16,11 @@
     <description>A library of classes and methods common to all Atlanmod projects</description>
 
     <properties>
-        <caffeine.version>3.0.1</caffeine.version>
-        <zah.version>0.12</zah.version>
+        <caffeine.version>3.0.4</caffeine.version>
+        <zah.version>0.15</zah.version>
         <fst.version>2.57</fst.version>
         <!-- WARNING: Fst versions > 3.0.0 are compiled with jdk 14 -->
-        <slf4j.version>1.7.30</slf4j.version>
+        <slf4j.version>1.7.32</slf4j.version>
     </properties>
 
     <dependencies>
