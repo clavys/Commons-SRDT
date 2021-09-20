@@ -53,4 +53,12 @@ class FlagsTest {
 
         assertThat(bytes.length).isEqualTo(1);
     }
+
+    @Test
+    void testGetWithEmptyFlags() {
+        Flags flags = new Flags(8);
+        for (int i = 0; i < 8; i++) {
+            assertThat(flags.get(i)).isFalse();
+        }
+    }
 }
