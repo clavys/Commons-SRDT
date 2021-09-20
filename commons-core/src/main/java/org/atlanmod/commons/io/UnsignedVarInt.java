@@ -30,7 +30,7 @@ import static org.atlanmod.commons.Preconditions.requireThat;
  *  read integer.
  *
  * For instance, the 1-byte int {@code 0xFF }, in binaries {@code [1111 1111]}, is
- * serialized using a 2-bytes array: {@code [1111 1111], [0000 0001]}. Not that
+ * serialized using a 2-bytes array: {@code [1111 1111], [0000 0001]}. Note that
  * here we follow the little-endian order.
  *
  * @author sunye
