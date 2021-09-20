@@ -2,9 +2,7 @@ package org.atlanmod.testing;
 
 import org.atlanmod.commons.Throwables;
 import org.atlanmod.commons.annotation.Static;
-import org.atlanmod.commons.predicate.BooleanPredicate;
-import org.atlanmod.commons.predicate.IntPredicate;
-import org.atlanmod.commons.predicate.PredicateContext;
+import org.atlanmod.commons.predicate.*;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -23,6 +21,18 @@ public class Assertions {
 
     public static IntPredicate assertThat(int expression) {
         return new IntPredicate(CONTEXT, expression);
+    }
+
+    public static LongPredicate assertThat(long expression) {
+        return new LongPredicate(CONTEXT, expression);
+    }
+
+    public static StringPredicate assertThat(String expression) {
+        return new StringPredicate(CONTEXT, expression);
+    }
+
+    public static ObjectPredicate<ObjectPredicate, Object> assertThat(Object expression) {
+        return new ObjectPredicate(CONTEXT, expression);
     }
 
     static class AssertionContext implements PredicateContext {
