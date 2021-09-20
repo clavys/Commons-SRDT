@@ -1,6 +1,8 @@
 ## 1.1.0
 
-- __\[ADD\]__ String and Object predicates for Preconditions and Assertions
+- __\[ADD\]__ Int and Long predicates for Preconditions, Assertions, and Guards
+- __\[ADD\]__ String and Object predicates for Preconditions,  Assertions, and Guards
+- __\[ADD\]__ New classes `Assertion` and `Preconditions` to properly distinguish Test Assertions from method Preconditions
 - __\[UPD\]__ New class `Guards` for distinguishing method *Guards* from real pre-condition.
 - __\[ADD\]__ New data structures, `Tree`, `TreeMap` and `Path` for representing trees of values
 - __\[UPD\]__ Require JDK 11
