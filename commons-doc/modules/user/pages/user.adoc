@@ -1,0 +1,12 @@
+= User Guide
+
+== Commons Core
+
+
+== Commons Testing
+
+The artifact *Commons Testing** provides several utility classes for helping Java developers to write unit and integration tests.
+
+=== Assertions
+
+=== Verifiers
