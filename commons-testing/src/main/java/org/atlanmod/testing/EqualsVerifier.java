@@ -7,10 +7,11 @@
  */
 package org.atlanmod.testing;
 
+import org.atlanmod.commons.reflect.MoreReflection;
+
 import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.Stream;
-import org.atlanmod.commons.reflect.MoreReflection;
 
 /**
  * Verifies that the {@code equals()} method of a class was correctly implemented, checking that:
@@ -78,7 +79,7 @@ public class EqualsVerifier<T> {
      * Verifies the implementation of method {@code equals()}.
      *
      */
-    public void check() {
+    public void check() {   
         checkArguments(arguments, variants);
         Class[] argumentTypes = mapToClasses(arguments);
 
