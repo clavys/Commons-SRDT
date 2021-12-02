@@ -2,10 +2,10 @@ package org.atlanmod.testing;
 
 import org.atlanmod.commons.Guards;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class StringBoundaryGenerator implements Generator<String> {
-
     private String[] values;
     private int index;
 

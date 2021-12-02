@@ -9,7 +9,6 @@ public class RandomStringOfIntGenerator implements Generator{
     public String generate() {
         Random random = new Random();
         int length= random.nextInt(10)+1;
-
         StringBuilder sb = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
             int randomInt = random.nextInt(10) + 48;

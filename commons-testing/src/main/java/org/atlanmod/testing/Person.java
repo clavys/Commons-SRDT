@@ -5,11 +5,21 @@ import java.util.Objects;
 public class Person {
 
     private final String name;
-    private final int[] age;
+    private final int age;
 
-    public Person(String name, int[] age) {
+    public Person(String name, Integer age) {
         this.name = name;
         this.age = age;
+    }
+
+    public Person() {
+        this.name = "nomParDefaut";
+        this.age = 20;
+    }
+
+    public Person(String[] st,int ib) {
+        this.name = "boubis";
+        this.age = ib;
     }
 
     @Override

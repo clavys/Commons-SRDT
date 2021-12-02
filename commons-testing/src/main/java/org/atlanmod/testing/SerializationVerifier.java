@@ -17,7 +17,6 @@ public class SerializationVerifier<T extends Serializable> {
         this.type = type;
     }
 
-
     public SerializationVerifier<T> withArguments(Object... arguments) {
         this.arguments = arguments;
         return this;
@@ -30,25 +29,18 @@ public class SerializationVerifier<T extends Serializable> {
     }
 
     public void check() throws IOException, ClassNotFoundException {
-
         Class[] argumentTypes = mapToClasses(arguments);
         Function<Object[], T> instantiator = MoreReflection.getInstantiator(type, argumentTypes);
         Object object = instantiator.apply(arguments);
-
         // serialiser object
         ByteArrayOutputStream boos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(boos);
         oos.writeObject(object);
-
         //deserialiser object
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(boos.toByteArray()));
         Object object2 = (Object) ois.readObject();
-
         System.out.println(object2);
-
-
         assertIsEqual(object,object2);
-
     }
 
     public static void assertIsEqual(Object one, Object other) {
