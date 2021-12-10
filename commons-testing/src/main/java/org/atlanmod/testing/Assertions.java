@@ -5,6 +5,7 @@ import org.atlanmod.commons.annotation.Static;
 import org.atlanmod.commons.predicate.*;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Collection;
 
 @Static
 @ParametersAreNonnullByDefault
@@ -35,10 +36,18 @@ public class Assertions {
         return new ObjectPredicate(CONTEXT, expression);
     }
 
+    public static CollectionPredicate assertThat(Collection<?> expression) {
+        return new CollectionPredicate(CONTEXT, expression);
+    }
+
     static class AssertionContext implements PredicateContext {
         @Override
         public void send(String pattern, Object... args) {
             throw new AssertionError(String.format(pattern, args));
         }
+    }
+
+    public static void fail(String message) {
+        throw new AssertionError(message);
     }
 }

@@ -6,7 +6,7 @@
 
     <groupId>org.atlanmod.commons</groupId>
     <artifactId>commons</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -247,15 +247,16 @@
                 <plugin>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>maven-bundle-plugin</artifactId>
-                    <version>5.1.1</version>
+                    <version>5.1.2</version>
                     <extensions>true</extensions>
                     <configuration>
                         <exportScr>true</exportScr>
                         <instructions>
                             <Bundle-Version>
-                                1.1.0.${maven.build.timestamp}
+                                ${project.version}
                             </Bundle-Version>
                             <!--Bundle-Version>
+                                1.1.0.${maven.build.timestamp}
                                 1.0.6
                             </Bundle-Version-->
                             <Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>

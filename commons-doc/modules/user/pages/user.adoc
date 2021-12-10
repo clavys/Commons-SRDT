@@ -1,0 +1,70 @@
+= User Guide
+
+== Commons Core
+
+=== Predicates on Booleans
+
+=== Predicates on Objects
+
+=== Predicates on Strings
+
+=== Predicates on Collections
+
+=== Predicates on Integers (int and long)
+
+
+
+
+=== Guards and Preconditions
+
+.Guards
+[source,java]
+----
+class MyList {
+    public void add(Object elm) {
+        Guuards.checkNotNull(elm);
+        // (...)
+    }
+}
+----
+
+.Preconditions
+[source,java]
+----
+class MyList {
+  private void doAdd(Object elm) {
+    Preconditions.requireThat(elm).isNotNull();
+    // (...)
+  }
+}
+----
+
+== Commons Testing
+
+The artifact *Commons Testing** provides several utility classes for helping Java developers to write unit and integration tests.
+
+=== Assertions
+
+====  Number Assertions
+[source,java]
+----
+Assertions.assertThat(value).is(11));
+----
+
+==== Object Assertions
+
+[source,java]
+----
+assertThat(obj).isNull();
+assertThat(obj).notNull();
+----
+
+=== Verifiers
+
+[source,java]
+----
+        Verifier.verifyEqualsOf(Person.class)
+                .withArguments("Anna", 33)
+                .andVariants("Carol", 44)
+                .check();
+----
