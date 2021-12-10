@@ -1,0 +1,86 @@
+:project-name: Commons
+= Build with Maven
+
+== Software Requirements
+
+* https://maven.apache.org[Apache Maven] (version 3.5.0 or greater)
+* Java JDK (version 11), from Oracle, OpenJDK, or Zulu
+
+== Get the Source Code
+
+You can download the source code of the latest release https://github.com/atlanmod/Commons/releases/latest[here] or clone the `master` branch using the following git command:
+
+[source,bash]
+----
+git clone -b master --single-branch  https://github.com/atlanmod/Commons.git
+----
+
+Configure Maven's JDK to allocate more memory:
+
+[source,bash]
+----
+export MAVEN_OPTS="-XX:PermSize=256m -XX:MaxPermSize=512m -XstartOnFirstThread"
+----
+
+=== Build Core Artifacts
+
+{project-name} components are bundled as a set of `jar` files that can be imported using the Maven dependency mechanism.
+You can build {project-name} components by going to the root of the source directory and run the following command:
+
+[source,bash]
+----
+mvn clean install
+----
+
+_(optional)_ You can also run the tests by using :
+
+[source,bash]
+----
+mvn test (-pl <neoemf-core|neoemf-data|neoemf-io|...>)
+----
+
+Note that building the core components does not create Eclipse plugins and an local version of the update site.
+To generate these additional artifacts see the next section.
+
+
+== Build in Eclipse
+
+You can alternatively build NeoEMF directly in Eclipse using the Eclipse Git and Maven integrations plugin.
+
+=== Requirements
+
+In order to import NeoEMF Git repository in Eclipse, you will need the following plugins in your installation (installable from the software repository of your Eclipse release):
+
+* *EGit* : v3.4.2 or later
+* *m2e* : v1.5.1 or later
+
+And the following m2e connectors (installable through `Preferences → Maven → Discovery / m2e Marketplace`):
+
+* *Maven SCM Handler for EGit (m2e-egit)* : v0.14 or later
+* *Tycho Project Configurators (Tycho configurator)* : v0.8.0 or later
+
+Note that additional m2e connectors can be required denpending of your specific installation.
+They can be installed using Eclipse quick fixes available in the `pom` files.
+
+=== Import and Build
+
+* Import the project using `File → Import → Maven → Check out Maven Projects from SCM`
+* Select "git" in the SCM URL field and paste the repository address (https://github.com/atlanmod/NeoEMF.git)
+* Choose your workspace and working sets setting and finish
+
+The projects *project*, *parent*, *core*, *graph*, *graph.blueprints* and *map* will be imported and built.
+
+If you want to import the projects generating Eclipse specific plugins (features, update-site), you have to import them by
+hand using `File → Import → Maven → Existing Maven Projects`, and select the projects under the "plugins" folder in your local repository.
+
+Note that building NeoEMF in Eclipse can take a long time (and a large disk space) because the default SCM connector fetches all the branches of the remote git repository.
+
+== Issues
+
+If you experience issues installing or using NeoEMF, you can https://github.com/atlanmod/NeoEMF/issues[submit an issue on github] or contact us at link:mailto:&#110;e&#111;&#x65;&#x6d;&#x66;&#x40;&#103;&#x6f;&#x6f;g&#108;&#x65;&#103;r&#111;&#117;&#112;s&#46;c&#x6f;&#109;[&#110;e&#111;&#x65;&#x6d;&#x66;&#x40;&#103;&#x6f;&#x6f;g&#108;&#x65;&#103;r&#111;&#117;&#112;s&#46;c&#x6f;&#109;]
+
+=== Known issues:
+
+* Only Luna plugins are fetched (the compatibility is not ensured for previous Eclipse versions)
+* The Eclipse plugins can not be built if maven can not access internet (it is needed to fetch Luna p2 repositories)
+* Sometimes the plugin build crashes and/or freezes during p2 index fetching from Luna repositories. It is generally sufficient to cancel the build (`ctrl-c`) and to relaunch it.

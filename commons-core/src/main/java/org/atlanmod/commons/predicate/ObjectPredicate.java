@@ -40,9 +40,16 @@ public class ObjectPredicate<Yourself extends ObjectPredicate, T> extends Predic
         return me();
     }
 
-    public Yourself isEqualTo(T other) {
+    public Yourself isEqualTo(Object other) {
         if(!value.equals(other)) {
             context.send(PATTERN, value, "equal to", other);
+        }
+        return me();
+    }
+
+    public Yourself isSameAs(Object other) {
+        if(value != other) {
+            context.send(PATTERN, value, "same as", other);
         }
         return me();
     }
@@ -51,6 +58,11 @@ public class ObjectPredicate<Yourself extends ObjectPredicate, T> extends Predic
         if(value.equals(other)) {
             context.send(PATTERN, value, "different from", other);
         }
+        return me();
+    }
+
+    public Yourself withMessage(String message) {
+        // TODO
         return me();
     }
 

@@ -71,6 +71,13 @@ public class IntPredicate extends Predicate {
         return this;
     }
 
+    public IntPredicate is(int other) {
+        if (value != other) {
+            context.send(PATTERN, value, "exactly", other);
+        }
+        return this;
+    }
+
     public IntPredicate isDifferentFrom(int other) {
         if (value == other) {
             context.send(PATTERN, value, "different from", other);
@@ -78,4 +85,8 @@ public class IntPredicate extends Predicate {
         return this;
     }
 
+    public IntPredicate withMessage(String message) {
+        // TODO
+        return this;
+    }
 }
