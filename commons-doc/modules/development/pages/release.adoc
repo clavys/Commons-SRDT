@@ -57,7 +57,7 @@ The procedure is the same as in the main project.
 * Commit *(without push)* the modifications
 * Tag the commit with name `vX.Y.Z`
 
-= Deploy a release
+== Deploy a release
 
 *NOTE:* Only the main project have to be deployed in Maven central !
 
@@ -88,7 +88,7 @@ mvn clean deploy -DskipTests -P deploy-artifacts
 
 Artifacts are now staged and wait for validation and deployment on the https://oss.sonatype.org[Nexus Repo Manager] (Note that staged artifacts, are not definitive, they can be removed/cancelled): A full description of different steps is available http://central.sonatype.org/pages/releasing-the-deployment.html[here].
 
-= Upgrade to a SNAPSHOT version
+== Upgrade to a SNAPSHOT version
 
 Once you have deployed yor artifacts, to avoid overwritten your release, you must upgrade your project in a SNAPSHOT state.
 Repeat the several steps described in the <<upgrade-to-a-release-version,Upgrade to a RELEASE version>> section by adding `-SNAPSHOT` or `.qualifier`.
