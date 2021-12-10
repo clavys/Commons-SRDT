@@ -1,8 +1,11 @@
 = Atlanmod Commons Change Log
 
+== 1.1.1
+
+* *[ADD]* Collection predicates for Preconditions, Assertions, and Guards
+
 == 1.1.0
 
-* *[ADD]* Int and Long predicates for Preconditions, Assertions, and Guards
 * *[ADD]* String and Object predicates for Preconditions, Assertions, and Guards
 * *[ADD]* New classes `Assertion` and `Preconditions` to properly distinguish Test Assertions from method Preconditions
 * *[UPD]* New class `Guards` for distinguishing method _Guards_ from real pre-condition.

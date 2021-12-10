@@ -3,10 +3,47 @@
 == Commons Core
 
 
+=== Guards and Preconditions
+
+.Guards
+[source,java]
+----
+class MyList {
+    public void add(Object elm) {
+        Guuards.checkNotNull(elm);
+        // (...)
+    }
+}
+----
+
+.Preconditions
+[source,java]
+----
+class MyList {
+  private void doAdd(Object elm) {
+    Preconditions.requireThat(elm).isNotNull();
+    // (...)
+  }
+}
+----
+
 == Commons Testing
 
 The artifact *Commons Testing** provides several utility classes for helping Java developers to write unit and integration tests.
 
 === Assertions
 
+[source,java]
+----
+Assertions.assertThat(value).isEqualTo(11));
+----
+
 === Verifiers
+
+[source,java]
+----
+        Verifier.verifyEqualsOf(Person.class)
+                .withArguments("Anna", 33)
+                .andVariants("Carol", 44)
+                .check();
+----
