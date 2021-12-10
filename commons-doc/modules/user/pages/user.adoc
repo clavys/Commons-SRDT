@@ -2,6 +2,18 @@
 
 == Commons Core
 
+=== Predicates on Booleans
+
+=== Predicates on Objects
+
+=== Predicates on Strings
+
+=== Predicates on Collections
+
+=== Predicates on Integers (int and long)
+
+
+
 
 === Guards and Preconditions
 
@@ -33,9 +45,18 @@ The artifact *Commons Testing** provides several utility classes for helping Jav
 
 === Assertions
 
+====  Number Assertions
 [source,java]
 ----
-Assertions.assertThat(value).isEqualTo(11));
+Assertions.assertThat(value).is(11));
+----
+
+==== Object Assertions
+
+[source,java]
+----
+assertThat(obj).isNull();
+assertThat(obj).notNull();
 ----
 
 === Verifiers
