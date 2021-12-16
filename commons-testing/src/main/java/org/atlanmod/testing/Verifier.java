@@ -28,15 +28,28 @@ import java.lang.reflect.Array;
  *      .{@link EqualsVerifier#check() check()}
  *
  * </code></pre>
+ *
+ * <pre><code class='java'>
+ * {@link Verifier#verifySerialization(Class) verifySerialization(String.class)}
+ *      .{@link SerializationVerifier#withArguments(Object...) withArguments("a String"}
+ *      .{@link SerializationVerifier#check() check()}
+ *
+ * </code></pre>
  */
 public class Verifier {
     private static final Map <Class<?>, Generator<?> > generators= new HashMap<>();
     private static Generator stringGenerator= new RandomStringGenerator();
     private static Generator integerGenerator= new RandomIntegerGenerator();
+    private static Generator charGenerator= new RandomCharGenerator();
+    //private static Generator byteGenerator= new RandomByteGenerator();
+    private static Generator booleanGenerator= new RandomBooleanGenerator();
 
     static {
         registerGenerator(integerGenerator);
         registerGenerator(stringGenerator);
+        registerGenerator(charGenerator);
+        //registerGenerator(byteGenerator);
+        registerGenerator(booleanGenerator);
     }
 
     private Verifier() {
@@ -54,17 +67,34 @@ public class Verifier {
         return new EqualsVerifier<>(type);
     }
 
-
-    public static <T extends Serializable> SerializationVerifier<T> verifySerializer(Class<T> type) {
+    /**
+     * Creates a {@link SerializationVerifier} for class {@code type}.
+     *
+     * @param type the class whose {@code serialize()} method will be verified.
+     * @param <T> the actual class of the class {@type}.
+     * @return an instance of {@link SerializationVerifier}.
+     */
+    public static <T extends Serializable> SerializationVerifier<T> verifySerialization(Class<T> type) {
         return new SerializationVerifier<>(type);
     }
 
+    /**
+     * Register a new generator for a specific type.
+     * @param generator the generator of the target class.
+     * @param <T> the target class to generate.
+     */
     public static <T> void registerGenerator(Generator <T> generator) {
         for (Class<?> type :generator.types() ) {
             generators.put(type, generator);
         }
     }
 
+    /**
+     *creation of an array generator from his simple generator.
+     * @param gen
+     * @param arrayType
+     * @return
+     */
     public static Generator createArrayGenerator(Generator gen,Class arrayType)  {
         Random random =new Random();
         int length= random.nextInt(10)+1;
@@ -89,55 +119,57 @@ public class Verifier {
         return newGenerator;
     }
 
-    public static Optional<List<Generator>> getGeneratorsForConstructor (Constructor<?> constr) {
+    /**
+     * Provide an optional list which contains the specific generator of each parameter of the constructor
+     * @param constr the constructor to be verified
+     * @return An optional list of generator
+     */
+    private static Optional<List<Generator>> getGeneratorsForConstructor (Constructor<?> constr) {
         if(constr.getParameters().length==0) {
-            System.out.println("Retour lorsque le constructeur n'a pas de paramètres : ");
             return Optional.of(Collections.emptyList());
         }
         List<Generator> generate = new ArrayList<>();
         for (Class<?> type : constr.getParameterTypes()) {
             Generator newgen = generators.get(type);
-            System.out.println("Le generateur associé est : "+newgen);
             if (newgen==null  && type.isArray()) {
                 Class<?> arrayType = type.getComponentType();
-                System.out.println("Le type de l'array est : "+arrayType);
                 newgen = generators.get(arrayType);
-                System.out.println("Le generateur associé au type de l'array est : "+newgen);
                 if (newgen!=null) {
                     //Creer le nouveau generateur d'array à partir de newgen et l'ajouter à generators
                     Generator newGenerator = createArrayGenerator(newgen,arrayType);
-                    //generators.put(arrayType,newGenerator)
                     registerGenerator(newGenerator);
                     newgen=newGenerator;
                 }
             }
             if(newgen==null) {
-                System.out.println("Retour lorsqu'on a pas de generateur pour ce constructeur : " +generate.size());
                 return Optional.empty();
             }
             generate.add(newgen);
         }
-        System.out.println("Retour lorsqu'on a trouvé un generateur pour ce constructeur de taille : " +generate.size());
         return Optional.of(generate);
     }
 
-    public static void getObjectFrom(Constructor<?> construc, List<Generator> listGenerateurs) {
+    /**
+     *
+     * @param construc
+     * @return
+     */
+    public static Object generateConstructor(Constructor<?> construc) {
+        List<Generator> listGenerateurs = getGeneratorsForConstructor(construc).get();
         List<Object> generatedArguments = new ArrayList<>();
         for (Generator gen : listGenerateurs) {
             generatedArguments.add(gen.generate());
         }
-        System.out.println("la taille de la liste est : "+generatedArguments.size());
-
-        for(Object j : generatedArguments) {
-            System.out.println("elt de la liste "+j);
-        }
         try {
-            Object o = construc.newInstance(generatedArguments.toArray());
-            System.out.println("La nouvelle instance de l'objet: {" + o +  "}\n");
+            Object o =  construc.newInstance(generatedArguments.toArray());
+            return o;
         } catch (InstantiationException | IllegalAccessException |InvocationTargetException e ) {
             e.printStackTrace();
-            System.err.println(e.getCause().getClass());
-            //constructor.getExceptionTypes(); le parcourir et faire un test de sous typage avec isAssignableFrom
+            return e.getCause().getClass();
+
+            //System.out.println("La classe de l'erreur :"+e.getCause().getClass());
+            //System.out.println("Les exceptions du constructeur "+construc.getExceptionTypes());
+            // le parcourir et faire un test de sous typage avec isAssignableFrom
         }
        /* catch (Exception f) {
             System.err.println("Exception pas de notre faute ");
@@ -148,16 +180,13 @@ public class Verifier {
     public static void generateConstructorsOfClass(Class klass)  {
         /* Au cas où on genere les constructeurs de la classe Integer,
          on doit generer un String d'entiers pour le constructeur*/
-        System.out.println("La classe du constructeur "+klass.getName()+" vs "+Integer.class.getName());
         if (klass.getName().equals(Integer.class.getName())) {
             registerGenerator(new RandomStringOfIntGenerator());
         }
         for (Constructor<?> each : klass.getConstructors()) {
-            System.out.println("La signature du constructeur : "+each);
             Optional<List<Generator>> optionalGeneratorList =getGeneratorsForConstructor(each);
             if(optionalGeneratorList.isPresent()) {
-                List<Generator> generatorList = optionalGeneratorList.get();
-                getObjectFrom(each, generatorList);
+                generateConstructor(each);
             }
         }
         //On remet le generateur de String par défaut
@@ -167,10 +196,6 @@ public class Verifier {
     }
 
     public static void main(String[] args) {
-        generateConstructorsOfClass(Person.class);
-        System.out.println("----------------------------------");
-        System.out.println("----------------------------------");
-        System.out.println("----------------------------------");
-        generateConstructorsOfClass(Person.class);
+        generateConstructorsOfClass(String.class);
     }
 }

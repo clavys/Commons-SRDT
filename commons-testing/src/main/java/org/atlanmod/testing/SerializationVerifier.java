@@ -39,7 +39,6 @@ public class SerializationVerifier<T extends Serializable> {
         //deserialiser object
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(boos.toByteArray()));
         Object object2 = (Object) ois.readObject();
-        System.out.println(object2);
         assertIsEqual(object,object2);
     }
 
