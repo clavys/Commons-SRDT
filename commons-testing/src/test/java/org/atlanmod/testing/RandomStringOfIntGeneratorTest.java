@@ -9,10 +9,10 @@ class RandomStringOfIntGeneratorTest {
 
     @Test
     void generate() {
-        RandomStringOfIntGenerator genString = new RandomStringOfIntGenerator();
-        assertEquals (genString.generate().getClass(),String.class);
-        //assertThat(genString.generate()).hasNoCause()
-        //assertDoesNotThrow(Integer.valueOf(genString.generate()));
+        RandomStringOfIntGenerator stringOfIntGenerator = new RandomStringOfIntGenerator();
+        String chaine = stringOfIntGenerator.generate();
+        assertNotEquals(null,chaine);
+        assertEquals (chaine.getClass(),String.class);
     }
 
     @Test

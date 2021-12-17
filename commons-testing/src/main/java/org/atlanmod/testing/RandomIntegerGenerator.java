@@ -4,6 +4,9 @@ import java.util.Random;
 public class RandomIntegerGenerator implements Generator<Integer>{
 
     @Override
+    /**
+     *Generate an integer.
+     */
     public Integer generate() {
         int min= 0;
         int max= 20;
@@ -15,6 +18,9 @@ public class RandomIntegerGenerator implements Generator<Integer>{
     }
 
     @Override
+    /**
+     *return an array of class which contains the integer and int class.
+     */
     public Class<Integer>[] types() {
         Class[] types={Integer.class,int.class};
         return types;

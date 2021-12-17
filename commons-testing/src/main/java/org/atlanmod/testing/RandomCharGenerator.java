@@ -4,6 +4,9 @@ import java.util.Random;
 
 public class RandomCharGenerator implements Generator<Character>{
     @Override
+    /**
+     *Generate a char.
+     */
     public Character generate() {
         Random random = new Random();
         int randomInt = random.nextInt(10) + 48;
@@ -16,6 +19,9 @@ public class RandomCharGenerator implements Generator<Character>{
     }
 
     @Override
+    /**
+     *return an array of class which contains the Character class.
+     */
     public Class[] types() {
         Class[] types={Character.class};
         return types;

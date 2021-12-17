@@ -8,8 +8,10 @@ class RandomBooleanGeneratorTest {
 
     @Test
     void generate() {
-        RandomBooleanGenerator genBool = new RandomBooleanGenerator();
-        assertEquals (genBool.generate().getClass(),Boolean.class);
+        RandomBooleanGenerator booleanGenerator = new RandomBooleanGenerator();
+        Boolean booleen = booleanGenerator.generate();
+        assertNotEquals(null,booleen);
+        assertEquals (booleen.getClass(),Boolean.class);
     }
 
     @Test

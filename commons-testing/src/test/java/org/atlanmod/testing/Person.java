@@ -39,6 +39,14 @@ public class Person implements Serializable {
                 '}';
     }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public Integer getAge() {
+        return this.age;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(name, age);

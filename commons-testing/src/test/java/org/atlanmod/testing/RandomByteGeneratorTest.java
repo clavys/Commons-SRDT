@@ -4,15 +4,16 @@ import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class RandomByteGeneratorTest {
 
     @Test
     void generate()  {
-        RandomByteGenerator genByte = new RandomByteGenerator();
-        assertEquals (genByte.generate().getClass(),Byte.class);
+        RandomByteGenerator byteGenerator = new RandomByteGenerator();
+        Byte aByte = byteGenerator.generate();
+        assertNotEquals(null,aByte);
+        assertEquals (aByte.getClass(),Byte.class);
     }
 
     @Test

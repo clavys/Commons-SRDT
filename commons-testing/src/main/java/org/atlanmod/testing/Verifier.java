@@ -8,12 +8,11 @@
 package org.atlanmod.testing;
 
 import org.atlanmod.commons.Throwables;
-
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
 import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * Entry point for verification methods that improve unit tests.
@@ -37,12 +36,12 @@ import java.lang.reflect.Array;
  * </code></pre>
  */
 public class Verifier {
-    private static final Map <Class<?>, Generator<?> > generators= new HashMap<>();
-    private static Generator stringGenerator= new RandomStringGenerator();
-    private static Generator integerGenerator= new RandomIntegerGenerator();
-    private static Generator charGenerator= new RandomCharGenerator();
+    private static final Map<Class<?>,Generator<?>> generators= new HashMap<>();
+    private static Generator<String> stringGenerator = new RandomStringGenerator();
+    private static Generator<Integer> integerGenerator = new RandomIntegerGenerator();
+    private static Generator<Character> charGenerator = new RandomCharGenerator();
     //private static Generator byteGenerator= new RandomByteGenerator();
-    private static Generator booleanGenerator= new RandomBooleanGenerator();
+    private static Generator<Boolean> booleanGenerator = new RandomBooleanGenerator();
 
     static {
         registerGenerator(integerGenerator);
@@ -91,19 +90,19 @@ public class Verifier {
 
     /**
      *creation of an array generator from his simple generator.
-     * @param gen
-     * @param arrayType
-     * @return
+     * @param gen the  simple generator
+     * @param arrayType the class of the array generator we want to create
+     * @return An array generator
      */
     public static Generator createArrayGenerator(Generator gen,Class arrayType)  {
         Random random =new Random();
-        int length= random.nextInt(10)+1;
-        Generator newGenerator= new Generator() {
+        int length= random.nextInt(10) + 1;
+        return new Generator() {
             @Override
             public Object generate() {
-                Object list = Array.newInstance(arrayType,length);
-                for (int i=0; i<length; i++) {
-                    Array.set(list,i,gen.generate());
+                Object list = Array.newInstance(arrayType, length);
+                for (int i = 0; i < length; i++) {
+                    Array.set(list, i, gen.generate());
                 }
                 return list;
             }
@@ -116,7 +115,6 @@ public class Verifier {
                 return listTypes.toArray(new Class[0]);
             }
         };
-        return newGenerator;
     }
 
     /**
@@ -136,9 +134,9 @@ public class Verifier {
                 newgen = generators.get(arrayType);
                 if (newgen!=null) {
                     //Creer le nouveau generateur d'array à partir de newgen et l'ajouter à generators
-                    Generator newGenerator = createArrayGenerator(newgen,arrayType);
+                    Generator newGenerator = createArrayGenerator(newgen, arrayType);
                     registerGenerator(newGenerator);
-                    newgen=newGenerator;
+                    newgen = newGenerator;
                 }
             }
             if(newgen==null) {
@@ -150,9 +148,9 @@ public class Verifier {
     }
 
     /**
-     *
-     * @param construc
-     * @return
+     *Generate a new instance of a constructor and return it.
+     * @param construc the constructor we want to generate
+     * @return A new instance of a constructor
      */
     public static Object generateConstructor(Constructor<?> construc) {
         List<Generator> listGenerateurs = getGeneratorsForConstructor(construc).get();
@@ -161,38 +159,33 @@ public class Verifier {
             generatedArguments.add(gen.generate());
         }
         try {
-            Object o =  construc.newInstance(generatedArguments.toArray());
-            return o;
+           return   construc.newInstance(generatedArguments.toArray());
         } catch (InstantiationException | IllegalAccessException |InvocationTargetException e ) {
             e.printStackTrace();
             return e.getCause().getClass();
-
-            //System.out.println("La classe de l'erreur :"+e.getCause().getClass());
-            //System.out.println("Les exceptions du constructeur "+construc.getExceptionTypes());
-            // le parcourir et faire un test de sous typage avec isAssignableFrom
         }
-       /* catch (Exception f) {
-            System.err.println("Exception pas de notre faute ");
-            f.printStackTrace();
-        }*/
     }
 
-    public static void generateConstructorsOfClass(Class klass)  {
-        /* Au cas où on genere les constructeurs de la classe Integer,
-         on doit generer un String d'entiers pour le constructeur*/
+    /**
+     * Generate a new instance of the constructors of a class and put them in a list.
+     * @param klass the class we want to generate all constructors
+     * @return A list of objects of type klass
+     */
+    public static List<Object> generateConstructorsOfClass(Class klass)  {
         if (klass.getName().equals(Integer.class.getName())) {
             registerGenerator(new RandomStringOfIntGenerator());
         }
+        List<Object> listConstructors = new ArrayList<>();
         for (Constructor<?> each : klass.getConstructors()) {
-            Optional<List<Generator>> optionalGeneratorList =getGeneratorsForConstructor(each);
+            Optional<List<Generator>> optionalGeneratorList = getGeneratorsForConstructor(each);
             if(optionalGeneratorList.isPresent()) {
-                generateConstructor(each);
+                listConstructors.add(generateConstructor(each));
             }
         }
-        //On remet le generateur de String par défaut
         if (klass.getName().equals(Integer.class.getName())) {
             registerGenerator(stringGenerator);
         }
+        return listConstructors;
     }
 
     public static void main(String[] args) {

@@ -1,15 +1,17 @@
 package org.atlanmod.testing;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RandomStringGeneratorTest {
 
     @Test
     void generate() {
-        RandomStringGenerator genString = new RandomStringGenerator();
-        assertEquals (genString.generate().getClass(),String.class);
+        RandomStringGenerator stringGenerator = new RandomStringGenerator();
+        String chaine = stringGenerator.generate();
+        assertNotEquals(null,chaine);
+        assertEquals (chaine.getClass(),String.class);
     }
 
     @Test

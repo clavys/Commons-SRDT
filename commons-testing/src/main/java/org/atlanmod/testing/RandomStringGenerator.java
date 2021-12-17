@@ -4,7 +4,10 @@ import java.util.Random;
 public class RandomStringGenerator implements Generator<String> {
 
     @Override
-    public String generate() {
+    /**
+     *Generate a string.
+     */
+ public String generate() {
         Random random = new Random();
         int length= random.nextInt(10)+1;
         StringBuilder sb = new StringBuilder(length);
@@ -21,6 +24,9 @@ public class RandomStringGenerator implements Generator<String> {
     }
 
     @Override
+    /**
+     *return an array of class which contains the string class.
+     */
     public Class<String>[] types() {
         Class[] types={String.class};
         return types;

@@ -6,6 +6,9 @@ public class RandomStringOfIntGenerator implements Generator{
 
 
     @Override
+    /**
+     *Generate a string.
+     */
     public String generate() {
         Random random = new Random();
         int length= random.nextInt(10)+1;
@@ -19,6 +22,9 @@ public class RandomStringOfIntGenerator implements Generator{
     }
 
     @Override
+    /**
+     *return an array of class which contains the string class.
+     */
     public Class[] types() {
         Class[] types={String.class};
         return types;

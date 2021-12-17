@@ -8,8 +8,10 @@ class RandomCharGeneratorTest {
 
     @Test
     void generate() {
-        RandomCharGenerator genChar = new RandomCharGenerator();
-        assertEquals (genChar.generate().getClass(),Character.class);
+        RandomCharGenerator charGenerator = new RandomCharGenerator();
+        Character caractere = charGenerator.generate();
+        assertNotEquals(null,caractere);
+        assertEquals (caractere.getClass(),Character.class);
     }
 
     @Test
