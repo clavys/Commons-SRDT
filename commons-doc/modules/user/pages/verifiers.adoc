@@ -1,0 +1,91 @@
+= Verifiers
+
+== SerializationVerifier
+Allows to check the serialization of a class.
+
+[source,java]
+----
+Verifier.verifySerialization(Person.class)
+    .withArguments("Anna",25)
+    .check();
+
+----
+
+== generateConstructor
+
+Allows to generate a new instance of a constructor by using several type generators which are:
+
+* *_<<RandomIntegerGenerator>>_*
+* *_<<RandomStringGenerator>>_*
+* *_<<RandomStringOfIntGenerator>>_*
+* *_<<RandomBooleanGenerator>>_*
+* *_<<RandomCharGenerator>>_*
+* *_<<RandomByteGenerator>>_*
+
+[source,java]
+----
+Constructor constr = Person.class.getConstructors()[0];
+Object generatedConstructor = Verifier.generateConstructor(constr);
+----
+
+== RandomIntegerGenerator
+
+Allows to generate a random *integer*.
+[source,java]
+----
+RandomIntegerGenerator integerGenerator = new RandomIntegerGenerator();
+Integer entier = integerGenerator.generate();
+----
+
+== RandomStringGenerator
+
+Allows to generate a random *string*.
+[source,java]
+----
+RandomStringGenerator stringGenerator = new RandomStringGenerator();
+String chaine = stringGenerator.generate();
+----
+
+== RandomStringOfIntGenerator
+
+Allows to generate a random *string of int*.
+[source,java]
+----
+RandomStringOfIntGenerator stringOfIntGenerator = new RandomStringOfIntGenerator();
+String chaine = stringOfIntGenerator.generate();
+----
+
+== RandomBooleanGenerator
+
+Allows to generate a random *boolean*.
+[source,java]
+----
+RandomBooleanGenerator booleanGenerator = new RandomBooleanGenerator();
+Boolean booleen = booleanGenerator.generate();
+----
+
+== RandomCharGenerator
+
+Allows to generate a random *character*.
+[source,java]
+----
+RandomCharGenerator charGenerator = new RandomCharGenerator();
+Character caractere = charGenerator.generate();
+----
+
+== RandomByteGenerator
+
+Allows to generate a random *byte*.
+[source,java]
+----
+RandomByteGenerator byteGenerator = new RandomByteGenerator();
+Byte aByte = byteGenerator.generate();
+----
+
+== generateConstructorsOfClass
+
+Allows to generate a new instance of all the constructors of a class
+[source,java]
+----
+Verifier.generateConstructorsOfClass(Person.class);
+----

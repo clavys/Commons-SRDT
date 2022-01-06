@@ -17,6 +17,13 @@
 
 === Guards and Preconditions
 
+precondition()
+Precondition allows us to check a condition before proceeding with code. That is, if a Condition stated evaluates to false the program execution stops.
+The one big condition in Precondition (LOLOLOL) is that it works in production code as well as development code. If the chosen Condition stated evaluates to false precondition will stop the executing code, and log a chosen message
+
+Guards works slightly differently. It defines different paths through the code depending on whether the expression resolves to true or false. Because we are dealing with code paths here,
+
+
 .Guards
 [source,java]
 ----

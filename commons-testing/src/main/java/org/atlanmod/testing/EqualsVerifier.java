@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Atlanmod.
+ * Copyright (c) 2022 Naomod.
  *
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v2.0 which accompanies
@@ -116,8 +116,8 @@ public class EqualsVerifier<T> {
 
     private static Class[] mapToClasses(Object[] objects) {
         return Stream.of(objects)
-            .map(Object::getClass)
-            .toArray(Class[]::new);
+                .map(Object::getClass)
+                .toArray(Class[]::new);
     }
 
     public static void assertIsEqual(Object one, Object other) {
