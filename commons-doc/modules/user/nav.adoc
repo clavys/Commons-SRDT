@@ -1,1 +1,2 @@
 * xref:user.adoc[User Guide]
+* xref:verifiers.adoc[Verifiers]

@@ -41,7 +41,7 @@ public class ObjectPredicate<Yourself extends ObjectPredicate, T> extends Predic
     }
 
     public Yourself isEqualTo(Object other) {
-        if(!value.equals(other)) {
+        if(!Objects.equals(value,other)) {
             context.send(PATTERN, value, "equal to", other);
         }
         return me();
