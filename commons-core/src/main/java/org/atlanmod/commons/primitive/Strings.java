@@ -160,9 +160,14 @@ public final class Strings {
    * Checks whether a String is null, empty, or contains only whitespaces.
    *
    * @param value the String to check
-   * @return {@code true} if the value is null, empty, or only contains whitespaces.
+   * @return {@code true} if the value is null, empty, or only has whitespaces.
    */
   public static boolean isBlank(@Nonnull final String value) {
-    return value == null || value.trim().isEmpty();
+    if (value == null || value.isEmpty()) return true;
+
+    for (int i = 0; i < value.length(); i++) {
+      if (!Character.isWhitespace(value.charAt(i))) return false;
+    }
+    return true;
   }
 }
