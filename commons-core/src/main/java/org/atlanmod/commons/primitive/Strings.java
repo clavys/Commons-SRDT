@@ -163,11 +163,6 @@ public final class Strings {
    * @return {@code true} if the value is empty or only has whitespaces.
    */
   public static boolean isBlank(@Nonnull final String value) {
-    int length = value.length();
-    if (length == 0) return true;
-    for (int i = 0; i < length; i++) {
-      if (!Character.isWhitespace(value.charAt(i))) return false;
-    }
-    return true;
+    return value == null || value.trim().isEmpty();
   }
 }
