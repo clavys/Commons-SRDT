@@ -157,10 +157,10 @@ public final class Strings {
   }
 
   /**
-   * Checks whether a String is empty or contains only whitespaces.
+   * Checks whether a String is null, empty, or contains only whitespaces.
    *
    * @param value the String to check
-   * @return {@code true} if the value is empty or only has whitespaces.
+   * @return {@code true} if the value is null, empty, or only contains whitespaces.
    */
   public static boolean isBlank(@Nonnull final String value) {
     return value == null || value.trim().isEmpty();
