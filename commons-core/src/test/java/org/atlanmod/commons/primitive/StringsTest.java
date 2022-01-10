@@ -82,4 +82,16 @@ class StringsTest extends AbstractTest {
         byte[] expected0 = string0.getBytes();
         assertThat(actual0).containsExactly(expected0);
     }
+
+    @Test
+    void testIsBlank() {
+        final String empty = "";
+        final String oneBlank = " ";
+        final String longBlank = "                                                                    ";
+        final String pointWithBlanks = "                         .                     ";
+        assertThat(Strings.isBlank(empty)).isTrue();
+        assertThat(Strings.isBlank(oneBlank)).isTrue();
+        assertThat(Strings.isBlank(longBlank)).isTrue();
+        assertThat(Strings.isBlank(pointWithBlanks)).isFalse();
+    }
 }
