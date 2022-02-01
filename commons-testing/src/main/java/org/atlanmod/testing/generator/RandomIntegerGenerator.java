@@ -10,28 +10,22 @@ import org.atlanmod.testing.Generator;
 
 import java.util.Random;
 
-public class RandomIntegerGenerator implements Generator<Integer> {
+public class RandomIntegerGenerator extends IntegerGenerator implements Generator<Integer> {
 
-    @Override
-    /**
-     *Generate an integer.
-     */
-    public Integer generate() {
-        int min= 0;
-        int max= 20;
+    private static final int SIZE = 5;
+    private final int[] values = new int[SIZE];
+    private int index = 0;
+
+    public RandomIntegerGenerator() {
         Random r = new Random();
-        int value = r.nextInt((max - min) + 1);
-        boolean bool = r.nextBoolean();
-       // if(!bool) value=-1*value;
-        return value;
+        for (int i = 0; i < SIZE; i++) {
+            values[i] = r.nextInt();
+        }
     }
 
     @Override
-    /**
-     *return an array of class which contains the integer and int class.
-     */
-    public Class<Integer>[] types() {
-        Class[] types={Integer.class,int.class};
-        return types;
+    public Integer generate() {
+        return values[index++ % SIZE];
     }
+
 }

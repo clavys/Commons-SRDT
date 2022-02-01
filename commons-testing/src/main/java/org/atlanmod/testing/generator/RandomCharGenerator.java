@@ -12,27 +12,25 @@ import org.atlanmod.testing.Generator;
 import java.util.Random;
 
 public class RandomCharGenerator implements Generator<Character> {
-    @Override
-    /**
-     *Generate a char.
-     */
-    public Character generate() {
+    private static final int SIZE = 5;
+    private final char[] values = new char[SIZE];
+    private int index = 0;
+
+    public RandomCharGenerator() {
         Random random = new Random();
-        int randomInt = random.nextInt(10) + 48;
-        int randomUpperCaseAlphabet = random.nextInt(26) + 65;
-        int randomLowerCaseAlphabet = random.nextInt(26) + 97;
-        int[] possibleValues = {randomInt, randomLowerCaseAlphabet, randomUpperCaseAlphabet};
-        int choice = random.nextInt(3);
-        char generatedChar = (char)possibleValues[choice];
-        return generatedChar;
+        int offset = 'a';
+        for (int i = 0; i < values.length; i++) {
+            values[i] = (char) (offset + random.nextInt(26));
+        }
     }
 
     @Override
-    /**
-     *return an array of class which contains the Character class.
-     */
+    public Character generate() {
+        return values[index++ % values.length];
+    }
+
+    @Override
     public Class[] types() {
-        Class[] types={Character.class};
-        return types;
+        return new Class[]{Character.class, char.class};
     }
 }

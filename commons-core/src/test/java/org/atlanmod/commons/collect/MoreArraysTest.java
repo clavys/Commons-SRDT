@@ -175,6 +175,19 @@ class MoreArraysTest extends AbstractTest {
     }
 
     @Test
+    void testContainsAll() {
+        Integer[] container = new Integer[]{0, 1, 2, 3, 4};
+        Integer[] contained = new Integer[] {0,4};
+        Integer[] notContained = new Integer[]{0, 1, 2, 3, 4, 5};
+
+        assertThat(MoreArrays.containsAll(container, contained)).isTrue();
+        assertThat(MoreArrays.containsAll(container, container)).isTrue();
+        assertThat(MoreArrays.containsAll(container, new Integer[0])).isTrue();
+
+        assertThat(MoreArrays.contains(container, notContained)).isFalse();
+    }
+
+    @Test
     void testIndexOf() {
         Integer[] array0 = new Integer[]{0, 1, 2, 2, 0, 1};
 

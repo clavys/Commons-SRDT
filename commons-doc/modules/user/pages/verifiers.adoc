@@ -6,9 +6,7 @@ Allows to check the serialization of a class.
 [source,java]
 ----
 Verifier.verifySerialization(Person.class)
-    .withArguments("Anna",25)
     .check();
-
 ----
 
 == generateConstructor

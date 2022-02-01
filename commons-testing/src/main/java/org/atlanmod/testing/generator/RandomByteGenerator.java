@@ -13,23 +13,22 @@ import java.util.Random;
 
 public class RandomByteGenerator implements Generator<Byte> {
 
-    @Override
-    /**
-     *Generate a byte.
-     */
-    public Byte generate() {
+    private static final int SIZE = 5;
+    private final byte[] values = new byte[SIZE];
+    private int index = 0;
+
+    public RandomByteGenerator() {
         Random rd = new Random();
-        byte[] arr = new byte[7];
-        rd.nextBytes(arr);
-        return arr[2];
+        rd.nextBytes(values);
     }
 
     @Override
-    /**
-     * return an array of class which contains the byte class.
-     */
+    public Byte generate() {
+        return values[index++ % values.length];
+    }
+
+    @Override
     public Class<Byte>[] types() {
-        Class[] types={Byte.class,byte.class};
-        return types;
+        return new Class[]{Byte.class,byte.class};
     }
 }

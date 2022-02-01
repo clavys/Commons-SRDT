@@ -5,21 +5,14 @@
  * available under the terms of the Eclipse Public License v2.0 which accompanies
  * this distribution, and is available at https://www.eclipse.org/legal/epl-2.0/
  */
-package org.atlanmod.testing;
+package org.atlanmod.testing.generator;
 
-
-public interface Generator <T>  {
-
-    /**
-     *
-     * @return
-     */
-    T generate();
+public abstract class IntegerGenerator {
 
     /**
-     *
-     * @return
+     *return an array of class which contains the integer and int class.
      */
-    Class<T>[] types();
-
+    public Class<Integer>[] types() {
+        return new Class[]{Integer.class, int.class};
+    }
 }

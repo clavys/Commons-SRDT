@@ -254,6 +254,26 @@ public final class MoreArrays {
     }
 
     /**
+     * Checks if the {@code subArray} is contained by the given {@code array}.
+     *
+     * @param array the array to search through
+     * @param subArray the subarray to check
+     *
+     * @return {@code true} if the array contains all the elements of the subarray, {@code false} otherwise
+     *
+     * @throws NullPointerException if the {@code array} or {@code subarray} is {@code null}
+     */
+    public static <T> boolean containsAll(T[] array, @Nonnull T[] subArray) {
+        checkNotNull(array, "array");
+        checkNotNull(subArray, "subArray");
+
+        for (Object each : subArray) {
+            if (!contains(array, each)) return false;
+        }
+        return true;
+    }
+
+    /**
      * Finds the index of the given {@code value} in the {@code array}.
      *
      * @param array the array to search through for the object

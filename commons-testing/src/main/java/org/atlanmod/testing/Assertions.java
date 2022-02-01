@@ -47,6 +47,10 @@ public class Assertions {
         return new CollectionPredicate(CONTEXT, expression);
     }
 
+    public static ArrayPredicate assertThat(Object[] expression) {
+        return new ArrayPredicate(CONTEXT, expression);
+    }
+
     static class AssertionContext implements PredicateContext {
         @Override
         public void send(String pattern, Object... args) {

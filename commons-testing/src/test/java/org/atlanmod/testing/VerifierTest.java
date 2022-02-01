@@ -7,7 +7,7 @@
  */
 package org.atlanmod.testing;
 
-import org.atlanmod.testing.generator.RandomBooleanGenerator;
+import org.atlanmod.testing.generator.RoundRobinBooleanGenerator;
 import org.atlanmod.testing.generator.RandomIntegerGenerator;
 import org.atlanmod.testing.generator.RandomStringGenerator;
 import org.junit.jupiter.api.Test;
@@ -57,7 +57,7 @@ class VerifierTest {
      */
     @Test
     void createArrayGeneratorForBoolean() {
-        RandomBooleanGenerator Gen = new RandomBooleanGenerator();
+        RoundRobinBooleanGenerator Gen = new RoundRobinBooleanGenerator();
         Class GenType= Gen.types()[0];
         Object arrayGenType = Array.newInstance(GenType, 0).getClass();
         Generator arrayGenerator = Verifier.createArrayGenerator(Gen,GenType);

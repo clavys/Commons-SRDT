@@ -9,26 +9,17 @@ package org.atlanmod.testing.generator;
 
 import org.atlanmod.testing.Generator;
 
-import java.util.Random;
-
-public class RandomBooleanGenerator implements Generator<Boolean> {
+public class RoundRobinBooleanGenerator implements Generator<Boolean> {
+    private static final boolean[] VALUES = {true, false};
+    private int index = 0;
 
     @Override
-    /**
-     * Generate a boolean.
-     */
     public Boolean generate() {
-        Random r = new Random();
-        boolean bool = r.nextBoolean();
-        return bool;
+        return VALUES[index++ % VALUES.length];
     }
 
     @Override
-    /**
-     * return an array of class which contains the boolean class.
-     */
     public Class<Boolean>[] types() {
-        Class[] types={Boolean.class};
-        return types;
+        return new Class[]{Boolean.class, boolean.class};
     }
 }

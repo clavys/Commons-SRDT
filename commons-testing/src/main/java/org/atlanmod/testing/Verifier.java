@@ -43,7 +43,7 @@ public class Verifier {
     private static Generator<Integer> integerGenerator = new RandomIntegerGenerator();
     private static Generator<Character> charGenerator = new RandomCharGenerator();
     //private static Generator byteGenerator= new RandomByteGenerator();
-    private static Generator<Boolean> booleanGenerator = new RandomBooleanGenerator();
+    private static Generator<Boolean> booleanGenerator = new RoundRobinBooleanGenerator();
 
     static {
         registerGenerator(integerGenerator);
