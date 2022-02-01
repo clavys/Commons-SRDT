@@ -7,26 +7,17 @@
  */
 package org.atlanmod.testing.generator;
 
-import org.atlanmod.testing.Generator;
-
 import java.util.Random;
 
-public class RandomCharGenerator implements Generator<Character> {
-    private static final int SIZE = 5;
-    private final char[] values = new char[SIZE];
-    private int index = 0;
+public class RandomCharGenerator extends AbstractGenerator<Character> {
 
     public RandomCharGenerator() {
+        values = new Character[SIZE];
         Random random = new Random();
         int offset = 'a';
         for (int i = 0; i < values.length; i++) {
-            values[i] = (char) (offset + random.nextInt(26));
+            values[i] = Character.valueOf((char) (offset + random.nextInt(26)));
         }
-    }
-
-    @Override
-    public Character generate() {
-        return values[index++ % values.length];
     }
 
     @Override

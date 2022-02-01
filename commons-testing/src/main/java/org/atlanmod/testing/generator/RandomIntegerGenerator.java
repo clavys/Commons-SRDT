@@ -6,26 +6,19 @@
  * this distribution, and is available at https://www.eclipse.org/legal/epl-2.0/
  */
 package org.atlanmod.testing.generator;
+import org.atlanmod.commons.Preconditions;
 import org.atlanmod.testing.Generator;
 
 import java.util.Random;
 
-public class RandomIntegerGenerator extends IntegerGenerator implements Generator<Integer> {
-
-    private static final int SIZE = 5;
-    private final int[] values = new int[SIZE];
-    private int index = 0;
+public class RandomIntegerGenerator extends IntegerGenerator {
 
     public RandomIntegerGenerator() {
+        values = new Integer[SIZE];
         Random r = new Random();
         for (int i = 0; i < SIZE; i++) {
-            values[i] = r.nextInt();
+            values[i] = Integer.valueOf(r.nextInt());
         }
-    }
-
-    @Override
-    public Integer generate() {
-        return values[index++ % SIZE];
     }
 
 }

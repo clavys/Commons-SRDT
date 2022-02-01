@@ -7,16 +7,9 @@
  */
 package org.atlanmod.testing.generator;
 
-import org.atlanmod.testing.Generator;
+public class BoundaryIntegerGenerator extends IntegerGenerator {
 
-public class BoundaryIntegerGenerator extends IntegerGenerator implements Generator<Integer> {
-
-    private static final int[] VALUES = new int[]{Integer.MIN_VALUE, 0, Integer.MAX_VALUE};
-    private int index = 0;
-
-    @Override
-    public Integer generate() {
-        return this.VALUES[index++ % VALUES.length];
+    public BoundaryIntegerGenerator() {
+        values = new Integer[]{Integer.MIN_VALUE, 0, Integer.MAX_VALUE};
     }
-
 }

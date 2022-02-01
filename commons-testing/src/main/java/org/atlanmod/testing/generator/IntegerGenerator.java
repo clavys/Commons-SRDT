@@ -7,7 +7,7 @@
  */
 package org.atlanmod.testing.generator;
 
-public abstract class IntegerGenerator {
+public abstract class IntegerGenerator extends AbstractGenerator<Integer>{
 
     /**
      *return an array of class which contains the integer and int class.

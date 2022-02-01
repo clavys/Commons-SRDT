@@ -6,29 +6,23 @@
  * this distribution, and is available at https://www.eclipse.org/legal/epl-2.0/
  */
 package org.atlanmod.testing.generator;
-import org.atlanmod.testing.Generator;
 
-import java.io.UnsupportedEncodingException;
+import org.atlanmod.commons.collect.MoreArrays;
+
 import java.util.Random;
 
-public class RandomByteGenerator implements Generator<Byte> {
-
-    private static final int SIZE = 5;
-    private final byte[] values = new byte[SIZE];
-    private int index = 0;
+public class RandomByteGenerator extends AbstractGenerator<Byte> {
 
     public RandomByteGenerator() {
+        byte[] bytes = new byte[SIZE];
         Random rd = new Random();
-        rd.nextBytes(values);
+        rd.nextBytes(bytes);
+        values = MoreArrays.toObject(bytes);
     }
 
-    @Override
-    public Byte generate() {
-        return values[index++ % values.length];
-    }
 
     @Override
     public Class<Byte>[] types() {
-        return new Class[]{Byte.class,byte.class};
+        return new Class[]{Byte.class, byte.class};
     }
 }

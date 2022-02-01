@@ -7,15 +7,10 @@
  */
 package org.atlanmod.testing.generator;
 
-import org.atlanmod.testing.Generator;
+public class RoundRobinBooleanGenerator extends AbstractGenerator<Boolean> {
 
-public class RoundRobinBooleanGenerator implements Generator<Boolean> {
-    private static final boolean[] VALUES = {true, false};
-    private int index = 0;
-
-    @Override
-    public Boolean generate() {
-        return VALUES[index++ % VALUES.length];
+    public RoundRobinBooleanGenerator() {
+        values = new Boolean[]{true, false};
     }
 
     @Override
