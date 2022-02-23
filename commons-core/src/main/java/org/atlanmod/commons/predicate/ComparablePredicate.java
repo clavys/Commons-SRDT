@@ -1,13 +1,14 @@
 package org.atlanmod.commons.predicate;
 
-public class ComparablePredicate<Yourself extends ComparablePredicate, T extends Comparable>
-        extends ObjectPredicate<Yourself, T>{
+@SuppressWarnings("PMD.GenericsNaming")
+public class ComparablePredicate<YOURSELF extends ComparablePredicate, T extends Comparable>
+        extends ObjectPredicate<YOURSELF, T>{
 
     public ComparablePredicate(PredicateContext context, T value) {
         super(context, value);
     }
 
-    public Yourself isGreaterThan(T other) {
+    public YOURSELF isGreaterThan(T other) {
         boolean expected = this.value.compareTo(other) > 0;
         if(!expected) {
             context.send(PATTERN, value, "greater than", other);
@@ -15,7 +16,7 @@ public class ComparablePredicate<Yourself extends ComparablePredicate, T extends
         return me();
     }
 
-    public Yourself isGreaterThanOrEqualTo(T other) {
+    public YOURSELF isGreaterThanOrEqualTo(T other) {
         boolean expected = this.value.compareTo(other) >= 0;
         if(!expected) {
             context.send(PATTERN, value, "greater than", other);
@@ -23,7 +24,7 @@ public class ComparablePredicate<Yourself extends ComparablePredicate, T extends
         return me();
     }
 
-    public Yourself isLessThan(T other) {
+    public YOURSELF isLessThan(T other) {
         boolean expected = this.value.compareTo(other) < 0;
         if(!expected) {
             context.send(PATTERN, value, "less than", other);
@@ -31,7 +32,7 @@ public class ComparablePredicate<Yourself extends ComparablePredicate, T extends
         return me();
     }
 
-    public Yourself isLessThanOrEqualTo(T other) {
+    public YOURSELF isLessThanOrEqualTo(T other) {
         boolean expected = this.value.compareTo(other) <= 0;
         if(!expected) {
             context.send(PATTERN, value, "less or equal to", other);
@@ -39,7 +40,7 @@ public class ComparablePredicate<Yourself extends ComparablePredicate, T extends
         return me();
     }
 
-    public Yourself isEqualTo(T other) {
+    public YOURSELF isEqualTo(T other) {
         boolean expected = this.value.compareTo(other) == 0;
         if(!expected) {
             context.send(PATTERN, value, "equal to", other);
