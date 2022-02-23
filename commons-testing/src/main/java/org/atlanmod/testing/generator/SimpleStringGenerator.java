@@ -7,14 +7,10 @@
  */
 package org.atlanmod.testing.generator;
 
-public class RoundRobinBooleanGenerator extends AbstractGenerator<Boolean> {
+public class SimpleStringGenerator extends StringGenerator {
 
-    public void initializeValues() {
-        this.setValues(new Boolean[]{true, false});
-    }
-
-    @Override
-    public Class<Boolean>[] types() {
-        return new Class[]{Boolean.class, boolean.class};
-    }
+  public void initializeValues() {
+    this.setValues(new String[] {"To be or not to be, this is the question",
+            "", "Atlanmod", "Commons", "Testing"});
+  }
 }

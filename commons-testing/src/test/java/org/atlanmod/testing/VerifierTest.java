@@ -32,7 +32,7 @@ class VerifierTest {
         RandomIntegerGenerator Gen = new RandomIntegerGenerator();
         Class GenType = Gen.types()[0];
         Object arrayGenType = Array.newInstance(GenType, 0).getClass();
-        Generator arrayGenerator = Verifier.createArrayGenerator(Gen, GenType);
+        Generator arrayGenerator = Instantiator.getInstance().createArrayGenerator(Gen, GenType);
         assertEquals(arrayGenerator.generate().getClass(), arrayGenType);
         assertEquals(arrayGenerator.generate().getClass(), arrayGenerator.types()[0]);
         assertEquals(arrayGenType, arrayGenerator.types()[0]);
@@ -46,7 +46,7 @@ class VerifierTest {
         RandomStringGenerator Gen = new RandomStringGenerator();
         Class GenType= Gen.types()[0];
         Object arrayGenType = Array.newInstance(GenType, 0).getClass();
-        Generator arrayGenerator = Verifier.createArrayGenerator(Gen,GenType);
+        Generator arrayGenerator = Instantiator.getInstance().createArrayGenerator(Gen,GenType);
         assertEquals(arrayGenerator.generate().getClass(), arrayGenType);
         assertEquals(arrayGenerator.generate().getClass(),arrayGenerator.types()[0]);
         assertEquals(arrayGenType,arrayGenerator.types()[0]);
@@ -60,7 +60,7 @@ class VerifierTest {
         RoundRobinBooleanGenerator Gen = new RoundRobinBooleanGenerator();
         Class GenType= Gen.types()[0];
         Object arrayGenType = Array.newInstance(GenType, 0).getClass();
-        Generator arrayGenerator = Verifier.createArrayGenerator(Gen,GenType);
+        Generator arrayGenerator = Instantiator.getInstance().createArrayGenerator(Gen,GenType);
         assertEquals(arrayGenerator.generate().getClass(), arrayGenType);
         assertEquals(arrayGenerator.generate().getClass(),arrayGenerator.types()[0]);
         assertEquals(arrayGenType,arrayGenerator.types()[0]);
@@ -73,7 +73,7 @@ class VerifierTest {
      */
     void generateConstructor() {
         Constructor constr = Person.class.getConstructors()[0];
-        Object generatedConstructor = Verifier.generateConstructor(constr);
+        Object generatedConstructor = Instantiator.getInstance().generateConstructor(constr);
         Person pers = (Person) generatedConstructor;
         assertNotEquals(null,pers);
         assertEquals(Person.class,pers.getClass());
@@ -87,7 +87,7 @@ class VerifierTest {
      * Test the generation of a class.
      */
     void generateConstructorsOfClass() {
-        List<Object> list = Verifier.generateConstructorsOfClass(Person.class);
+        List<Object> list = Instantiator.getInstance().generateConstructorsOfClass(Person.class);
         for(Object objet:list) {
             Person person = (Person) objet;
             assertNotEquals(null,person);

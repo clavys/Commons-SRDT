@@ -13,13 +13,12 @@ import java.util.Random;
 
 public class RandomByteGenerator extends AbstractGenerator<Byte> {
 
-    public RandomByteGenerator() {
+    protected void initializeValues() {
         byte[] bytes = new byte[SIZE];
         Random rd = new Random();
         rd.nextBytes(bytes);
-        values = MoreArrays.toObject(bytes);
+        this.setValues(MoreArrays.toObject(bytes));
     }
-
 
     @Override
     public Class<Byte>[] types() {

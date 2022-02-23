@@ -43,6 +43,10 @@ public class Assertions {
         return new ObjectPredicate(CONTEXT, expression);
     }
 
+    public static ComparablePredicate<ComparablePredicate, Comparable> assertThat(Comparable expression) {
+        return new ComparablePredicate(CONTEXT, expression);
+    }
+
     public static CollectionPredicate assertThat(Collection<?> expression) {
         return new CollectionPredicate(CONTEXT, expression);
     }

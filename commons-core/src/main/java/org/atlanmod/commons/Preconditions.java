@@ -322,6 +322,15 @@ public final class Preconditions {
     public static ObjectPredicate<ObjectPredicate, Object> requireThat(Object expression) {
         return new ObjectPredicate(CONTEXT, expression);
     }
+
+    public static ComparablePredicate<ComparablePredicate, Comparable> requireThat(Comparable expression) {
+        return new ComparablePredicate(CONTEXT, expression);
+    }
+
+    public static CollectionPredicate<CollectionPredicate, Collection> requireThat(Collection<?> expression) {
+        return new CollectionPredicate(CONTEXT, expression);
+    }
+
     // endregion
 
     static class PreconditionContext implements PredicateContext {

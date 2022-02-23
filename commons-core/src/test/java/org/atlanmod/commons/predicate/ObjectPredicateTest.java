@@ -15,8 +15,9 @@ class ObjectPredicateTest {
 
     @Test
     void isNotNull() {
+        Object nullObject = null;
         throwsPreconditionError(() ->
-                requireThat(null).isNotNull());
+                requireThat(nullObject).isNotNull());
     }
 
     @Test
@@ -35,8 +36,9 @@ class ObjectPredicateTest {
     @Test
     void correctBehavior() {
         Object neo = new Object();
+        Object nullObject = null;
 
-        requireThat(null).isNull();
+        requireThat(nullObject).isNull();
         requireThat(neo).isNotNull();
         requireThat(neo).isEqualTo(neo);
         requireThat(neo).isDifferentFrom(new Object());

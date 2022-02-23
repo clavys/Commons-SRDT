@@ -9,7 +9,7 @@ package org.atlanmod.testing.generator;
 
 public class BoundaryIntegerGenerator extends IntegerGenerator {
 
-    public BoundaryIntegerGenerator() {
-        values = new Integer[]{Integer.MIN_VALUE, 0, Integer.MAX_VALUE};
+    protected void initializeValues() {
+        this.setValues(new Integer[]{Integer.MIN_VALUE, 0, Integer.MAX_VALUE});
     }
 }

@@ -8,8 +8,6 @@
 
 package org.atlanmod.commons.predicate;
 
-import java.util.Objects;
-
 /**
  *
  * @author sunye

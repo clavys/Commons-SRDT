@@ -7,16 +7,13 @@
  */
 package org.atlanmod.testing.generator;
 
-import org.atlanmod.commons.Preconditions;
-import org.atlanmod.testing.Generator;
-
 import java.util.Random;
 
-public class RandomStringGenerator extends AbstractGenerator<String> {
+public class RandomStringGenerator extends StringGenerator {
     private final static int MAX_STRING_SIZE = 256;
 
-    public RandomStringGenerator() {
-        values = new String[SIZE];
+    public void initializeValues() {
+        String[] values = new String[SIZE];
         Random random = new Random();
         for (int i = 0; i < values.length; i++) {
             int stringLength = random.nextInt(MAX_STRING_SIZE);
@@ -26,10 +23,7 @@ public class RandomStringGenerator extends AbstractGenerator<String> {
             }
             values[i] = builder.toString();
         }
+        this.setValues(values);
     }
 
-    @Override
-    public Class<String>[] types() {
-        return new Class[]{String.class};
-    }
 }

@@ -7,17 +7,21 @@
  */
 package org.atlanmod.testing.generator;
 
+import org.atlanmod.commons.collect.MoreArrays;
+
 import java.util.Random;
 
 public class RandomCharGenerator extends AbstractGenerator<Character> {
 
-    public RandomCharGenerator() {
-        values = new Character[SIZE];
+    public void initializeValues() {
+        char[] values = new char[SIZE];
         Random random = new Random();
         int offset = 'a';
         for (int i = 0; i < values.length; i++) {
-            values[i] = Character.valueOf((char) (offset + random.nextInt(26)));
+            values[i] = (char) (offset + random.nextInt(26));
         }
+
+        this.setValues(MoreArrays.toObject(values));
     }
 
     @Override

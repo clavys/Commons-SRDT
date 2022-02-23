@@ -11,14 +11,15 @@ package org.atlanmod.testing;
 public interface Generator <T>  {
 
     /**
-     *
+     * Returns a new instance of
      * @return
      */
     T generate();
 
     /**
+     * Returns an array containing all the classes supported by the generator.
      *
-     * @return
+     * @return an array containing all generator types
      */
     Class<T>[] types();
 

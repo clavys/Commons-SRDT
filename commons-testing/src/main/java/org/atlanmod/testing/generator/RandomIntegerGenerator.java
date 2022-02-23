@@ -13,12 +13,13 @@ import java.util.Random;
 
 public class RandomIntegerGenerator extends IntegerGenerator {
 
-    public RandomIntegerGenerator() {
-        values = new Integer[SIZE];
+    public void initializeValues() {
+        Integer[] values = new Integer[SIZE];
         Random r = new Random();
         for (int i = 0; i < SIZE; i++) {
             values[i] = Integer.valueOf(r.nextInt());
         }
+        this.setValues(values);
     }
 
 }

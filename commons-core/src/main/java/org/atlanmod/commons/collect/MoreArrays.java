@@ -361,6 +361,49 @@ public final class MoreArrays {
     }
 
     /**
+     * Converts an array of {@link Character} to an array of primitive types {@code char}.
+     *
+     * @param boxedArray the array of {@link Character} to convert.
+     *
+     * @return an array of {@code char} containing the same elements as {@code boxedArray}, in the same order, converted
+     * to primitives.
+     */
+    @Nonnull
+    public static char[] toPrimitive(final Character... boxedArray) {
+        checkNotNull(boxedArray, "boxedArray");
+
+        final int size = boxedArray.length;
+
+        final char[] primitiveArray = new char[size];
+        for (int i = 0; i < size; i++) {
+            primitiveArray[i] = boxedArray[i];
+        }
+
+        return primitiveArray;
+    }
+
+    /**
+     * Converts an array of primitive types {@code char} to an array of {@link Character}.
+     *
+     * @param primitiveArray the array of {@code char} to convert.
+     *
+     * @return an array of {@link Character} containing the same elements as {@code primitiveArray}, in the same order,
+     * converted to boxed types.
+     */
+    public static Character[] toObject(final char... primitiveArray) {
+        checkNotNull(primitiveArray, "primitiveArray");
+
+        final int size = primitiveArray.length;
+        final Character[] boxedArray = new Character[size];
+
+        for (int i = 0; i < size; i++) {
+            boxedArray[i] = primitiveArray[i];
+        }
+
+        return boxedArray;
+    }
+
+    /**
      * Returns the tail of the {@code array}, that is, a new array containing all its elements except the first one.
      *
      * @param array the array containing the tail

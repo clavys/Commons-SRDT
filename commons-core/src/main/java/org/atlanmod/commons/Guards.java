@@ -8,6 +8,7 @@
 package org.atlanmod.commons;
 
 import org.atlanmod.commons.annotation.Static;
+import org.atlanmod.commons.predicate.*;
 import org.jetbrains.annotations.Contract;
 
 import javax.annotation.Nonnegative;
@@ -36,6 +37,8 @@ import java.util.Objects;
 @Static
 @ParametersAreNonnullByDefault
 public class Guards {
+
+    private final static PredicateContext CONTEXT = new GuardContext();
 
     /**
      * A string representing a logging without message.
@@ -661,6 +664,38 @@ public class Guards {
 
     // endregion
 
+    // region checkThat
+
+    public static IntPredicate checkThat(int expression) {
+        return new IntPredicate(CONTEXT, expression);
+    }
+
+    public static LongPredicate checkThat(long expression) {
+        return new LongPredicate(CONTEXT, expression);
+    }
+
+    public static BooleanPredicate checkThat(boolean expression) {
+        return new BooleanPredicate(CONTEXT, expression);
+    }
+
+    public static StringPredicate checkThat(String expression) {
+        return new StringPredicate(CONTEXT, expression);
+    }
+
+    public static ObjectPredicate<ObjectPredicate, Object> checkThat(Object expression) {
+        return new ObjectPredicate(CONTEXT, expression);
+    }
+
+    public static ComparablePredicate<ComparablePredicate, Comparable> checkThat(Comparable expression) {
+        return new ComparablePredicate(CONTEXT, expression);
+    }
+
+    public static CollectionPredicate<CollectionPredicate, Collection> checkThat(Collection<?> expression) {
+        return new CollectionPredicate(CONTEXT, expression);
+    }
+
+    // endregion
+
     /**
      * Returns a formatted string using the specified format string and arguments.
      *
@@ -672,5 +707,21 @@ public class Guards {
     @Nullable
     private static String format(String pattern, Object... args) {
         return null != pattern ? String.format(pattern, args) : null;
+    }
+
+    static class GuardContext implements PredicateContext {
+        private GuardContext() {
+        }
+
+        @Override
+        public void send(String pattern, Object... args) {
+            throw new GuardException(String.format(pattern, args));
+        }
+    }
+
+    public static class GuardException extends IllegalArgumentException {
+        public GuardException(String message) {
+            super(message);
+        }
     }
 }

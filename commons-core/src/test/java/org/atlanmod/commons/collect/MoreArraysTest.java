@@ -226,6 +226,22 @@ class MoreArraysTest extends AbstractTest {
     }
 
     @Test
+    void testCharactersToPrimitive() {
+        Character[] boxedArray = new Character[] {0, 1, 2, 3, 4};
+        char[] primitiveArray = new char[] {0, 1, 2, 3, 4};
+
+        assertThat(primitiveArray).isEqualTo(MoreArrays.toPrimitive(boxedArray));
+    }
+
+    @Test
+    void testCharsToObject() {
+        Character[] boxedArray = new Character[] {'a', 'b', 'c', 'd', 'e'};
+        char[] primitiveArray = new char[] {'a', 'b', 'c', 'd', 'e'};
+
+        assertThat(boxedArray).isEqualTo(MoreArrays.toObject(primitiveArray));
+    }
+
+    @Test
     void testHead() {
         Integer[] array0 = new Integer[]{0, 1, 2, 2, 0, 1};
         assertThat(MoreArrays.head(array0)).isEqualTo(array0[0]);
