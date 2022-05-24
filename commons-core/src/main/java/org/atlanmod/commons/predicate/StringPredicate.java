@@ -20,10 +20,20 @@ public class StringPredicate extends ObjectPredicate<StringPredicate, String> {
     }
 
     public StringPredicate contains(String substr) {
-        if (!value.contains(substr)) {
-            context.send("\nExpecting value to contain");
+        boolean expected = value.contains(substr);
+        if (!expected) {
+            context.send("\nExpecting String value to contain (%s)", substr);
         }
         return this;
+    }
+
+
+    public StringPredicate isNotEmpty() {
+        boolean expected = !value.equals("");
+        if (!expected) {
+            context.send("\nExpecting String value not to be empty");
+        }
+        return me();
     }
 }
 

@@ -109,4 +109,9 @@ public class Path<T> {
     public  static <E> Path<E> of(E... values) {
         return new Path<>(Arrays.copyOf(checkNotNull(values), values.length));
     }
+
+    public static Path<String> fromDottedString(String qualifiedName) {
+        String[] names = qualifiedName.split("\\.");
+        return new Path<>(names);
+    }
 }

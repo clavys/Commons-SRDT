@@ -23,36 +23,36 @@ public class Assertions {
         throw Throwables.notInstantiableClass(getClass());
     }
 
-    public static BooleanPredicate assertThat(boolean expression) {
-        return new BooleanPredicate(CONTEXT, expression);
+    public static BooleanPredicate assertThat(boolean actual) {
+        return new BooleanPredicate(CONTEXT, actual);
     }
 
-    public static IntPredicate assertThat(int expression) {
-        return new IntPredicate(CONTEXT, expression);
+    public static IntPredicate assertThat(int actual) {
+        return new IntPredicate(CONTEXT, actual);
     }
 
-    public static LongPredicate assertThat(long expression) {
-        return new LongPredicate(CONTEXT, expression);
+    public static LongPredicate assertThat(long actual) {
+        return new LongPredicate(CONTEXT, actual);
     }
 
-    public static StringPredicate assertThat(String expression) {
-        return new StringPredicate(CONTEXT, expression);
+    public static StringPredicate assertThat(String actual) {
+        return new StringPredicate(CONTEXT, actual);
     }
 
-    public static ObjectPredicate<ObjectPredicate, Object> assertThat(Object expression) {
-        return new ObjectPredicate(CONTEXT, expression);
+    public static ObjectPredicate<ObjectPredicate, Object> assertThat(Object actual) {
+        return new ObjectPredicate(CONTEXT, actual);
     }
 
-    public static ComparablePredicate<ComparablePredicate, Comparable> assertThat(Comparable expression) {
-        return new ComparablePredicate(CONTEXT, expression);
+    public static ComparablePredicate<ComparablePredicate, Comparable> assertThat(Comparable actual) {
+        return new ComparablePredicate(CONTEXT, actual);
     }
 
-    public static CollectionPredicate assertThat(Collection<?> expression) {
-        return new CollectionPredicate(CONTEXT, expression);
+    public static CollectionPredicate assertThat(Collection<?> actual) {
+        return new CollectionPredicate(CONTEXT, actual);
     }
 
-    public static ArrayPredicate assertThat(Object[] expression) {
-        return new ArrayPredicate(CONTEXT, expression);
+    public static ArrayPredicate assertThat(Object[] actual) {
+        return new ArrayPredicate(CONTEXT, actual);
     }
 
     static class AssertionContext implements PredicateContext {

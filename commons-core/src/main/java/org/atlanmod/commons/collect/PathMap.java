@@ -1,21 +1,41 @@
 package org.atlanmod.commons.collect;
 
+import org.jetbrains.annotations.Contract;
+
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import static java.util.Collections.emptyList;
 import static org.atlanmod.commons.Guards.checkNotNull;
 
 @ParametersAreNonnullByDefault
-public class TreeMap<K, V> {
+public class PathMap<K, V> {
     private final Node root = new RootNode();
 
     public V put(Path<K> keys, V value) {
         return root.put(checkNotNull(keys), checkNotNull(value));
     }
 
+    @Contract(pure = true)
     public Optional<V> get(Path<K> keys) {
         return root.get(checkNotNull(keys));
+    }
+
+    public Optional<V> computeIfAbsent(Path<K> keys, Function<? super K, ? extends V> mappingFunction) {
+        return root.computeIfAbsent(checkNotNull(keys), checkNotNull(mappingFunction));
+    }
+
+    /**
+     * Apply a consumer to each pair (Parent, Child)
+     *
+     * @param consumer
+     */
+    public void apply(BiConsumer<V, V> consumer) {
+        root.apply(consumer);
     }
 
     @Override
@@ -60,6 +80,28 @@ public class TreeMap<K, V> {
             return keys.size() == 1 ? child.getValue() : child.get(keys.tail());
         }
 
+        public Optional<V> computeIfAbsent(Path<K> keys, Function<? super K, ? extends V> mappingFunction) {
+            ContentNode child;
+            K key = keys.head();
+
+            int position = indexOf(key);
+
+            if (position < 0) {
+                child = addChild(key);
+                child.setValue(mappingFunction.apply(key));
+            } else {
+                child = nodes.get(position);
+            }
+
+            if (keys.size() == 1) {
+                return child.getValue();
+            } else {
+                return child.computeIfAbsent(keys.tail(), mappingFunction);
+            }
+        }
+
+        public abstract void apply(BiConsumer<V,V> consumer);
+
         private int indexOf(K key) {
             for (int i = 0; i < nodes.size(); i++) {
                 ContentNode each = nodes.get(i);
@@ -79,7 +121,7 @@ public class TreeMap<K, V> {
             return newNode;
         }
 
-        private List<ContentNode> nodes() {
+        List<ContentNode> nodes() {
             if (nodes.isEmpty()) {
                 nodes = new ArrayList<>(3);
             }
@@ -104,6 +146,13 @@ public class TreeMap<K, V> {
 
     class RootNode extends Node {
         @Override
+        public void apply(BiConsumer<V, V> consumer) {
+            for (ContentNode each: nodes()) {
+                each.apply(consumer);
+            }
+        }
+
+        @Override
         public String toString() {
             return "root" + super.toString();
         }
@@ -121,12 +170,20 @@ public class TreeMap<K, V> {
             this.key = key;
         }
 
+        Optional<V> getValue() {
+            return Optional.ofNullable(value);
+        }
+
         void setValue(V value) {
             this.value = value;
         }
 
-        Optional<V> getValue() {
-            return Optional.ofNullable(value);
+        @Override
+        public void apply(BiConsumer<V, V> consumer) {
+            for(ContentNode each: nodes()) {
+                consumer.accept(value, each.value);
+                each.apply(consumer);
+            }
         }
 
         @Override

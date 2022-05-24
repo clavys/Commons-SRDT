@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.atlanmod.testing.Assertions.assertThat;
 
 class InstantiatorTest {
 
@@ -12,7 +12,10 @@ class InstantiatorTest {
     void testInstanciate() throws InvocationTargetException, InstantiationException, IllegalAccessException {
         Instantiator instantiator = Instantiator.getInstance();
 
-        String str = instantiator.instanciate(String.class);
-        System.out.println(str.length());
+        Person someone = instantiator.instanciate(Person.class);
+
+        assertThat(someone).isNotNull();
+        assertThat(someone.getName()).isNotNull().isNotEmpty();
+        assertThat(someone.getAge()).isNotNull();
     }
 }
