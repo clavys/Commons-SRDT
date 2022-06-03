@@ -1,5 +1,7 @@
 = Atlanmod Commons Change Log
 
+== 1.1.2
+
 == 1.1.1
 
 * *[ADD]* Collection predicates for Preconditions, Assertions, and Guards
