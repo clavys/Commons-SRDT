@@ -258,13 +258,14 @@
                     <configuration>
                         <exportScr>true</exportScr>
                         <instructions>
-                            <Bundle-Version>
-                                ${project.version}
-                            </Bundle-Version>
                             <!--Bundle-Version>
-                                1.1.0.${maven.build.timestamp}
-                                1.0.6
+                                For an unknown reason, Felix (or BND?) does not replace 'SNAPSHOT' by 'qualifier', as
+                                it was supposed to do.
+                                ${project.version}
                             </Bundle-Version-->
+                            <Bundle-Version>
+                                1.1.0.${maven.build.timestamp}
+                            </Bundle-Version>
                             <Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
                             <Import-Package/>
                             <Embed-Dependency>

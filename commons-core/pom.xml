@@ -162,8 +162,7 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.groupId}</Bundle-SymbolicName>
                         <Import-Package>
-                            org.osgi.framework,
-                            org.slf4j
+                            org.osgi.framework
                         </Import-Package>
                         <Export-Package>
                             !org.atlanmod.commons.*.internal.*,
