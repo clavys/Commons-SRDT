@@ -15,6 +15,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -692,6 +693,10 @@ public class Guards {
 
     public static CollectionPredicate<CollectionPredicate, Collection> checkThat(Collection<?> expression) {
         return new CollectionPredicate(CONTEXT, expression);
+    }
+
+    public static LocalDatePredicate checkThat(LocalDate expression) {
+        return new LocalDatePredicate(CONTEXT, expression);
     }
 
     // endregion

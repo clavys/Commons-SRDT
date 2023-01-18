@@ -12,6 +12,7 @@ import org.atlanmod.commons.annotation.Static;
 import org.atlanmod.commons.predicate.*;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Static
@@ -49,6 +50,10 @@ public class Assertions {
 
     public static CollectionPredicate assertThat(Collection<?> actual) {
         return new CollectionPredicate(CONTEXT, actual);
+    }
+
+    public static LocalDatePredicate assertThat(LocalDate expression) {
+        return new LocalDatePredicate(CONTEXT, expression);
     }
 
     public static ArrayPredicate assertThat(Object[] actual) {

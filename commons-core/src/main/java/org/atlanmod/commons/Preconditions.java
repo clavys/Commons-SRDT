@@ -14,6 +14,7 @@ import org.atlanmod.commons.predicate.*;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.time.LocalDate;
 import java.util.Collection;
 
 /**
@@ -329,6 +330,10 @@ public final class Preconditions {
 
     public static CollectionPredicate<CollectionPredicate, Collection> requireThat(Collection<?> expression) {
         return new CollectionPredicate(CONTEXT, expression);
+    }
+
+    public static LocalDatePredicate requireThat(LocalDate expression) {
+        return new LocalDatePredicate(CONTEXT, expression);
     }
 
     // endregion
