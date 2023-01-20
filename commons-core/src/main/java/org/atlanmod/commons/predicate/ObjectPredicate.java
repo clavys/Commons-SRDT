@@ -15,7 +15,8 @@ import java.util.Objects;
  * @since 1.1.0
  */
 @SuppressWarnings("PMD.GenericsNaming")
-public class ObjectPredicate<YOURSELF extends ObjectPredicate, T> extends Predicate {
+public class ObjectPredicate<Myself extends ObjectPredicate, T>
+        extends Predicate {
     static final String PATTERN = "\nExpecting value (%s) to be %s (%s)";
 
     final T value;
@@ -25,47 +26,47 @@ public class ObjectPredicate<YOURSELF extends ObjectPredicate, T> extends Predic
         this.value = value;
     }
 
-    public YOURSELF isNull() {
+    public Myself isNull() {
         if (!Objects.isNull(value)) {
             context.send(PATTERN, value, "null", "");
         }
         return me();
     }
 
-    public YOURSELF isNotNull() {
+    public Myself isNotNull() {
         if (Objects.isNull(value)) {
             context.send(PATTERN, value, "non null", "");
         }
         return me();
     }
 
-    public YOURSELF isEqualTo(Object other) {
+    public Myself isEqualTo(Object other) {
         if (!Objects.equals(value, other)) {
             context.send(PATTERN, value, "equal to", other);
         }
         return me();
     }
 
-    public YOURSELF isSameAs(Object other) {
+    public Myself isSameAs(Object other) {
         if (value != other) {
             context.send(PATTERN, value, "same as", other);
         }
         return me();
     }
 
-    public YOURSELF isDifferentFrom(T other) {
+    public Myself isDifferentFrom(T other) {
         if (value.equals(other)) {
             context.send(PATTERN, value, "different from", other);
         }
         return me();
     }
 
-    public YOURSELF withMessage(String message) {
+    public Myself withMessage(String message) {
         // TODO
         return me();
     }
 
-    public YOURSELF me() {
-        return (YOURSELF) this;
+    public Myself me() {
+        return (Myself) this;
     }
 }

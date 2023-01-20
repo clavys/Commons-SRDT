@@ -2,8 +2,8 @@ package org.atlanmod.commons.predicate;
 
 import java.util.Collection;
 
-public class CollectionPredicate<Yourself extends CollectionPredicate, T extends Collection>
-        extends ObjectPredicate<Yourself, T> {
+public class CollectionPredicate<Myself extends CollectionPredicate, T extends Collection>
+        extends ObjectPredicate<Myself, T> {
 
     private static final String PATTERN = "\nExpecting collection %s (%s)";
 
@@ -11,35 +11,35 @@ public class CollectionPredicate<Yourself extends CollectionPredicate, T extends
         super(context, value);
     }
 
-    public Yourself contains(Object elm) {
+    public Myself contains(Object elm) {
         if (!value.contains(elm)) {
             context.send(PATTERN, "to contain", elm);
         }
         return me();
     }
 
-    public Yourself containsAll(Collection<?> subCollection) {
+    public Myself containsAll(Collection<?> subCollection) {
         if (!value.containsAll(subCollection)) {
             context.send(PATTERN, "to contain all from", subCollection);
         }
         return me();
     }
 
-    public Yourself isEmpty() {
+    public Myself isEmpty() {
         if (!value.isEmpty()) {
             context.send(PATTERN, "to be empty", "");
         }
         return me();
     }
 
-    public Yourself notEmpty() {
+    public Myself notEmpty() {
         if (value.isEmpty()) {
             context.send(PATTERN, "not to be empty", "");
         }
         return me();
     }
 
-    public Yourself sizeIs(int size) {
+    public Myself sizeIs(int size) {
         if (value.size() != size) {
             context.send(PATTERN, "size to be", size);
         }
