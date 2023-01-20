@@ -103,11 +103,11 @@
         <javax-annotations.version>3.0.2</javax-annotations.version>
 
         <osgi.version>8.0.0</osgi.version>
-        <osgi-annotations.version>1.5.0</osgi-annotations.version><!-- 1.4.0: requires OSGi R7 -->
+        <osgi-annotations.version>1.5.1</osgi-annotations.version><!-- 1.4.0: requires OSGi R7 -->
 
-        <assertj.version>3.22.0</assertj.version>
-        <mockito.version>4.5.1</mockito.version>
-        <junit.version>5.8.2</junit.version>
+        <assertj.version>3.24.2</assertj.version>
+        <mockito.version>5.0.0</mockito.version>
+        <junit.version>5.9.2</junit.version>
     </properties>
 
     <dependencies>
@@ -253,7 +253,7 @@
                 <plugin>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>maven-bundle-plugin</artifactId>
-                    <version>5.1.6</version>
+                    <version>5.1.8</version>
                     <extensions>true</extensions>
                     <configuration>
                         <exportScr>true</exportScr>
@@ -302,19 +302,19 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
-                    <version>3.0.0-M1</version>
+                    <version>3.0.0</version>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>3.5.0</version>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-install-plugin</artifactId>
-                    <version>3.0.0-M1</version>
+                    <version>3.1.0</version>
                 </plugin>
 
                 <plugin>
@@ -326,7 +326,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.2.2</version>
+                    <version>3.3.0</version>
                     <configuration>
                         <skipIfEmpty>true</skipIfEmpty>
                     </configuration>
@@ -336,7 +336,7 @@
                     <!-- `deploy-javadoc` profile comes in addition to this configuration -->
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.4.0</version>
+                    <version>3.4.1</version>
                     <configuration>
                         <additionalOptions>-Xdoclint:none</additionalOptions>
                         <failOnError>false</failOnError>
@@ -350,7 +350,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.3.0</version>
                 </plugin>
 
                 <plugin>
@@ -362,7 +362,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0-M5</version>
+                    <version>3.0.0-M7</version>
                     <configuration>
                         <!-- Property @{argLine} : created by jacoco:prepare-agent -->
                         <argLine>@{argLine} ${argLine.global}</argLine>
@@ -372,13 +372,15 @@
                             <java.util.logging.SimpleFormatter.format>[%4$s] %5$s%6$s%n
                             </java.util.logging.SimpleFormatter.format>
                         </systemPropertyVariables>
+                        <!--  allow to use unnamed modules -->
+                        <useModulePath>false</useModulePath>
                     </configuration>
                 </plugin>
 
                 <plugin> <!-- Disable by default -->
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.12.0</version>
+                    <version>3.12.1</version>
                     <configuration>
                         <skip>true</skip>
                         <skipDeploy>true</skipDeploy>
@@ -388,7 +390,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
-                    <version>2.11.0</version>
+                    <version>2.14.2</version>
                     <configuration>
                         <rulesUri>https://www.atlanmod.org/Commons/versions.xml</rulesUri>
                     </configuration>
@@ -397,13 +399,13 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.1.0</version>
                 </plugin>
 
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
-                    <version>4.5.3.0</version>
+                    <version>4.7.3.0</version>
                 </plugin>
 
             </plugins>

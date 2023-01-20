@@ -16,11 +16,11 @@
     <description>A library of classes and methods common to all Atlanmod projects</description>
 
     <properties>
-        <caffeine.version>3.1.0</caffeine.version>
-        <zah.version>0.15</zah.version>
+        <caffeine.version>3.1.2</caffeine.version>
+        <zah.version>0.16</zah.version>
         <fst.version>2.57</fst.version>
         <!-- WARNING: Fst versions > 3.0.0 are compiled with jdk 14 -->
-        <slf4j.version>1.7.36</slf4j.version>
+        <slf4j.version>2.0.6</slf4j.version>
     </properties>
 
     <dependencies>
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>23.0.0</version>
+            <version>24.0.0</version>
             <scope>provided</scope>
             <optional>true</optional><!-- needed only for annotations -->
         </dependency>
@@ -160,6 +160,7 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
+                        <jpms-module-info>org.atlanmod.commons.core</jpms-module-info>
                         <Bundle-SymbolicName>${project.groupId}</Bundle-SymbolicName>
                         <Import-Package>
                             org.osgi.framework
