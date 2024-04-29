@@ -59,6 +59,7 @@
     <modules>
         <module>commons-core</module>
         <module>commons-testing</module>
+        <module>Crdt-Api</module>
     </modules>
 
     <developers>
