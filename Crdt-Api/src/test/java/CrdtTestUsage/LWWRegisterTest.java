@@ -17,9 +17,10 @@ public class LWWRegisterTest {
         cst1.connect(cst2);
         cst1.connect(cst3);
 
+
         final LWWRegister<String> lww1 = cst1.createLWWRegister("id_23");
-        final LWWRegister<String> lww2 = cst2.createLWWRegister("id_23");
-        final LWWRegister<String> lww3 = cst3.createLWWRegister("id_23");
+        final var lww2 = cst2.findLWWRegister("id_23").get();
+        final var lww3 = cst3.findLWWRegister("id_23").get();
 
         System.out.println("id node1 =" + lww1.getId());
         System.out.println("id node2 =" + lww2.getId());
@@ -42,7 +43,7 @@ public class LWWRegisterTest {
         System.out.println("node3 =" + lww3.get());
 
         cst1.connect(cst2);
-
+//étrange
         System.out.println("node1 =" + lww1.get());
         System.out.println("node2 =" + lww2.get());
         System.out.println("node3 =" + lww3.get());
