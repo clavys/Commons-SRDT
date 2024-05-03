@@ -6,47 +6,71 @@ import com.netopyr.wurmloch.store.CrdtStore;
 import com.netopyr.wurmloch.store.LocalCrdtStore;
 import com.netopyr.wurmloch.vectorclock.StrictVectorClock;
 import org.junit.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+
 public class LWWRegisterTest {
     @Test
     public void test() {
 
-        final LocalCrdtStore cst1 = new LocalCrdtStore();
-        final LocalCrdtStore cst2 = new LocalCrdtStore();
-        final LocalCrdtStore cst3 = new LocalCrdtStore();
+        // create two LocalCrdtStores and connect them
+        final LocalCrdtStore crdtStore1 = new LocalCrdtStore("N_1");
+        final LocalCrdtStore crdtStore2 = new LocalCrdtStore("N_2");
+        final LocalCrdtStore crdtStore3 = new LocalCrdtStore("N_3");
+        crdtStore1.connect(crdtStore2);
+        crdtStore1.connect(crdtStore3);
 
-        cst1.connect(cst2);
-        cst1.connect(cst3);
+        // create an LWW-Register and find the according replica in the second store
+        final LWWRegister<String> replica1 = crdtStore1.createLWWRegister("ID_1");
+        final LWWRegister<String> replica2 = crdtStore2.<String>findLWWRegister("ID_1").get();
+        final LWWRegister<String> replica3 = crdtStore3.<String>findLWWRegister("ID_1").get();
+
+        // set values in both replicas
+        replica1.set("apple");
+        replica2.set("pen");
+        replica3.set("banana");
+
+        // the stores are connected, thus the last write wins
+        System.out.println("node1 =" + replica1.get());
+        System.out.println("node1 =" + replica2.get());
+        System.out.println("node1 =" + replica3.get());
+        assertThat(replica1.get(), is("banana"));
+        assertThat(replica2.get(), is("banana"));
 
 
-        final LWWRegister<String> lww1 = cst1.createLWWRegister("id_23");
-        final var lww2 = cst2.findLWWRegister("id_23").get();
-        final var lww3 = cst3.findLWWRegister("id_23").get();
+        // disconnect the stores simulating a network issue, offline mode etc.
+        crdtStore1.disconnect(crdtStore2);
+        crdtStore1.disconnect(crdtStore3);
 
-        System.out.println("id node1 =" + lww1.getId());
-        System.out.println("id node2 =" + lww2.getId());
-        System.out.println("id node3 =" + lww3.getId());
+        // add one entry to each replica
+        replica1.set("strawberry");
+        replica2.set("pinaple");
+        replica3.set("pear");
 
-        lww1.set("first");
+        // the stores are not connected, thus the changes have only local effects
+        System.out.println("node1 =" + replica1.get());
+        System.out.println("node1 =" + replica2.get());
+        System.out.println("node1 =" + replica3.get());
+        assertThat(replica1.get(), is("strawberry"));
+        assertThat(replica3.get(), is("pear"));
 
-        System.out.println("node1 =" + lww1.get());
-        System.out.println("node2 =" + lww2.get());
-        System.out.println("node3 =" + lww3.get());
+        // reconnect the stores
+        crdtStore1.connect(crdtStore2);
+        crdtStore1.connect(crdtStore3);
 
-        cst1.disconnect(cst2);
-        cst1.disconnect(cst3);
-        lww1.set("1st");
-        lww2.set("2nd");
-        lww3.set("3rd");
+        // the LWW-Register is synchronized automatically.
+        // as the update happened concurrently, the update from the node with the larger ID wins
+        System.out.println("node1 =" + replica1.get());
+        System.out.println("node1 =" + replica2.get());
+        System.out.println("node1 =" + replica3.get());
+        assertThat(replica1.get(), is("pear"));
+        assertThat(replica2.get(), is("pear"));
+        assertThat(replica3.get(), is("pear"));
 
-        System.out.println("node1 =" + lww1.get());
-        System.out.println("node2 =" + lww2.get());
-        System.out.println("node3 =" + lww3.get());
 
-        cst1.connect(cst2);
-//étrange
-        System.out.println("node1 =" + lww1.get());
-        System.out.println("node2 =" + lww2.get());
-        System.out.println("node3 =" + lww3.get());
+
+
 
     }
 
