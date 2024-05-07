@@ -2,6 +2,7 @@ package CrdtTestUsage;
 
 import com.netopyr.wurmloch.crdt.GSet;
 import com.netopyr.wurmloch.store.LocalCrdtStore;
+import org.atlanmod.commons.LocalStoreBuilder;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -13,7 +14,20 @@ public class gsetTest {
 
         @Test
         public void gSetTest() {
+            LocalStoreBuilder builder1 = new LocalStoreBuilder();
+            LocalStoreBuilder builder2 = new LocalStoreBuilder();
+            LocalStoreBuilder builder3 = new LocalStoreBuilder();
 
+            builder1.build().connect(builder2.build()).connect(builder3.build());
+
+            var set1 = builder1.createGSet("ID_1");
+            var set2 = builder2.createGSet("ID_1");
+            var set3 = builder3.createGSet("ID_1");
+            set1.add("gogo");
+
+            System.out.println(Arrays.toString(set3.toArray()));
+
+            /*
             LocalCrdtStore crdtStore1 = new LocalCrdtStore();
             LocalCrdtStore crdtStore2 = new LocalCrdtStore();
             LocalCrdtStore crdtStore3 =  new LocalCrdtStore();
