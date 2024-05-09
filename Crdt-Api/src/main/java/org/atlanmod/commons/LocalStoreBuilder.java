@@ -43,6 +43,7 @@ public class LocalStoreBuilder {
     public <T> MVRegister<T> createMVRegister(String id) {
         return this.store.createMVRegister(id);
     }
+
     public GCounter createGCounter(String id) {
         return this.store.createGCounter(id);
     }
