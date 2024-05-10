@@ -2,13 +2,14 @@ package org.atlanmod.commons;
 
 import com.netopyr.wurmloch.crdt.*;
 import io.reactivex.functions.Function4;
+import javaslang.collection.Array;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 
 import java.util.Iterator;
 
 public class CrdtBuilder {
-    private final Crdt crdt;
+    public final Crdt crdt;
 
     public CrdtBuilder(Crdt crdt) {
         this.crdt = crdt;
@@ -23,20 +24,48 @@ public class CrdtBuilder {
         return this.crdt.getId();
     }
 
-    public Object get() {
-        if (crdt instanceof GCounter) {
-            return ((GCounter) crdt).get();
+
+    public <T> T get() {
+        if (crdt instanceof GCounter ) {
+            return (T)((Long) ((GCounter) crdt).get());
         } else if (crdt instanceof PNCounter) {
-            return ((PNCounter) crdt).get();
+            return (T)((Long) ((PNCounter) crdt).get());
+        } else if (crdt instanceof MVRegister) {
+            return (T) ((MVRegister<T>) crdt).get();
         } else if (crdt instanceof LWWRegister) {
-            return ((LWWRegister<?>) crdt).get();
-        }else if (crdt instanceof MVRegister) {
-            return ((MVRegister<?>) crdt).get();
-        }else {
+            return ((LWWRegister<T>) crdt).get();
+        } else {
             throw new UnsupportedOperationException("CRDT type not supported for get() method");
         }
     }
 
+    /*
+    public long getLong() {
+        if (crdt instanceof GCounter) {
+            return ((GCounter) crdt).get();
+        } else if (crdt instanceof PNCounter) {
+            return ((PNCounter) crdt).get();
+        }else {
+            throw new UnsupportedOperationException("CRDT type not supported for get()->(long) method");
+        }
+    }
+
+    public <T> Array<T> getArray() {
+        if (crdt instanceof MVRegister) {
+            return ((MVRegister<T>) crdt).get();
+        }else {
+            throw new UnsupportedOperationException("CRDT type not supported for get()->(Array<T>) method");
+        }
+    }
+
+    public <T> T getObjet() {
+        if (crdt instanceof LWWRegister) {
+            return ((LWWRegister<T>) crdt).get();
+        }else {
+            throw new UnsupportedOperationException("CRDT type not supported for get()->(T) method");
+        }
+    }
+*/
     public CrdtBuilder increment() {
         if (crdt instanceof GCounter) {
             ((GCounter) crdt).increment();
@@ -64,15 +93,21 @@ public class CrdtBuilder {
     public CrdtBuilder decrement() {
         if (crdt instanceof PNCounter) {
             ((PNCounter) crdt).decrement();
+            return this;
+        }else{
+            throw new UnsupportedOperationException("CRDT type not supported for decrement() method");
         }
-        return this;
+
     }
 
     public CrdtBuilder decrement(long value) {
         if (crdt instanceof PNCounter) {
             ((PNCounter) crdt).decrement(value);
+            return this;
+        }else{
+            throw new UnsupportedOperationException("CRDT type not supported for decrement(long value) method");
         }
-        return this;
+
     }
 
     public <T> int size() {

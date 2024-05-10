@@ -9,14 +9,18 @@ import org.reactivestreams.Subscriber;
 
 public class LocalStoreBuilder {
     private LocalCrdtStore store;
-    private String id;
+    private final String id;
 
     public LocalStoreBuilder() {
+        this.id = null;
+
+
     }
 
-    public LocalStoreBuilder id(String id) {
+    public LocalStoreBuilder(String id) {
         this.id = id;
-        return this;
+
+
     }
 
     public LocalStoreBuilder build() {
@@ -36,28 +40,28 @@ public class LocalStoreBuilder {
         this.store.disconnect(other.store);
         return this;
     }
-    //public <T extends Crdt> T createCrdt(Function4<String, String, Publisher<? extends CrdtCommand>, Subscriber<? super CrdtCommand>, T> factory, String id) {}
-    public <T> LWWRegister<T> createLWWRegister(String id) {
-        return this.store.createLWWRegister(id);
+
+    public CrdtBuilder createLWWRegister(String id) {
+        return new CrdtBuilder(this.store.createLWWRegister(id));
     }
     public <T> MVRegister<T> createMVRegister(String id) {
         return this.store.createMVRegister(id);
     }
 
-    public GCounter createGCounter(String id) {
-        return this.store.createGCounter(id);
+    public CrdtBuilder createGCounter(String id) {
+        return new CrdtBuilder(this.store.createGCounter(id));
     }
-    public PNCounter createPNCounter(String id) {
-        return this.store.createPNCounter(id);
+    public CrdtBuilder createPNCounter(String id) {
+        return new CrdtBuilder(this.store.createPNCounter(id));
     }
-    public <T> GSet<T> createGSet(String id) {
-        return this.store.createGSet(id);
+    public CrdtBuilder createGSet(String id) {
+        return new CrdtBuilder(this.store.createGSet(id));
     }
-    public <T> ORSet<T> createORSet(String id) {
-        return this.store.createORSet(id);
+    public CrdtBuilder createORSet(String id) {
+        return new CrdtBuilder(this.store.createORSet(id));
     }
-    public <T> RGA<T> createRGA(String id) {
-        return this.store.createRGA(id);
+    public CrdtBuilder createRGA(String id) {
+        return new CrdtBuilder(this.store.createRGA(id));
     }
 
 
