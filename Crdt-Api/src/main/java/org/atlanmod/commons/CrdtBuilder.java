@@ -39,6 +39,18 @@ public class CrdtBuilder {
         }
     }
 
+    public <T> Object getArray(){
+        if (crdt instanceof GSet) {
+            return ((GSet<T>) crdt).toArray();
+        } else if (crdt instanceof ORSet) {
+            return ((ORSet<T>) crdt).toArray();
+        } else if (crdt instanceof RGA) {
+            return ((RGA<T>) crdt).toArray();
+        } else {
+            throw new UnsupportedOperationException("CRDT type not supported for getArray() method");
+        }
+    }
+
     /*
     public long getLong() {
         if (crdt instanceof GCounter) {
