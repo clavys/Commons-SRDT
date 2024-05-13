@@ -3,6 +3,8 @@ package CrdtTestUsage;
 import com.netopyr.wurmloch.crdt.GCounter;
 import com.netopyr.wurmloch.store.CrdtStore;
 import com.netopyr.wurmloch.store.LocalCrdtStore;
+import org.atlanmod.commons.CrdtBuilder;
+import org.atlanmod.commons.LocalStoreBuilder;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -11,6 +13,22 @@ public class GCounterTest {
 
     @Test
     public void test() {
+        LocalStoreBuilder builder1 = new LocalStoreBuilder();
+        LocalStoreBuilder builder2 = new LocalStoreBuilder();
+        LocalStoreBuilder builder3 = new LocalStoreBuilder();
+
+        builder1.connect(builder2).connect(builder3);
+
+        var set1 = builder1.createGCounter("ID_1");
+        var set2 = builder2.createGCounter("ID_1");
+        var set3 = builder3.createGCounter("ID_1");
+
+        set1.increment();
+        long result = set1.increment().increment().get();
+        System.out.println("Node 1 : " + set1.get());
+
+
+        /*
         final LocalCrdtStore cst1 = new LocalCrdtStore();
         final LocalCrdtStore cst2 = new LocalCrdtStore();
         final  LocalCrdtStore cst3 = new LocalCrdtStore();
@@ -44,5 +62,7 @@ public class GCounterTest {
         System.out.println("Node 1 : " + gc1.get());
         System.out.println("Node 2 : " + gc2.get());
         System.out.println("Node 3 : " + gc3.get());
+
+         */
     }
 }

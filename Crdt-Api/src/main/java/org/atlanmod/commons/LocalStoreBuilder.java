@@ -14,16 +14,17 @@ public class LocalStoreBuilder {
 
     public LocalStoreBuilder() {
         this.id = null;
+        this.store = new LocalCrdtStore();
 
 
     }
 
     public LocalStoreBuilder(String id) {
         this.id = id;
-
+        this.store = new LocalCrdtStore(id);
 
     }
-
+/*
     public LocalStoreBuilder build() {
         if (id == null) {
             this.store = new LocalCrdtStore();
@@ -32,7 +33,7 @@ public class LocalStoreBuilder {
         this.store = new LocalCrdtStore(id);
         return this;
     }
-
+*/
     public LocalStoreBuilder connect(@NotNull LocalStoreBuilder other){
         this.store.connect(other.store);
         return this;
