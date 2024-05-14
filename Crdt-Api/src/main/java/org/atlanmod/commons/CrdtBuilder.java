@@ -2,13 +2,10 @@ package org.atlanmod.commons;
 
 import com.netopyr.wurmloch.crdt.*;
 import io.reactivex.functions.Function4;
-import javaslang.collection.Array;
-import javaslang.control.Option;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 
 import java.util.Iterator;
-import java.util.Optional;
 
 public class CrdtBuilder {
     public final Crdt crdt;
@@ -43,7 +40,7 @@ public class CrdtBuilder {
         }
     }
 
-    public <T> Object getArray(){
+    public <T> Object[] getArray(){
         if (crdt instanceof GSet) {
             return ((GSet<T>) crdt).toArray();
         } else if (crdt instanceof ORSet) {

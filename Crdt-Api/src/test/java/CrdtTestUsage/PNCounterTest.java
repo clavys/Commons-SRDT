@@ -14,7 +14,7 @@ public class PNCounterTest {
         final LocalStoreBuilder store2 = new LocalStoreBuilder();
         final LocalStoreBuilder store3 = new LocalStoreBuilder();
 
-        store1.build().connect(store2.build()).connect(store3.build());
+        store1.connect(store2).connect(store3);
 
         CrdtBuilder pnCounter1 = store1.createPNCounter("id10");
         CrdtBuilder pnCounter2 = store2.findPNCounter(pnCounter1.getId());

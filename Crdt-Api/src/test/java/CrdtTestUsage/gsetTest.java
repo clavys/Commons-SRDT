@@ -18,14 +18,16 @@ public class gsetTest {
             LocalStoreBuilder builder2 = new LocalStoreBuilder();
             LocalStoreBuilder builder3 = new LocalStoreBuilder();
 
-            builder1.build().connect(builder2.build()).connect(builder3.build());
+            builder1.connect(builder2).connect(builder3);
 
             var set1 = builder1.createGSet("ID_1");
             var set2 = builder2.createGSet("ID_1");
             var set3 = builder3.createGSet("ID_1");
             set1.add("gogo");
 
-            System.out.println(Arrays.toString(set3.toArray()));
+
+
+            System.out.println(Arrays.toString(set3.getArray()));
 
             /*
             LocalCrdtStore crdtStore1 = new LocalCrdtStore();

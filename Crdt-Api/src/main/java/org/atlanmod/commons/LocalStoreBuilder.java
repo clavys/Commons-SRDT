@@ -12,6 +12,8 @@ public class LocalStoreBuilder {
     private LocalCrdtStore store;
     private final String id;
 
+
+
     public LocalStoreBuilder() {
         this.id = null;
         this.store = new LocalCrdtStore();
