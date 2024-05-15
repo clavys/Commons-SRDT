@@ -66,7 +66,15 @@ public class LWWSet<E> extends AbstractSet<E> implements Crdt {
             elements.put(value,newTimestampedV);
             return false;
         }
+    }
 
+    public E lwwSetQuery(E key){
+        TimestampedVectorClock timestampedV = elements.get(key);
+        if(timestampedV != null && !timestampedV.isRemoved){
+            return key;
+        }else{
+            return null;
+        }
     }
 /*
     public void processCommand(LWWSetCommand<T> command) {
