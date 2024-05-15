@@ -128,6 +128,60 @@ public class LWWSet<E> extends AbstractSet<E> implements Crdt {
         }
     }
 
+    import java.util.HashSet;
+import java.util.Set;
+
+    public class LWWSet<T> {
+        private Set<TimestampedElement<T>> elements = new HashSet<>();
+
+        public void add(T element, long timestamp) {
+            // Ajouter un élément avec isRemoved = false pour indiquer qu'il n'est pas supprimé
+            elements.add(new TimestampedElement<>(element, timestamp, false));
+        }
+
+        public void remove(T element, long timestamp) {
+            // Ajouter un élément avec isRemoved = true pour indiquer qu'il est supprimé
+            elements.add(new TimestampedElement<>(element, timestamp, true));
+        }
+
+        public boolean contains(T element) {
+            // Vérifier si l'élément est présent dans les éléments et n'est pas marqué comme supprimé
+            TimestampedElement<T> timestampedElement = new TimestampedElement<>(element, 0, false);
+            return elements.contains(timestampedElement);
+        }
+
+        public void merge(LWWSet<T> other) {
+            // Fusionner les ensembles d'éléments
+            elements.addAll(other.elements);
+        }
+
+        private class TimestampedElement<T> {
+            private T element;
+            private long timestamp;
+            private boolean isRemoved;
+
+            public TimestampedElement(T element, long timestamp, boolean isRemoved) {
+                this.element = element;
+                this.timestamp = timestamp;
+                this.isRemoved = isRemoved;
+            }
+
+            @Override
+            public int hashCode() {
+                return element.hashCode();
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                if (this == obj) return true;
+                if (obj == null || getClass() != obj.getClass()) return false;
+                TimestampedElement<?> other = (TimestampedElement<?>) obj;
+                return element.equals(other.element);
+            }
+        }
+    }
+
+
 /*
     private static class Element<E> {
 
