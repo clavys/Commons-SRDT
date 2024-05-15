@@ -2,7 +2,6 @@ package org.atlanmod.commons;
 
 import com.netopyr.wurmloch.crdt.*;
 import io.reactivex.functions.Function4;
-import javaslang.collection.Array;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 
@@ -14,6 +13,8 @@ public class CrdtBuilder {
     public CrdtBuilder(Crdt crdt) {
         this.crdt = crdt;
     }
+
+
 
 
     public Function4<String, String, Publisher<? extends CrdtCommand>, Subscriber<? super CrdtCommand>, Crdt> getFactory() {
@@ -36,6 +37,18 @@ public class CrdtBuilder {
             return ((LWWRegister<T>) crdt).get();
         } else {
             throw new UnsupportedOperationException("CRDT type not supported for get() method");
+        }
+    }
+
+    public <T> Object[] getArray(){
+        if (crdt instanceof GSet) {
+            return ((GSet<T>) crdt).toArray();
+        } else if (crdt instanceof ORSet) {
+            return ((ORSet<T>) crdt).toArray();
+        } else if (crdt instanceof RGA) {
+            return ((RGA<T>) crdt).toArray();
+        } else {
+            throw new UnsupportedOperationException("CRDT type not supported for getArray() method");
         }
     }
 

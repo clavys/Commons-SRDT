@@ -35,7 +35,7 @@ public class ORSetTest {
         System.out.println(Arrays.toString(ors1.toArray()));
         System.out.println(Arrays.toString(ors2.toArray()));
 
-        cst1.disconnect(cst2);
+
 
         ors1.remove("banana");
         ors2.add("strawberry");
