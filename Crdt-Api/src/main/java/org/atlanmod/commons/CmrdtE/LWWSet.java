@@ -17,11 +17,12 @@ import org.reactivestreams.Subscriber;
 import java.util.*;
 
 public class LWWSet<E> extends AbstractSet<E> implements Crdt {
+
     private final String crdtId;
     private VectorClock clock;
-    private final Set<TimestampedElement<E>> elements = new HashSet<>();
+    private final Map<E,TimestampedVectorClock> elements = new HashMap<>();
     //private final Set<T>
-    private final Processor<LWWSetCommand<E>, LWWSetCommand<E>> commands = ReplayProcessor.create();
+   // private final Processor<LWWSetCommand<E>, LWWSetCommand<E>> commands = ReplayProcessor.create();
 
     public LWWSet(String crdtId) {
         this.crdtId = Objects.requireNonNull(crdtId, "Id must not be null");
@@ -39,16 +40,35 @@ public class LWWSet<E> extends AbstractSet<E> implements Crdt {
         return null;
     }
 
-    public void add(E value) {
+   /* public void add(E value) {
 
         boolean bo = !(elements.contains(value));
 
     }
-
+*/
     public synchronized void doAdd(E value) {
 
     }
 
+    public boolean doRemove(E value,VectorClock clk){
+        TimestampedVectorClock timestampedV = elements.get(value);
+        if (timestampedV != null){
+            if (timestampedV.timestamp.compareTo(clk) > 0){
+                timestampedV.timestamp = clk;
+                if(!timestampedV.isRemoved){
+                    timestampedV.isRemoved = true;
+                    return true;
+                }
+            }
+            return false;
+        }else{
+            TimestampedVectorClock newTimestampedV = new TimestampedVectorClock(clk, true);
+            elements.put(value,newTimestampedV);
+            return false;
+        }
+
+    }
+/*
     public void processCommand(LWWSetCommand<T> command) {
         if (command instanceof AddCommand) {
             doadd()
@@ -60,6 +80,8 @@ public class LWWSet<E> extends AbstractSet<E> implements Crdt {
 
     }
 
+ */
+
     @Override
     public Iterator<E> iterator() {
         return new LWWSetIterator<>();
@@ -70,7 +92,7 @@ public class LWWSet<E> extends AbstractSet<E> implements Crdt {
         return 0;
     }
 
-    public void add(T element, long timestamp) {
+    /*public void add(T element, long timestamp) {
         // Ajouter un élément avec isRemoved = false pour indiquer qu'il n'est pas supprimé
         elements.add(new TimestampedElement<>(element, timestamp, false));
     }
@@ -90,31 +112,30 @@ public class LWWSet<E> extends AbstractSet<E> implements Crdt {
         // Fusionner les ensembles d'éléments
         elements.addAll(other.elements);
     }
+*/
+    private static class TimestampedVectorClock {
+        public VectorClock timestamp;
+        public boolean isRemoved;
 
-    private static class TimestampedElement<T> {
-        private T element;
-        private long timestamp;
-        private boolean isRemoved;
-
-        public TimestampedElement(T element, long timestamp, boolean isRemoved) {
-            this.element = element;
+        public TimestampedVectorClock(VectorClock timestamp, boolean isRemoved) {
             this.timestamp = timestamp;
             this.isRemoved = isRemoved;
         }
 
         @Override
         public int hashCode() {
-            return element.hashCode();
+            return timestamp.hashCode();
         }
 
         @Override
         public boolean equals(Object obj) {
             if (this == obj) return true;
             if (obj == null || getClass() != obj.getClass()) return false;
-            TimestampedElement<?> other = (TimestampedElement<?>) obj;
-            return element.equals(other.element);
+            TimestampedVectorClock other = (TimestampedVectorClock) obj;
+            return timestamp.equals(other.timestamp);
         }
     }
+
 
     private class LWWSetIterator<E> implements Iterator<E> {
         @Override
