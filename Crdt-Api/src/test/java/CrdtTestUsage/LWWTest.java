@@ -6,6 +6,10 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+
 public class LWWTest {
     @Test
     public void LWWTst() {
@@ -21,18 +25,25 @@ public class LWWTest {
 
         rep1.set("Ninja");
         rep2.set("Fuji");
-        System.out.println("Node 1 : " + rep1.get());
+
+        /*System.out.println("Node 1 : " + rep1.get());
         System.out.println("Node 2 : " + rep2.get());
-        System.out.println("Node 3 : " + rep3.get());
+        System.out.println("Node 3 : " + rep3.get());*/
+        assertThat(rep1.get(), is("Fuji"));
+        assertThat(rep1.get(), is("Fuji"));
+        assertThat(rep1.get(), is("Fuji"));
         System.out.println("Node 2 has disconneted");
-        store1.disconnect(store2);
+        //store1.disconnect(store2);
         //store2.disconnect(store1); //Cas bizarre
         rep2.set("Fromage");
         rep3.set("Toage");
+       //assertThat(rep1.get(), is("Toage"));
+        //assertThat(rep1.get(), is("Toage"));
+        //assertThat(rep1.get(), is("Toage"));
         System.out.println("Node 1 : " + rep1.get());
         System.out.println("Node 2 : " + rep2.get());
         System.out.println("Node 3 : " + rep3.get());
-        store1.connect(store2);
+        //store1.connect(store2);
         System.out.println("Node 2 connected");
         System.out.println("Node 1 : " + rep1.get());
         System.out.println("Node 2 : " + rep2.get());

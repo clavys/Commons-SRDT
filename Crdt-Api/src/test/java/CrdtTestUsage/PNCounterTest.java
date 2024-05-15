@@ -16,7 +16,7 @@ public class PNCounterTest {
         final PNCounter pnCounter = store1.createPNCounter();
         final PNCounter pnCounter2 = store2.findPNCounter(pnCounter.getId()).get();
         final PNCounter pnCounter3 = store3.findPNCounter(pnCounter.getId()).get();
-        pnCounter.increment(2L);
+        pnCounter.increment(2);
         System.out.println("Node 1 : " +pnCounter.get());
         System.out.println("Node 2 : "+pnCounter2.get());
         System.out.println("Node 3 : "+pnCounter3.get());

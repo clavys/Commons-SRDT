@@ -5,8 +5,6 @@ import com.netopyr.wurmloch.crdt.MVRegister;
 import com.netopyr.wurmloch.store.LocalCrdtStore;
 import org.junit.Test;
 
-import java.util.Arrays;
-
 public class MVRegisterTest {
     @Test
     public void gSetTest() {

@@ -25,7 +25,6 @@ public class gsetTest {
             var set3 = builder3.createGSet("ID_1");
             set1.add("gogo");
 
-            System.out.println(Arrays.toString(set3.toArray()));
 
             /*
             LocalCrdtStore crdtStore1 = new LocalCrdtStore();

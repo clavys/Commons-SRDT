@@ -40,9 +40,11 @@ public class GCounterTest {
         System.out.println("Node 3 : " + gc3.get());
         System.out.println("Node 2 reconnected");
         cst1.connect(cst2);
-        //gc3.increment(-1L); Error case
+       // gc3.increment(-1L); //Error case
         System.out.println("Node 1 : " + gc1.get());
         System.out.println("Node 2 : " + gc2.get());
         System.out.println("Node 3 : " + gc3.get());
     }
+
+    pr
 }
