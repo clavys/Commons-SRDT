@@ -45,7 +45,11 @@ public class LWWSet<E> extends AbstractSet<E> implements Crdt {
     }
 
     public void processCommand(CrdtCommand command){
-
+        if (command instanceof LWWSet.AddCommand) {
+            E value = ((LWWSetCommand<E>) command).getValue();
+            VectorClock clk = ((LWWSetCommand<E>) command).getClock();
+            doAdd(value,clk);
+        }
     }
 
    public void add(E value, VectorClock ts) {
@@ -110,19 +114,9 @@ public class LWWSet<E> extends AbstractSet<E> implements Crdt {
             return null;
         }
     }
-/*
-    public void processCommand(LWWSetCommand<T> command) {
-        if (command instanceof AddCommand) {
-            doadd()
-        } else if (command instanceof removeCommand) {
 
-        } else {
 
-        }
 
-    }
-
- */
 
     @Override
     public Iterator<E> iterator() {
