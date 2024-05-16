@@ -2,7 +2,9 @@ package org.atlanmod.commons.CmrdtE;
 
 import com.netopyr.wurmloch.crdt.Crdt;
 import com.netopyr.wurmloch.crdt.CrdtCommand;
+import com.netopyr.wurmloch.crdt.LWWRegister;
 import com.netopyr.wurmloch.crdt.ORSet;
+import com.netopyr.wurmloch.vectorclock.StrictVectorClock;
 import com.netopyr.wurmloch.vectorclock.VectorClock;
 import io.reactivex.processors.ReplayProcessor;
 import javaslang.Function4;
@@ -21,6 +23,8 @@ public class LWWSet<E> extends AbstractSet<E> implements Crdt {
     private final String crdtId;
     private VectorClock clock;
     private final Map<E,TimestampedVectorClock> elements = new HashMap<>();
+    private VectorClock lastClear;
+    private final Processor<LWWSetCommand<E>, LWWSetCommand<E>> commands = ReplayProcessor.create();
     //private final Set<T>
    // private final Processor<LWWSetCommand<E>, LWWSetCommand<E>> commands = ReplayProcessor.create();
 
@@ -40,14 +44,44 @@ public class LWWSet<E> extends AbstractSet<E> implements Crdt {
         return null;
     }
 
-   /* public void add(E value) {
-
-        boolean bo = !(elements.contains(value));
+    public void processCommand(CrdtCommand command){
 
     }
-*/
-    public synchronized void doAdd(E value) {
 
+   public void add(E value, VectorClock ts) {
+        commands.onNext(new AddCommand<>(getId(), value, ts));
+        doAdd(value, ts);
+    }
+
+    /**
+     * Ajout d'un élément dans le set et renvoie true si l'élément a bien été ajouté.
+     * @param element
+     * @param timestamp
+     */
+    public boolean doAdd(E element, VectorClock timestamp) {
+        // Ajouter un élément avec isRemoved = false pour indiquer qu'il n'est pas supprimé
+        //elements.add(new TimestampedElement<>( timestamp, false));
+        TimestampedVectorClock tmp = elements.get(element);
+        if (tmp != null){
+            if (timestamp.compareTo(tmp.timestamp) > 1) {
+                tmp.timestamp = timestamp;
+                if (tmp.isRemoved == true){
+                    tmp.isRemoved = false;
+                    return true;
+                }
+                return false;
+            }
+        }else{
+            tmp = new TimestampedVectorClock(timestamp, false);
+            elements.put(element, tmp);
+            if(tmp.timestamp.compareTo(lastClear) <= 0){
+                tmp.timestamp = lastClear;
+                tmp.isRemoved = true;
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     public boolean doRemove(E value,VectorClock clk){
@@ -100,27 +134,7 @@ public class LWWSet<E> extends AbstractSet<E> implements Crdt {
         return 0;
     }
 
-    /*public void add(T element, long timestamp) {
-        // Ajouter un élément avec isRemoved = false pour indiquer qu'il n'est pas supprimé
-        elements.add(new TimestampedElement<>(element, timestamp, false));
-    }
 
-    public void remove(T element, long timestamp) {
-        // Ajouter un élément avec isRemoved = true pour indiquer qu'il est supprimé
-        elements.add(new TimestampedElement<>(element, timestamp, true));
-    }
-
-    public boolean contains(T element) {
-        // Vérifier si l'élément est présent dans les éléments et n'est pas marqué comme supprimé
-        TimestampedElement<T> timestampedElement = new TimestampedElement<>(element, 0, false);
-        return elements.contains(timestampedElement);
-    }
-
-    public void merge(LWWSet<T> other) {
-        // Fusionner les ensembles d'éléments
-        elements.addAll(other.elements);
-    }
-*/
     private static class TimestampedVectorClock {
         public VectorClock timestamp;
         public boolean isRemoved;
@@ -159,6 +173,67 @@ public class LWWSet<E> extends AbstractSet<E> implements Crdt {
         @Override
         public void remove() {
             Iterator.super.remove();
+        }
+    }
+
+    public static class LWWSetCommand<E> extends CrdtCommand{
+
+        private final E value;
+        private final VectorClock clock;
+
+        public LWWSetCommand(String crdtId, E value, VectorClock clock) {
+            super(crdtId);
+            this.value = value;
+            this.clock = clock;
+        }
+
+        E getValue(){
+            return value;
+        }
+
+        VectorClock getClock(){
+            return clock;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+
+            if (o == null || getClass() != o.getClass()) return false;
+
+            LWWSet.LWWSetCommand<?> that = (LWWSet.LWWSetCommand<?>) o;
+
+            return new EqualsBuilder()
+                    .appendSuper(super.equals(o))
+                    .append(value, that.value)
+                    .append(clock, that.clock)
+                    .isEquals();
+        }
+
+        @Override
+        public int hashCode() {
+            return new HashCodeBuilder(17, 37)
+                    .appendSuper(super.hashCode())
+                    .append(value)
+                    .append(clock)
+                    .toHashCode();
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                    .appendSuper(super.toString())
+                    .append("value", value)
+                    .append("clock", clock)
+                    .toString();
+        }
+    }
+
+    public static final class AddCommand<E> extends LWWSetCommand{
+
+        public AddCommand(String crdtId, E value, VectorClock clock) {
+            super(crdtId, value, clock);
+
         }
     }
 
