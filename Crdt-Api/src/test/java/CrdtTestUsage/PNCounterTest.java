@@ -1,8 +1,6 @@
 package CrdtTestUsage;
 
-import com.netopyr.wurmloch.crdt.PNCounter;
-import com.netopyr.wurmloch.store.LocalCrdtStore;
-import org.atlanmod.commons.CrdtBuilder;
+import org.atlanmod.commons.CrdtWrapper;
 import org.atlanmod.commons.LocalStoreBuilder;
 import org.junit.Test;
 
@@ -16,9 +14,9 @@ public class PNCounterTest {
 
         store1.connect(store2).connect(store3);
 
-        CrdtBuilder pnCounter1 = store1.createPNCounter("id10");
-        CrdtBuilder pnCounter2 = store2.findPNCounter(pnCounter1.getId());
-        CrdtBuilder pnCounter3 = store2.findPNCounter(pnCounter1.getId());
+        CrdtWrapper pnCounter1 = store1.createPNCounter("id10");
+        CrdtWrapper pnCounter2 = store2.findPNCounter(pnCounter1.getId());
+        CrdtWrapper pnCounter3 = store2.findPNCounter(pnCounter1.getId());
 
         System.out.println("Node 1 : " +pnCounter1.increment(3L).decrement().get());
         System.out.println("Node 3 : " +pnCounter3.get());

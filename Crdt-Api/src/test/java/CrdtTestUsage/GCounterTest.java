@@ -1,13 +1,7 @@
 package CrdtTestUsage;
 
-import com.netopyr.wurmloch.crdt.GCounter;
-import com.netopyr.wurmloch.store.CrdtStore;
-import com.netopyr.wurmloch.store.LocalCrdtStore;
-import org.atlanmod.commons.CrdtBuilder;
 import org.atlanmod.commons.LocalStoreBuilder;
 import org.junit.Test;
-
-import java.util.Arrays;
 
 public class GCounterTest {
 

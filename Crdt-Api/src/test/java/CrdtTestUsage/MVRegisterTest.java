@@ -3,12 +3,25 @@ package CrdtTestUsage;
 
 import com.netopyr.wurmloch.crdt.MVRegister;
 import com.netopyr.wurmloch.store.LocalCrdtStore;
+import javaslang.collection.Array;
+import org.atlanmod.commons.LocalStoreBuilder;
 import org.junit.Test;
 
 public class MVRegisterTest {
     @Test
     public void gSetTest() {
 
+        LocalStoreBuilder builder1 = new LocalStoreBuilder();
+        LocalStoreBuilder builder2 = new LocalStoreBuilder();
+        LocalStoreBuilder builder3 = new LocalStoreBuilder();
+
+        builder1.connect(builder2).connect(builder3);
+
+        var set1 = builder1.createMVRegister("ID_1");
+
+
+
+/*
         final LocalCrdtStore cst1 = new LocalCrdtStore();
         final LocalCrdtStore cst2 = new LocalCrdtStore();
         final LocalCrdtStore cst3 = new LocalCrdtStore();
@@ -47,6 +60,6 @@ public class MVRegisterTest {
         System.out.println("node2 =" + lww2.get());
         System.out.println("node3 =" + lww3.get());
 
-
+*/
     }
 }

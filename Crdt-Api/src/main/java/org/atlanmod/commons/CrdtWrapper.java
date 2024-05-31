@@ -7,10 +7,10 @@ import org.reactivestreams.Subscriber;
 
 import java.util.Iterator;
 
-public class CrdtBuilder {
+public class CrdtWrapper {
     public final Crdt crdt;
 
-    public CrdtBuilder(Crdt crdt) {
+    public CrdtWrapper(Crdt crdt) {
         this.crdt = crdt;
     }
 
@@ -52,34 +52,8 @@ public class CrdtBuilder {
         }
     }
 
-    /*
-    public long getLong() {
-        if (crdt instanceof GCounter) {
-            return ((GCounter) crdt).get();
-        } else if (crdt instanceof PNCounter) {
-            return ((PNCounter) crdt).get();
-        }else {
-            throw new UnsupportedOperationException("CRDT type not supported for get()->(long) method");
-        }
-    }
 
-    public <T> Array<T> getArray() {
-        if (crdt instanceof MVRegister) {
-            return ((MVRegister<T>) crdt).get();
-        }else {
-            throw new UnsupportedOperationException("CRDT type not supported for get()->(Array<T>) method");
-        }
-    }
-
-    public <T> T getObjet() {
-        if (crdt instanceof LWWRegister) {
-            return ((LWWRegister<T>) crdt).get();
-        }else {
-            throw new UnsupportedOperationException("CRDT type not supported for get()->(T) method");
-        }
-    }
-*/
-    public CrdtBuilder increment() {
+    public CrdtWrapper increment() {
         if (crdt instanceof GCounter) {
             ((GCounter) crdt).increment();
             return this;
@@ -91,7 +65,7 @@ public class CrdtBuilder {
         }
     }
 
-    public CrdtBuilder increment(long value) {
+    public CrdtWrapper increment(long value) {
         if (crdt instanceof GCounter) {
             ((GCounter) crdt).increment(value);
             return this;
@@ -103,7 +77,7 @@ public class CrdtBuilder {
         }
     }
 
-    public CrdtBuilder decrement() {
+    public CrdtWrapper decrement() {
         if (crdt instanceof PNCounter) {
             ((PNCounter) crdt).decrement();
             return this;
@@ -113,7 +87,7 @@ public class CrdtBuilder {
 
     }
 
-    public CrdtBuilder decrement(long value) {
+    public CrdtWrapper decrement(long value) {
         if (crdt instanceof PNCounter) {
             ((PNCounter) crdt).decrement(value);
             return this;
@@ -146,7 +120,7 @@ public class CrdtBuilder {
     }
 
 
-    public <T> CrdtBuilder add(T element) {
+    public <T> CrdtWrapper add(T element) {
         if (crdt instanceof GSet) {
             ((GSet<T>) crdt).add(element);
             return this;
@@ -165,7 +139,7 @@ public class CrdtBuilder {
         throw new UnsupportedOperationException("CRDT type not supported for get(int index) method");
     }
 
-    public <E> CrdtBuilder add(int index, E element) {
+    public <E> CrdtWrapper add(int index, E element) {
         if (crdt instanceof RGA) {
            ((RGA<E>) crdt).add(index ,element);
            return this;
@@ -174,7 +148,7 @@ public class CrdtBuilder {
     }
 
 
-    public <E> CrdtBuilder remove(int index) {
+    public <E> CrdtWrapper remove(int index) {
         if (crdt instanceof RGA) {
             ((RGA<E>) crdt).remove(index);
             return this;
@@ -182,7 +156,7 @@ public class CrdtBuilder {
         throw new UnsupportedOperationException("CRDT type not supported for remove(int index) method");
     }
 
-    public <T> CrdtBuilder set(T newValue) {
+    public <T> CrdtWrapper set(T newValue) {
         if (crdt instanceof LWWRegister) {
             ((LWWRegister<T>) crdt).set(newValue);
             return this;
